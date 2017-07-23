@@ -1,0 +1,37 @@
+\section{Proposta do trabalho}
+
+Nós somos rodeados por sons. Quanto mais ruidoso é um ambiente, mais difícil se torna identificar um som em particular. Motivado por isto, especialistas na área de processamento de sinais criaram a tarefa de separar e extrair uma informação sonora a partir de uma amostra ruidosa tanto para comunicação humano-máquina quanto humano-humano. 
+
+Conhecida como separação cega de fontes, do inglês \textit{blind source separation} (BSS), esta é uma abordagem que visa estimar os sinais de áudio importantes através unicamente das suas misturas observadas. Assim sendo, a estimação é obtida sem possuir quaisquer informações sobre o processo de mistura ou sobre as fontes, como sua estrutura na frequência ou temporal.
+
+O estudo proposto teve origem na área de biomedicina, como será visto mais adiante, mas atualmente é bastante estudado pela área de engenharia eletrônica. Sendo mais específico, pode-se citar a área de processamento de sinais como a mais interessada no assunto, uma vez que uma das aplicações principais do BSS é a de separação de sinais de voZ, por exemplo.
+
+\section{Delimitação}
+
+Este trabalho abordará o caso da separação cega de fontes para misturas convolutivas, no domínio da frequência, determinados (quando o número de fontes é igual ao número de sensores) e para sinais de voz. Desta forma, deve-se dizer que tem uma aplicação limitada, uma vez que em diversos casos, não necessariamente dispõe-se da mesma quantidade de sensores e de fontes. Entretanto, é uma boa oportunidade de mostrar fundamentos de diversas áreas, tais como álgebra linear, estatística e otimização e combina-las de forma a obter um resultado satisfatório.
+
+
+\section{Justificativa}
+
+A interdisciplinaridade do assunto é fascinante. Combinar diversos fundamentos e aplica-los a um problema do mundo real é uma demonstração clara do porquê de todo conhecimento é valioso. Além disso, a diversidade de aplicações faz com que problemas de naturezas diferentes possuam uma solução similiar. Estudar e dominar este problema é fundamental para o avanço cientifico e tecnológico da área de processamento de sinais.
+
+
+\section{Objetivos}
+
+Os objetivo principal deste trabalho é comparar dois diferentes métodos empregados na separação cega de fontes para o mesmo cenário. Entretanto, para chegar a este ponto, é necessário introduzir o problema do BSS, apresentar sua modelagem matemática, descrever os fundamentos utilizados nesta formulação, propor um cenário simulável para a realização dos testes e obtenção dos dados.
+
+
+\section{Metodologia}
+
+O assunto em questão requer um conhecimento sólido em matemática, estatística e processamento de sinais para seu entendimento. Apesar de grande parte do problema já ser bem definido e ter algumas soluções mais adequadas para casos particulares, existem algumas etapas em que reside uma dificuldade maior, como no caso da permutação quando trabalha-se no domínio da frequência (será visto mais adiante). Assim sendo, serão revistos alguns destes conceitos antes da apresentação do problema em si. Uma vez feito isto, apresentaremos o problema aplicado para o caso de sinais de voz em ambientes reverberantes. Serão discutidas as dificuldades deste caso e suas respectivas propostas de solução.
+
+
+\section{Descrição}
+
+No capítulo 2 será apresentado o problema do BSS, bem como os conceitos utilizados para a modelagem do problema.
+
+O capítulo 3 apresenta os métodos de separação cega de fontes no domínio da frequência, apresentando suas vantagens e desvantagens em relação ao caso no domínio do tempo.
+
+O capítulo 4 trata do problema de permutação, que tem origem após a separação dos sinais no domínio da frequência, no momento de voltar para o domínio do tempo.
+
+No capítulo 5, apresenta-se a conclusão do estudo, introduzindo um contexto para trabalhos futuros.

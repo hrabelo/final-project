@@ -1,0 +1,57 @@
+\section{Relação Tempo-Frequência}
+    
+    \subsection{Contexto}
+        Para o caso real, os sinais de áudio convoluem com a resposta ao impulso de um filtro, que representa o percurso realizado pelos mesmos entre as fontes e os sensores. Isto caracteriza um caso de misturas convolutivas (conforme visto na seção [referência]). 
+        
+        Com o conhecimento de que podemos representar uma operação de convolução no domínio tempo da mesma forma do que uma multiplicação no domínio da frequência, uma forma de simplificar este problema seria aplicar a transformada de Fourier à estes sinais, resolver múltiplos casos de misturas instântaneas e aplicar a transformada inversa de Fourier para levar os sinais de volta ao domínio do tempo. Uma das vantagens desta abordagem reside na redução da complexidade computacional e qualquer algoritimo ICA que trabalhe com números complexos e misturas instantâneas está apto para ser usado.
+        
+        Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção [referência]), se tornam elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as as componentes de cada fonte não forem devidamente agrupadas antes de serem levadas para o domínio do tempo novamente. Isto é crucial para obter uma solução aceitável.
+        
+        Também é relevante citar o problema da circularidade da DFT. No caso discreto, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o caso em que os filtros no domínio do tempo sejam periódicos, o que não é condizente com a realidade. Para fazer com que a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que a representação do sinal no domínio do tempo deve ter um número de raias de frequência maior ou igual ao tamanho do filtro somado ao trecho do sinal, além do sinal ter de ser reconstruído através da técnica de Overlap-Add [referência]. Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar convolução rápida de um filtro com um sinal longo. Quando isto não é respeitado, o sinal provinente do tratamento na frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
+        
+    \subsection{STFT}
+        A STFT de um sinal x é dada pela equação abaixo (\ref{eq:STFT}), onde:
+
+    %STFT
+    \begin{equation}\label{eq:STFT}
+        \mathcal{X}(\mathpzc{m},\mathpzc{k})
+        = \sum_{n} \mathbf{x}(\mathpzc{n})
+        \mathpzc{win}_\mathpzc{a}(\mathpzc{n} - \mathpzc{mJ})
+        exp \left( -j \frac{2\pi\mathpzc{kn}}{K} \right), \mathpzc{k} = 0, \dots, K-1
+    \end{equation}
+
+
+        \begin{itemize}
+            
+            \item \mathpzc{k} é a raia de frequência, com intervalo [0, K-1]. Pode ser interpretada como a frequência discreta $\mathpzc{f_k}$ $\in$ \big\{0,$\frac{1}{K}$ $\mathpzc{f_s}$, \dots, $\frac{K-1}{K}$ $\mathpzc{f_s}$ \big\}.
+                        
+            \item K é o número de raias de frequência da DFT.
+                        
+            \item L é o comprimento da janela.
+                        
+            \item J é o deslocamento da janela.
+            
+            \item  $\mathpzc{f_s}$ é a frequência de amostragem.
+            
+            \item $\mathpzc{win_a}$($\mathpzc{n}$) é a janela de análise, definida como sendo não-nula apenas no intervalo [0, L-1]. O salto J é obviamente menor ou igual L, ou haverá perda de observações. Este saldo deve ser bem escolhido para não haver distorções na síntese dos sinais.
+        \end{itemize}
+    
+        Pode-se notar que K=L na equação acima. Entretanto, há casos em que K$>$L, que são chamados de \textit{oversampled}. Nestes casos, é necessário fazer \textit{zero-padding} para preencher o sinal com zeros antes de passar para a frequência.
+        
+        A notação prática do cálculo da STFT está em (\ref{eq:practiceSTFT}), onde $\mathbf{DFT(v)}$ representa a DFT do vetor $\mathbf{v}$, que pode ser calculada através da FFT. o vetor $\mathbf{x_{frame}}$(m) = 
+        
+        
+            %STFT
+    \begin{equation}\label{eq:practiceSTFT}
+        \mathcal{X}(\mathpzc{m})
+        = DFT(diag(\mathbf{x_{frame}}(\mathpzc{m})\mathbf{win_a}))
+    \end{equation}
+    
+\section{Pré-Processamento}
+    \subsection{Branqueamento}
+\section{Processamento}
+    \subsection{Separação}
+\section{Pós-Processamento}
+    \subsection{Escalonamento}
+    \subsection{Permutação}
+    \subsection{Suavização}

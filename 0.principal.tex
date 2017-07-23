@@ -1,0 +1,96 @@
+\documentclass[a4paper,12pt,oneside,openany]{book}	
+\input{TesePack}
+
+\begin{document}
+
+\frontmatter
+\thispagestyle{empty}
+
+\input{1.capa}
+
+\pagebreak            
+
+\input{2.preambulo}
+
+% Table of Contents
+% ---------------------------------------------------------------
+     \tableofcontents
+% ---------------------------------------------------------------
+% Lista de figuras
+% ---------------------------------------------------------------
+%\cleardoublepage
+%\addcontentsline{toc}{chapter}{Lista de Figuras}
+\listoffigures
+% ---------------------------------------------------------------
+% Lista de Tabelas
+% ---------------------------------------------------------------
+%\cleardoublepage
+%\addcontentsline{toc}{chapter}{Lista de Tabelas}
+\listoftables
+
+\mainmatter
+\cleardoublepage
+% ---------------------------------------------------------------
+% Chapter 1 - Introdução
+% ---------------------------------------------------------------
+\chapter{Introdução}
+\label{cap1}
+\input{3.cap1}
+
+% ---------------------------------------------------------------
+% Chapter 2 - Separação Cega de Fontes
+% ---------------------------------------------------------------
+\chapter{Separação Cega de Fontes}
+\label{cap2}
+\input{4.cap2}
+
+% ---------------------------------------------------------------
+% Chapter 3 - Separação de Misturas Não Lineares
+% ---------------------------------------------------------------
+\chapter{Separação de Fontes no Domínio da Frequência}
+\label{cap3}
+\input{5.cap3}
+
+% ---------------------------------------------------------------
+% Chapter 4 - Conclusões
+% ---------------------------------------------------------------
+\chapter{Conclusões}
+\label{cap4}
+\input{6.cap4}
+
+
+% ---------------------------------------------------------------
+% Bibliografia
+% ---------------------------------------------------------------
+\normalsize
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliografia}
+\bibliographystyle{coppe}
+\bibliography{7.biblio}
+
+% ---------------------------------------------------------------
+% Apêndices 
+% ---------------------------------------------------------------
+   \appendix
+   % ---------------------------------------------------------------
+   % Apêndice A - Estatística
+   % ---------------------------------------------------------------
+   \chapter{Conceitos de Estatística}
+   \label{ApendiceA}
+   \input{8.apendiceA}
+   % ---------------------------------------------------------------
+   % Apêndice B - Teoria da Informação
+   % ---------------------------------------------------------------
+   \chapter{Conceitos da Teoria da Informação}
+   \label{ApendiceB}
+   \input{9.apendiceB}
+   % ---------------------------------------------------------------
+   % Apêndice C
+   % ---------------------------------------------------------------
+   \chapter{???}
+   \label{ApendiceC}
+   \input{11.apendiceC}   
+
+\backmatter
+
+\end{document}
