@@ -133,26 +133,50 @@
         Uma vez feita a centralização, tem-se que $\mathpzc{E}$$\{$$\mathbf{x}$$\}$ = 0 . Assim sendo, a matriz de covariância do vetor de misturas é dada por:
         
         \begin{equation}\label{eq:covariance}
-            \sum_{\mathpzc{x_{k}x_{k}}} = \mathpzc{E}\{\mathbf{x_{k}x_{k}^H}\}
+            \mathbf{R_x} = \mathpzc{E}\{\mathbf{xx^T}\}
         \end{equation}
         
         O branqueamento se dá sobre cada frequência por uma matriz \mathbf{V}:
         
         \begin{equation}\label{eq:whiteningfrequency}
-            \mathbf{z_k}(\mathpzc{m}) = \mathbf{V_k}\mathbf{x_k}(\mathpzc{m})
+            \mathbf{z} = \mathbf{V}\mathbf{x}
         \end{equation}
         
-        para obtermos $\sum_{\mathpzc{z_{k}z_{k}}}$ = $\mathbf{I}$. Sabendo que $\sum_{\mathpzc{z_{k}z_{k}}}$= $\mathbf{V_k}$ $\sum_{\mathpzc{z_{k}z_{k}}}$ $\mathbf{V_k^H}$, ao decompormos $\sum_{\mathpzc{z_{k}z_{k}}}$ em razão das suas matrizes de autovalores e autovetores ($\sum_{\mathpzc{z_{k}z_{k}}}$ = $\mathbf{EDE^H}$), chegamos à conclusão de que:
+        Para obtermos o vetor $\mathbf{z}$ com as suas componentes descorrelacionadas, precisamos encontrar a matriz branqueadora $\mathbf{V}$ tal que $\mathpf{R_z}$ = $\mathbf{I}$.
+
+        \begin{equation}
+            \label{whiteningproof}
+        \mathpzc{R_z} = \mathbf{V}\mathbf{R_x}\mathbf{V^T} = I 
+        \end{equation}
+
+        Solucionando a equação acima em função de $\mathbf{V}$, chegamos à conclusão:
         
         \begin{equation}\label{eq:vk}
-            \mathbf{V_k} = \mathbf{D}^{-\frac{1}{2}}\mathbf{E^H}
+            \mathbf{V} = \mathbf{D}^{-\frac{1}{2}}\mathbf{E^T}
         \end{equation}
         
-        A matriz $\mathbf{E}$ é a matriz que contém os autoetores da matriz de correlação $\mathbf{R_{x_k}_{x_k}}$, onde cada coluna é um autovetor e e $\mathbf{D}$ é uma matriz diagonal que contém os autovalores de $\sum_{\mathpzc{x_{k}x_{k}}}$. O resultado interessante é que se perumtarmos as matrizes $\mathbf{D}$ e $\mathbf{E}$, o produto $\mathbf{D}^{-\frac{1}{2}}\mathbf{E^H}$ se mantém, contanto que a permutação aplicada seja igual nas duas matrizes.
+        A matriz $\mathbf{E}$ é a matriz que contém os autoetores da matriz de correlação $\mathbf{R_x}$, onde cada coluna é um autovetor e e $\mathbf{D}$ é uma matriz diagonal que contém os autovalores de $\mathbf{R_x}$. O resultado interessante é que se perumtarmos as matrizes $\mathbf{D}$ e $\mathbf{E}$, o produto $\mathbf{D}^{-\frac{1}{2}}\mathbf{E^T}$ se mantém, contanto que a permutação aplicada seja igual nas duas matrizes.
         
         Este resultado diz que podemos manipular as matrizes $\mathbf{D}$ e $\mathbf{E}$ de forma que o autovetor corresponda ao seu autovalor. Isto implica diretamente na redução dimensional do problema, uma vez que as componentes princiais do vetor de misturas corresponderão às primeiras linhas do vetor branqueado. Esta redução dimensional é conhecido como Análise de Componentes Principais (PCA), do qual surgiu o conceito de ICA. 
+        
 \section{Processamento}
-    \subsection{Separação}
+
+    \subsection{Separação por Natural ICA}
+    A separação dos sinais é realizada em cada raia de frequência, utilizando um algoritmo ICA que trabalhe com números complexos. O algoritmo Natural ICA, por não possuir restrições com relação à matriz separadora, é uma boa escolha.
+    No Natural ICA, após o branqueamento das amostras, a matriz de branqueamento $\mathbf{V_K}$ é utilizada como solução inicial $\mathbf{W_k = V_k}$ e a matriz $\mathbf{W_k}$ é atualizada iterativamente, utilizando o algoritmo apresentado em \ref{eq:matrixrefresh}
+    
+    \subsection{Separação por JADE}
+    
+    
 \section{Pós-Processamento}
-    \subsection{Escalonamento}
     \subsection{Permutação}
+    O principal desafio do ICA no domínio da frequência é o problema da permutação. Ele consiste em encontrar a matriz de permutação $\mathbf{P_k}$, definida na Seção \ref{sec:separability}, onde o índice $\mathpzc{k}$ indica a raia da frequência, de forma que se agrupe corretamente as frequências das fontes e a ISTFT gere resultados satisfatórios.
+    Este problema pode ser tratado de diferentes maneiras, entretanto, para este trabalho, iremos destacar o método TDOA (\textit{Time Difference Of Arrival}), que pode ser considerado uma extensão do DOA (\textit{Difference Of Arrival}).
+    
+    O DOA se baseia no ângulo de chegada das fontes nos sensores. Entretanto, é possível que duas fontes tenham o mesmo DOA, devido a estimativa de DOA utilizada funciona em um plano 2D. Desta forma, fontes cujos ângulos de chegada tenham o mesmo valor de cosseno estão, para o algoritmo, na mesma posição. Isto cria uma uma limitação de ângulos entre 0 e 2$\pi$. Uma alternativa é estimar a posição num espaço tridimensional das fontes (DOA 3D), mas isto acarreta em um aumento significativo do custo computacional.
+    
+    O TDOA é uma alternativa mais robusta ao DOA. Baseando-se na diferença de tempos de chegada de cada fonte aos sensores, este não sofre a limitação de ângulo que o DOA sofre, além de não ser computacionalmente mais custoso. Através do TDOA de cada fonte entre todos os pares de sensores, é possível identificá-las em cada uma das raias de frequência.
+    
+    Ambos os métodos acima baseiam-se na idéia de estimar a localização das fontes através de informações sobre o sistema de mistura, além de classificar as fontes em cada raia de frequência baseado em sua localização.
+    
+    Baseado em \cite{LuizVictorio}, utilizaremos a abordagem do TDOA por mostrar um resultado satisfatório para o caso proposto. Novamente, convidamos o leitor interessado em se aprofundar nas diferenças entre os métodos para resolver permutação a consultar a referência.
