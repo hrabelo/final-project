@@ -222,4 +222,48 @@
     
 \subsection{Modelo de estimação por máxima verossimilhança}
 
-Os algoritmos que utilizam estimativa por ML não colocam nenhuma restrição na matriz separadora, assim podem chegar a resultados mais precisos. Baseiam-se na maximização da verossimilhança da matriz separadora $\mathbf{W}$.
+Os algoritmos que utilizam estimativa por ML não colocam nenhuma restrição na matriz separadora, assim podem chegar a resultados mais precisos. Baseiam-se na maximização da verossimilhança da matriz separadora $\mathbf{W}$, dadas as misturas $\mathbf{x}$. A verossimilhança de um conjunto de parâmetros de um modelo estatístico dadas as observações ($\mathcal{L}$($\mathpzc{\theta | x}$)) tem relação com a densidade de probabilidade destas observações dados os parâmetros ($\mathbf{q}$($\mathpzc{x | \theta}$)). Aplicando-se ao nosso caso, os parâmetros são os elementos da matriz separadora e as observações são as misturas. A verossimilhança da matriz separadora $\mathbf{W}$ dadas $\mathbf{N_{amost}}$ observações de $\mathbf{x(n)}$ é dada por
+
+    \begin{equation}
+        \label{eq:verossimilance}
+        \mathbf{L(W | x(\mathpzc{n}))} = \prod_{n=1}^{N_{amost}} \mathpzc{q}(\mathbf{x(\mathpzc{n})} | \mathbf{W})
+    \end{equation}
+
+    Mesmo que as observações $\mathbf{x(n)}$ não sejam independentes entre si, na prática, a técnica ainda obtém resultados razo: \ref{eq:simplifiedmixer}, Assumindo que $\mathbf{W}$ = $\mathbf{A^{-1}}$, o termo $\mathpzc{q}$($\mathbf{x}$($\mathpzc{n}$) $|$ $\mathbf{W}$) é dado por 
+    \begin{equation} \label{eq:qxn}
+        \mathpzc{q}(\mathbf{x(\mathpzc{n})} | \mathbf{W}) = |det(\mathbf{W})|\prod_{i=1}^N\mathpzc{q}(\mathbf{w_ix}(\mathpzc{n}))
+    \end{equation}
+    
+    Combinando as equações \ref{eq:qxn} e \ref{eq:verossimilance}, obtemos:
+    
+    \begin{equation}
+        \label{eq:LW}
+        \mathbf{L(W)} = \prod_{n=1}^{N_{amost}}\prod_{i=1}^N\mathpzc{q}(\mathbf{w_ix})(\mathpzc{n})|det(\mathbf{W})|
+    \end{equation}
+    
+    Entretanto, é comum utilizar-se do logaritmo da verossimilhança, uma vez que é algebricamente mais simples e o máximo ainda é encontrado no mesmo ponto. Assim sendo, obtemos a equação
+    
+        \begin{equation}
+        \label{eq:logverossimilance}
+        log(\mathbf{L(W)}) = \mathpzc{E}\{\sum_{i=1}^Nlog(\mathpzc{q}(\mathbf{w_ix})(\mathpzc{n})) + N_{amost}log(|det(\mathbf{W})|)\}
+    \end{equation}
+    
+    onde o operador $\mathpzc{E}\{\cdot\}$ representa a estimativa do valor esperado. O valor máximo da verossimilhança pode ser encontrado iterativamente, utilizando-se o gradiente estocástico da verossimilhança. Dois dos principais algoritmos que utilizam da estimativa da ML são o Natural ICA \cite{NaturalICA}, e o algoritmo Bell-Sejnowski \cite{Bell}.
+    
+    O algoritmo Bell-Sejnowski converge muito lentamente, devido à inversão da matriz separadora $\mathbf{W}$. Este é um caso onde o processo de branqueamento, apresentado na Seção \ref{sec:separability} e que será visto novamente à frente, ajuda bastante na convergência. Entretanto, o Natural ICA possui uma convergência melhor sem precisar necessariamente de um pré-processamento, tornando o algoritmo Bell-Sejnowski obsoleto.
+    
+    O gradiente segundo a definição matemática usual aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana [30]. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em \ref{eq:verossimilance}, dá origem ao algoritmo Natural ICA.
+    
+    Definindo-se por $\mathcal{J}$ a função objetivo em função do parâmetro $\mathbf{W}$, temos que o gradiente usual e o gradiente natural são representados, respectivamente, por
+    
+    \begin{equation}
+        \label{eq:gradiente}
+        \Nabla\mathpzc{J} = \frac{\partial \mathpzc{J}(\mathbf{W})}{\partial \mathbf{W}}
+    \end{equation}
+    
+        \begin{equation}
+        \label{eq:naturalgradiente}
+        \Nabla\mathpzc{J} = \frac{\partial \mathpzc{J}(\mathbf{W})}{\partial \mathbf{W}}\mathbf{W^T}\mathbf{W}
+    \end{equation}
+    
+    onde a diferença reside na adição do produto com o termo quadrático de $\mathbf{W}$, para o caso do Natural ICA.
