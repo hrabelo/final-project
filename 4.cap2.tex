@@ -212,47 +212,65 @@
     
     \medskip
     
-    Em termos práticos, quanto mais misturadas estiverem as fontes, mais gaussiana ela estará. Existem duas formas de medir a gaussianidade: a curtose e a negentropia. Por não ser o objetivo deste trabalho, apenas introduziremos o conceito de cada uma das abordagens e optaremos pela utilização da negentropia, devido à sua robustez em relação ao caso da curtose. Além disto, o algoritmo utilizado escolhido é o \textit{NaturalICA}, que é baseado na maximização da verossimilhança, que será visto na seção a seguir. Assim sendo, convidamos o leitor que esteja interessado no aprofundamento das abordagens, a leitura de \cite{LuizVictorio}.
+    Em termos práticos, quanto mais misturadas estiverem as fontes, mais gaussiana ela estará. Existem duas formas de medir a gaussianidade: a curtose e a negentropia. Por não ser o objetivo deste trabalho, apenas introduziremos o conceito de cada uma das abordagens e optaremos pela utilização da negentropia, devido à sua robustez em relação ao caso da curtose. Além disto, o algoritmo utilizado escolhido é o \textit{NaturalICA}, que é baseado na maximização da verossimilhança, que será visto na seção a seguir. Assim sendo, convidamos o leitor que esteja interessado no aprofundamento das diferenças entre a abordagem por negentropia e por , a leitura de \cite{LuizVictorio}.
     
-    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussiana, subgaussiana e super-gaussiana. Também pode ser interpretada como a inclinação da curva gaussiana. Entre os problemas referentes à abordagem da ICA na curtose, estão o problema do algoritmo baseado em um gradiente, fazendo com que o mesmo necessite uma sábia escolha de um passo de adaptação e podendo resultar em convergência lenta ou até mesmo divergência. Além disso, o problema com \textit{outliers}, que correspondem às observações da amostra que desviam completamente das demais, tem bastante influência na não utilização do método, uma vez que um \textit{outlier} pode mudar completamente a curtose.
+    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussiana, subgaussiana e super-gaussiana. Também pode ser interpretada como a inclinação da curva gaussiana. Entre os problemas referentes à abordagem da ICA na curtose, está o problema do algoritmo baseado em um gradiente, fazendo com que o mesmo necessite uma sábia escolha de um passo de adaptação e podendo resultar em convergência lenta ou até mesmo divergência. Além disso, o problema com \textit{outliers}, que correspondem às observações da amostra que desviam completamente das demais, tem bastante influência na não utilização do método, uma vez que um \textit{outlier} pode mudar completamente a curtose.
     
-    Já a abordagem da Negentropia é mais robusta, apesar de ser computacionalmente mais intensiva. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada à uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma utilização da entropia de forma que fique invariante À qualquer transformação linear invertível. 
+    Já a abordagem da Negentropia é mais robusta, apesar de ser computacionalmente mais intensiva. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada à uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma utilização da entropia de forma que fique invariante à qualquer transformação linear invertível. 
     
     Para esta abordagem, é comum escolher uma função não linear \textit{G} e incorpora-la à formulação tradicional do método de forma a simplificar o modelo e reduzir os custos computacionais.
     
 \subsection{Modelo de estimação por máxima verossimilhança}
 
-Os algoritmos que utilizam estimativa por ML não colocam nenhuma restrição na matriz separadora, assim podem chegar a resultados mais precisos. Baseiam-se na maximização da verossimilhança da matriz separadora $\mathbf{W}$, dadas as misturas $\mathbf{x}$. A verossimilhança de um conjunto de parâmetros de um modelo estatístico dadas as observações ($\mathcal{L}$($\mathpzc{\theta | x}$)) tem relação com a densidade de probabilidade destas observações dados os parâmetros ($\mathbf{q}$($\mathpzc{x | \theta}$)). Aplicando-se ao nosso caso, os parâmetros são os elementos da matriz separadora e as observações são as misturas. A verossimilhança da matriz separadora $\mathbf{W}$ dadas $\mathbf{N_{amost}}$ observações de $\mathbf{x(n)}$ é dada por
-
-    \begin{equation}
-        \label{eq:verossimilance}
-        \mathbf{L(W | x(\mathpzc{n}))} = \prod_{n=1}^{N_{amost}} \mathpzc{q}(\mathbf{x(\mathpzc{n})} | \mathbf{W})
+    A maioria dos critérios utilizados pelo caso linear da BSS, embora tenha ligações com o ICA, surgiram a partir de outras idéias que não necessariamente estão ligadas à independência estatística. O caso da estimação por máxima verossimilhança é um dos exemplos mais consagrados deste grupo. Apresentaremos, nesta seção, os conceitos acerca da verossimilhança e como a mesma se relaciona com o problema de BSS. 
+    O objetivo por traz da ML é determinar um conjunto de parâmetros $\mathbf{\theta} = [\theta_1, \dots, \theta_n]$ a partir de um conjunto de amostras $\mathbf{e} = [e(1), \dots, e(P)]$ que contém informações sobre eles. As estimativas de $\mathbf{\theta}$ são denotadas por $\hat{\theta}$ e deter,determinadas através da maximização da chamada função de máxima verossimilhança $\mathbf{L(\theta)}$, conforme
+    
+    \begin{equation}\label{eq:argmax}
+    \hat{\theta} = \operatorname*{arg\,max}_{\theta} \mathbf{L(\theta)}
+    = \operatorname*{arg\,max}_{\theta}
+    \mathpzc{p_e}(\mathbf{e} | \mathbf{\theta})
+    \end{equation}
+    
+    \medskip
+    
+    ou seja, a abordagem por máxima verossimilhança busca o conjunto de parâmetros que maximiza a probabilidade condicional de $\mathbf{e}$ dado $\mathbf{\theta}$.
+    
+    É comum assumir a independência estatística entre as amostras de $\mathbf{e}$. Assim sendo, podemos reescrever a função de máxima verossimilhança como
+    
+    \begin{equation}\label{eq:argmax2}
+        \mathbf{L(\theta)}
+        =\mathpzc{p_e}(\mathbf{e} | \mathbf{\theta})
+        =\prod_{p=1}^P \mathpzc{p_e}(\mathbf{e}(\mathpzc{p}) | \mathbf{\theta})
     \end{equation}
 
-    Mesmo que as observações $\mathbf{x(n)}$ não sejam independentes entre si, na prática, a técnica ainda obtém resultados razo: \ref{eq:simplifiedmixer}, Assumindo que $\mathbf{W}$ = $\mathbf{A^{-1}}$, o termo $\mathpzc{q}$($\mathbf{x}$($\mathpzc{n}$) $|$ $\mathbf{W}$) é dado por 
-    \begin{equation} \label{eq:qxn}
-        \mathpzc{q}(\mathbf{x(\mathpzc{n})} | \mathbf{W}) = |det(\mathbf{W})|\prod_{i=1}^N\mathpzc{q}(\mathbf{w_ix}(\mathpzc{n}))
+    Com relação ao emprego da estimação por máxima verossimilhança no problema de BSS, os parâmetros a serem determinados são os elementos elementos da matriz de mistura $\mathbf{A}$ e os dados disponíveis são as amostras do vetor de misturas $\mathbf{x}$. Assim, adaptando para o nosso caso, obtemos
+    
+        \begin{equation}\label{eq:verobss}
+          \begin{split}
+         \mathbf{L(A)} & =\prod_{p=1}^P \mathpzc{p_x}(\mathbf{x}(\mathpzc{p}) | \mathbf{A})\\
+                                & =\prod_{p=1}^P\frac{\prod_{n=1}^N\mathpzc{p_{s_n}}(\mathbf{\tilde{a_n}}\mathbf{x}(\mathpzc{p}))}{| det(\mathbf{A}) |}
+        \end{split}
     \end{equation}
     
-    Combinando as equações \ref{eq:qxn} e \ref{eq:verossimilance}, obtemos:
-    
+    Lembrando que (Papoulis,1993) e considerando a hipótese de independência entre as fontes. O termo $\mathbf{\tilde{a}_n}$ corresponde a $\mathpzc{n}$-ésima linha da matriz inversa de $\mathbf{A}$. Também é possível descrever a função de máxima verossimilhança em termos da matriz separadora $\mathbf{W}$, que é mais interessante.
+
     \begin{equation}
-        \label{eq:LW}
-        \mathbf{L(W)} = \prod_{n=1}^{N_{amost}}\prod_{i=1}^N\mathpzc{q}(\mathbf{w_ix})(\mathpzc{n})|det(\mathbf{W})|
+        \label{eq:veroForW}
+        \mathbf{L(W)} = \prod_{p=1}^{P}\prod_{i=1}^N\mathpzc{p_{s_n}}(\mathbf{w_nx})(\mathpzc{p})|det(\mathbf{W})|
     \end{equation}
-    
-    Entretanto, é comum utilizar-se do logaritmo da verossimilhança, uma vez que é algebricamente mais simples e o máximo ainda é encontrado no mesmo ponto. Assim sendo, obtemos a equação
+  
+      Entretanto, é comum utilizar-se do logaritmo da verossimilhança, uma vez que é algebricamente mais simples e o máximo ainda é encontrado no mesmo ponto. Assim sendo, obtemos a equação
     
         \begin{equation}
         \label{eq:logverossimilance}
-        log(\mathbf{L(W)}) = \mathpzc{E}\{\sum_{i=1}^Nlog(\mathpzc{q}(\mathbf{w_ix})(\mathpzc{n})) + N_{amost}log(|det(\mathbf{W})|)\}
+        log(\mathbf{L(W)}) = \mathpzc{E}\{\sum_{i=1}^Nlog(\mathpzc{p_{s_n}}(\mathbf{w_nx})(\mathpzc{p})) + P log(|det(\mathbf{W})|)\}
     \end{equation}
     
     onde o operador $\mathpzc{E}\{\cdot\}$ representa a estimativa do valor esperado. O valor máximo da verossimilhança pode ser encontrado iterativamente, utilizando-se o gradiente estocástico da verossimilhança. Dois dos principais algoritmos que utilizam da estimativa da ML são o Natural ICA \cite{NaturalICA}, e o algoritmo Bell-Sejnowski \cite{Bell}.
     
     O algoritmo Bell-Sejnowski converge muito lentamente, devido à inversão da matriz separadora $\mathbf{W}$. Este é um caso onde o processo de branqueamento, apresentado na Seção \ref{sec:separability} e que será visto novamente à frente, ajuda bastante na convergência. Entretanto, o Natural ICA possui uma convergência melhor sem precisar necessariamente de um pré-processamento, tornando o algoritmo Bell-Sejnowski obsoleto.
     
-    O gradiente segundo a definição matemática usual aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana [30]. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em \ref{eq:verossimilance}, dá origem ao algoritmo Natural ICA.
+    O gradiente, segundo a definição matemática tradicional, aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana \cite{Riemenn}. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em \ref{eq:verossimilance}, dá origem ao algoritmo Natural ICA.
     
     Definindo-se por $\mathcal{J}$ a função objetivo em função do parâmetro $\mathbf{W}$, temos que o gradiente usual e o gradiente natural são representados, respectivamente, por
     
@@ -266,4 +284,97 @@ Os algoritmos que utilizam estimativa por ML não colocam nenhuma restrição na
         \Nabla\mathpzc{J} = \frac{\partial \mathpzc{J}(\mathbf{W})}{\partial \mathbf{W}}\mathbf{W^T}\mathbf{W}
     \end{equation}
     
-    onde a diferença reside na adição do produto com o termo quadrático de $\mathbf{W}$, para o caso do Natural ICA.
+    onde a diferença reside na adição do produto com o termo quadrático de $\mathbf{W}$ para o caso do Natural ICA.
+    
+    A atualização da matriz separadora $\mathbf{W}$ está representada em \ref{eq:refresh}. Esta equação depende apenas das amostras $\mathbf{y}$ e não possui nenhuma restrição. Isto torna essa abordagem bastante vantajosa pois mesmo que a matriz misturadora $\mathbf{A}$ seja mal condicionada, o desempenho é bastante satisfatório. A demonstração matemática da equação está em \cite{ICA3}
+    
+    \begin{equation}
+    \label{eq:refresh}
+    \mathbf{W} \leftarrow \mathbf{W} + \eta(I - \mathpzc{E}\{\phi({\mathbf{y})\mathbf{y^T}}\})\mathbf{W}
+    \end{equation}
+    
+    A função $\phi$ é chamada de \textit{score} e é calculada baseada na densidade de probabilidade das fontes através da equação \ref{eq:score}
+    
+        \begin{equation}
+    \label{eq:score}
+    \mathbf{\phi({\mathpzc{y_i}})} = - \frac{\partial}{\partial \mathpzc{y_i}} \log(p_y(\mathpzc{y_i}))
+    \end{equation}
+    
+    A densidade de probabilidade das fontes deve ser estimada, e deve ser não-gaussiana. Apesar de não precisarem ser exatas, há um limite para o quão erradas estas densidades podem estar. Uma análise quantitativa deste erro é dada em \cite{ICA3}, considerando o algoritmo Bell-Sejnowski, e para passos de adaptação pequenos.
+    
+    Vale ressaltar que supor que a distribuição das fontes é conhecida é uma desvantagem dos
+    algoritmos baseados em ML em relação aos algoritmos que utilizam maximização da não-gaussianidade, por exemplo. No caso em que a distribuição estimada é bem diferente da distribuição real, os algoritmos baseados em ML terão desempenho inferior aos algoritmos baseados em maximização da não-gaussianidade, mesmo sem a restrição de que a matriz separadora seja unitária. A figura \ref{fig:score} relaciona algumas das densidades de probabilidade para fontes reais utilizadas no algoritmo Natural ICA e suas respectivas funções score.
+    
+    \begin{figure}\label{fig:score}
+        \centering
+        \includegraphics{table.JPG}
+        \caption{Funções score para diferentes densidades de probabilidade de fontes reais.}
+    \end{figure}
+    
+    Existem particularidades de certos casos que geram a necessidade de certas modificações no algoritmo. No caso do Natural ICA, para fontes cujas potências variam muito de um instante do tempo para o outro, o algoritmo pode ter problemas para convergir, devido à sua relação com o gradiente. Isto acontece em uma implementação on-line, por exemplo. Para este caso, o autor, em \cite{holonomic}, deriva o Natural ICA com restrições não-holonômicas. Entretanto, por não fazer parte do escopo deste trabalho, não será discutido.
+
+
+\section{Avaliação de Desempenho}
+    Utilizamos da avaliação de desempenho proposta por \cite{performance}, onde:
+    
+    \begin{equation}
+         \mathbf{y_i} = [s_{target}]_i(\mathpzc{n})  + [e_{art}]_i(\mathpzc{n})  +  [e_{noise}]_i(\mathpzc{n}) +  [e_{interf}]_i(\mathpzc{n})
+    \end{equation}
+    
+    e temos as métricas
+    \begin{enumerate}
+        \item SIR (Razão Sinal-Interferência) - mede a razão entre o sinal da fonte desejada e a interferência de outras fontes;
+        \item SDR (Razão Sinal-Distorção) - mede a razão entre o sinal desejado e as distorções provenientes de ruído, janelamento, transformações não-lineares, e inclusive interferência de outras fontes;
+        \item SAR (Razão Sinal-Artefatos) - mede a razão entre o sinal de saída (com interferências e ruído) e os artefatos, que são todas as distorções do sinal excluídas as interferências de outras fontes e o ruído dos sensores.
+    \end{enumerate}
+    
+    Estas medidas podem ser encontradas da seguinte forma
+    
+    \begin{equation}
+        \label{eq:sir}
+        SIR_i = 10\log_{10} \frac{|| [s_{target}]_i ||^2}{|| [e_{interf}]_i ||^2}
+    \end{equation}
+    \medskip
+    \begin{equation}
+        \label{eq:sdr}
+        SDR_i = 10\log_{10} \frac{|| [s_{target}]_i ||^2}{|| [e_{interf}]_i + [e_{noise}]_i + [e_{art}]_i   ||^2}
+    \end{equation}
+    \medskip
+    \begin{equation}
+        \label{eq:sar}
+        SAR_i = 10\log_{10} \frac{|| [s_{target}]_i + [e_{interf}]_i + [e_{noise}]_i ||^2}{|| [e_{interf}]_i ||^2}
+    \end{equation}
+    
+    Onde $s_{target}$ é a fonte real, com alguma distorção aceitável, $e_{interf}$  é a parcela do erro
+proveniente de interferências de outras fontes $i`$ $\neq$ i na estimativa $y_i$ da fonte, $e_{noise}$
+é a parcela do erro proveniente de ruído dos sensores, e $e_{art}$ é a parcela do erro que não provém nem de interferências nem de ruído. Estes podem ser obtidos das seguintes formas
+
+    \begin{equation}
+        \label{eq:star}
+         [s_{target}]_i  = (\mathbf{y_i^Ts_i})\frac{\mathbf{s_i}}{||\mathbf{s_i}||^2}
+    \end{equation}
+    
+    \medskip
+    
+    \begin{equation}
+        \label{eq:eint}
+         [e_{interf}]_i  = \sum_{i' \neq i} \{(\mathbf{y_i^Ts_i})\frac{\mathbf{s_i}}{||\mathbf{s_i}||^2}\}
+    \end{equation}
+    
+    \medskip
+    
+    \begin{equation}
+        \label{eq:enoise}
+         [e_{noise}]_i  = (\mathbf{y_i^Tn_j})\frac{\mathbf{n_j}}{||\mathbf{n_j}||^2}
+    \end{equation}
+    
+    \medskip
+    
+        \begin{equation}
+        \label{eq:eart}
+         [e_{art}]_i  = \mathbf{y_i} -  [e_{noise}]_i -  [e_{interf}]_i - [s_{target}]_i 
+    \end{equation}
+    
+    Como não consideramos ruído nos sensores neste trabalho, temos $e_{noise}$ = 0.
+    
+    
