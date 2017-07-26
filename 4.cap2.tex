@@ -270,7 +270,7 @@
     
     O algoritmo Bell-Sejnowski converge muito lentamente, devido à inversão da matriz separadora $\mathbf{W}$. Este é um caso onde o processo de branqueamento, apresentado na Seção \ref{sec:separability} e que será visto novamente à frente, ajuda bastante na convergência. Entretanto, o Natural ICA possui uma convergência melhor sem precisar necessariamente de um pré-processamento, tornando o algoritmo Bell-Sejnowski obsoleto.
     
-    O gradiente, segundo a definição matemática tradicional, aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana \cite{Riemenn}. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em \ref{eq:verossimilance}, dá origem ao algoritmo Natural ICA.
+    O gradiente, segundo a definição matemática tradicional, aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana \cite{Riemenn}. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em \ref{eq:logverossimilance}, dá origem ao algoritmo Natural ICA.
     
     Definindo-se por $\mathcal{J}$ a função objetivo em função do parâmetro $\mathbf{W}$, temos que o gradiente usual e o gradiente natural são representados, respectivamente, por
     
