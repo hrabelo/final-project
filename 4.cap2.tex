@@ -1,18 +1,19 @@
+\label{chap:2}
 
 \section{Contexto Histórico}
 
     Um problema de biologia relacionado à maneira com que o sistema nervoso central codifica um impulso muscular foi o que levou Hérault, Jutten e Ans a publicarem o trabalho que é considerado a origem da formulação do problema de BSS (Hérault, Jutten \& Ans, 1985). O trabalho consistia em tentar obter um modelo computacional que se comportasse como o cérebro humano no momento em que este, a partir de apenas um único sinal nervoso, interpreta duas funções importantes: a translação e a velocidade angular do movimento muscular. Pode-se dizer este trabalho teve dois principais resultados. O primeiro foi evidenciar a necessidade da aplicação de \textit{HOS} (do inglês, \textit{Higher Order Statistics} ao problema. Isto foi fundamental na concepção dos métodos para resolução do problema da BSS. O segundo foi a modelagem algébrica dos sistemas de mistura e separação, a matéria-prima do caso BSS/ICA.
 
 
-    Em 1994, Pierre Comon, utilizando-se dos resultados obtidos por Darmois na década de 1950, formalizou o conceito de ICA e relacionou a independência estatística com o problema da BSS. (Comon, 1994)
+    Em 1994, Pierre Comon, utilizando-se dos resultados obtidos por Darmois na década de 1950, formalizou o conceito de ICA e relacionou a independência estatística com o problema da BSS. (\cite{Comon})
     
     
     Jean-François Cardoso e Amari obtiveram, de forma independente, um método de otimização altamente empregado em BSS, denominado de gradiente relativo por Cardoso (Cardoso \& Laheld, 1996) e de gradiente natural por Amari (Amari, 1998). Cardoso também introduziu os conceitos de maximização por verossimilhança no problema de BSS (Cardoso, 1998).
     
     
-    O trabalho de Bell e Sejnowski (Bell \& Sejnowski, 1995) popularizou o problema do BSS na comunidade de processamento de sinais devido à sua simplicade de implementação combinada com a capacidade de separar uma quantidade considerável de fontes.
+    O trabalho de Bell e Sejnowski (\cite{ICAML}) popularizou o problema do BSS na comunidade de processamento de sinais devido à sua simplicade de implementação combinada com a capacidade de separar uma quantidade considerável de fontes.
     
-    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja  (Karhunen, Pajunen \& Oja, 1998) possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA, já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduz o conceito de maximização da não-gaussianidade (Hyvärinen, Karhunen \& Oja, 2001), dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
+    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja (\cite{ICA}) possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA, já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduz o conceito de maximização da não-gaussianidade (\cite{ICAML}), dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
     
     
     Atualmente, uma das principais vertentes de estudo do problema de BSS é considerada a dissociação entre BSS e ICA, que pode ser evidenciada por estudos tais como o do framework TRINICON (Buchner, Aichner \& Kellerman, 2004)
@@ -87,7 +88,7 @@
     onde a matriz $\mathbf{A}$ de dimensão $\mathpzc{N x N}$ é chamada de matriz de mistura. A diferença é que, no caso linear, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam com as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor, devido à reverberação. Assim, tem-se uma convolução de cada um desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS (\cite{ICA}). Além disso, é possível recuperar as fontes através da Análise de Componentes Independentes, que será visto na próxima seção.
 
 \section{Análise de Componentes Independentes}
-    Nesta seção serão apresentados os aspectos básicos da ICA, relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear e convolutivo, trataremos apenas do caso linear, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon (Comon, 1994), responsável pela formalização matemática desse assunto, e as referências (\cite{ICA}, \cite{ICA3}).
+    Nesta seção serão apresentados os aspectos básicos da ICA, relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear e convolutivo, trataremos apenas do caso linear, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon (\cite{Comon}), responsável pela formalização matemática desse assunto, e as referências (\cite{ICA}, \cite{ICA3}).
     
     Os algoritmos ICA podem ser derivados através da estimativa da máxima verossimilhança \cite{ICAML} e da maximização da não-gaussianidade \cite{ICAgauss}. Apesar da maioria dos algoritmos serem desenvolvidos para trabalhar com números reais, podemos estende-los para lidar com números complexos. Para isto, é preciso escolher aprorpriadamente uma função \textit{G}.
 
@@ -109,12 +110,12 @@
     
     Sob a hipótese de que os sinais fontes são estatisticamente independentes entre si, fica claro que os elementos de $\mathbf{x}$ não são mais independentes, devido ao processo de mistura. O ponto fundamental da aplicação da ICA diz respeito exatamente a esta constatação, no sentido de que essa metodologia se propõe a separar as fontes a partir da recuperação da independência. O sistema separador, a matriz $\mathbf{W}$, é ajustado de modo que as compomentes do vetor $\mathbf{y}$ de estimativas das fontes sejam as mais independentes possíveis entre si.
     
-    Entretanto, esta abordagem levanta a seguinte questão: tornar as estimativas das fontes independentes implica necessariamente na recuperação das fontes? Foi Pierre Comon (Comon, 1994) que não só respondeu a esta pergunta, mas também forneceu todo o respaldo matemático necessário para o desenvolvimento da ICA e, por consequência, da BSS.
+    Entretanto, esta abordagem levanta a seguinte questão: tornar as estimativas das fontes independentes implica necessariamente na recuperação das fontes? Foi Pierre Comon (\cite{Comon}) que não só respondeu a esta pergunta, mas também forneceu todo o respaldo matemático necessário para o desenvolvimento da ICA e, por consequência, da BSS.
     A partir do teorema de Darmois, ele mostrou que é possível separar as fontes com base na recuperação da independência estatística, respeitando algumas condições para as fontes e para o sistema separador.
 
 \subsection{Separabilidade}\label{sec:separability}
 
-    O modelo descrito em \ref{eq:simplifiedmixer} é dito separado se, para toda matriz separadora $\mathbx{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre sim, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambigüidades associadas a este modelo: não é possível recuperar a ordem das fontes nem seus ganhos de escala. Mediante este problema, Comon \nocite{Common} (Comon, 1994) formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
+    O modelo descrito em \ref{eq:simplifiedmixer} é dito separado se, para toda matriz separadora $\mathbx{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre sim, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambigüidades associadas a este modelo: não é possível recuperar a ordem das fontes nem seus ganhos de escala. Mediante este problema, Comon \nocite{Common} formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
     
     \bigskip
     
@@ -169,7 +170,7 @@
         \mathbf{W} = \mathbf{D}^{-\frac{1}{2}}\mathbf{E^T}
     \end{equation}
     
-    Entretanto, se consideramos o caso em que o sistema separador é dado pela expressão $\mathbf{QW}$, onde $\mathbf{Q}$ corresponde a uma matriz ortogonal (i.e, sua inversa coincide com sua transposta). Substituindo na solução da equação \ref{correlationmatrixfory}, fica claro ver que o resultado permanece o mesmo. Isto mostra que a recuperação das fontes utilizando apenas a informação da descorrelação apresenta uma indeterminação relacionada com um fator ortogonal.
+    Entretanto, se consideramos o caso em que o sistema separador é dado pela expressão $\mathbf{QW}$, onde $\mathbf{Q}$ corresponde a uma matriz ortogonal (i.e, sua inversa coincide com sua transposta). Substituindo na solução da equação \ref{eq:correlationmatrixfory}, fica claro ver que o resultado permanece o mesmo. Isto mostra que a recuperação das fontes utilizando apenas a informação da descorrelação apresenta uma indeterminação relacionada com um fator ortogonal.
     
     A Figura \ref{fig:orthogonalproblem2} ilustra geometricamente o problema. Com este objetivo, exibimos as Figuras \ref{fig:orthogonalproblema}, \ref{fig:orthogonalproblemb} e \ref{fig:orthogonalproblemc} as distribuições conjuntas de duas fontes, as misturas e suas estimativas obtidas pelo processo de branqueamento, respectivamente. Como o sistema misturador linear é modelado por uma matriz, as misturas são geradas a partir de rotações e escalonamento das fontes. Apesar do braqueamento conseguir recuperar as escalas das fontes, ele não consegue recuperar a rotação devido à indeterminação referente a uma matriz ortogonal, cujo efeito é a rotação dos dados.
     
@@ -204,7 +205,7 @@
 
 \subsection{Modelo de maximização da não-gaussianidade}
     
-    Uma maneira de medir a independência entre duas estimativas de fontes é olhar sua não-gaussianidade, baseando-se no Teorema Central do Limite \cite{central}
+    Um dos principais atrativos presentes nessa estratégia é a possibilidade de recuperar cada uma das fontes individualmente. Um dos algoritmos mais conhecidos em BSS, o FastICA, foi baseado neste critério. Para entendermos a abordagem via maximização da não-gaussianidade, precisamos introduzir o conceito de medição da independência entre duas estimativas de fontes, olhando sua não-gaussianidade. Isto se baseia no Teorema Central do Limite \cite{central}
     
     \medskip
     
@@ -212,18 +213,43 @@
     
     \medskip
     
-    Em termos práticos, quanto mais misturadas estiverem as fontes, mais gaussiana ela estará. Existem duas formas de medir a gaussianidade: a curtose e a negentropia. Por não ser o objetivo deste trabalho, apenas introduziremos o conceito de cada uma das abordagens e optaremos pela utilização da negentropia, devido à sua robustez em relação ao caso da curtose. Além disto, o algoritmo utilizado escolhido é o \textit{NaturalICA}, que é baseado na maximização da verossimilhança, que será visto na seção a seguir. Assim sendo, convidamos o leitor que esteja interessado no aprofundamento das diferenças entre a abordagem por negentropia e por , a leitura de \cite{LuizVictorio}.
+    Em termos práticos, quanto mais misturadas estiverem as fontes, mais gaussiana ela estará. Existem duas formas de medir a gaussianidade: a curtose e a negentropia.
+
     
-    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussiana, subgaussiana e super-gaussiana. Também pode ser interpretada como a inclinação da curva gaussiana. Entre os problemas referentes à abordagem da ICA na curtose, está o problema do algoritmo baseado em um gradiente, fazendo com que o mesmo necessite uma sábia escolha de um passo de adaptação e podendo resultar em convergência lenta ou até mesmo divergência. Além disso, o problema com \textit{outliers}, que correspondem às observações da amostra que desviam completamente das demais, tem bastante influência na não utilização do método, uma vez que um \textit{outlier} pode mudar completamente a curtose.
+    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussiana, subgaussiana e super-gaussiana. Também pode ser interpretada como o grau da inclinação da curva em relação à curva gaussiana e é definida segundo
     
-    Já a abordagem da Negentropia é mais robusta, apesar de ser computacionalmente mais intensiva. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada à uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma utilização da entropia de forma que fique invariante à qualquer transformação linear invertível. 
+    \begin{equation}
+        \mathpzc{k_4} = \mathpzc{E}\{\mathpzc{x^4}\} - 3(\mathpzc{E}\{\mathpzc{x^2}\})^2.
+    \end{equation} 
     
-    Para esta abordagem, é comum escolher uma função não linear \textit{G} e incorpora-la à formulação tradicional do método de forma a simplificar o modelo e reduzir os custos computacionais.
+    A curtose é não-nula para a grande maioria das variáveis aleatórias, salvo os sinais gaussianos. Assim, podemos estender o conceito de maximização da não-gaussianidade para a maximização do valor absoluto da curtose para o conjunto das fontes. Essa abordagem foi proposta em \cite{ML}, juntamente ao \textit{deflation}, que tem por objetivo a extração das fontes de maneira serial. Existem basicamente duas abordagens para este caso, uma que em que o algoritmo baseado em um gradiente ( que faz com que o mesmo necessite uma sábia escolha de um passo de adaptação e podendo resultar em convergência lenta ou até mesmo divergência) a de ponto fixo, que é a base do FastICA. Entretanto, o problema com \textit{outliers}, que correspondem às observações da amostra que desviam completamente das demais, tem bastante influência na não utilização do método, uma vez que um \textit{outlier} pode mudar completamente a curtose.
+    
+
+        
+    Já a abordagem da negentropia é mais robusta, apesar de ser computacionalmente mais intensiva. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada à uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância \cite{entropy}. Assim, uma forma de maximizar a não-gaussianidade seria minimizar as entropias marginais das estimativas das fontes. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma normalização da entropia de forma que fique invariante à qualquer transformação linear invertível. A negentropia de uma variável aleatória $\mathpzc{x}$ é dada por:
+    
+    \begin{equation}
+        \mathpzc{J(x) = H(x_g) - H(x)}
+    \end{equation}
+    
+    Onde $\mathpzc{x_g}$ representa uma variável aleatória gaussiana com a mesma variância de $\mathpzc{x}$. Desta forma, a negentropia é sempre não-negativa e só é igual à zero quando $\mathpzc{x}$ for uma variável gaussiana. Uma vantagem da negentropia é que esta entidade é consideravelmente mais robusta a \textit{outliers} se comparada à abordagem baseada na curtose.
+    Entretanto, há uma dificuldade em relação à sua aplicação devido à necessiade de estimação da entropia. Para tentar contronar isto, é comum escolher uma função não-linear não-quadrática $\mathbf{G(\cdot)}$ e incorpora-la à formulação tradicional do método \cite{ICAgauss}, dada por:
+    
+    \begin{equation}
+        \mathpzc{J(y)} = \alpha(\mathpzc{E}\{\mathpzc{G(y)}\} - \mathpzc{E}\{\mathpzc{G(\nu)}\})^2,
+    \end{equation}
+    
+    onde $\alpha$ é uma constante e $\nu$ é uma variável aleatória gaussiana de média zero e variância unitária. Pela utilização de uma gaussiana normalizada neste caso, é necessário incluir a restrição de potência de cada uma das estimativas das fontes:
+    
+    \begin{equation}
+        \mathpzc{E}\{\mathpzc{y_i}\} = \mathpzc{E}\{\mathbf{w_i^Tx}\} = 1.
+    \end{equation}
+    
     
 \subsection{Modelo de estimação por máxima verossimilhança}
 
     A maioria dos critérios utilizados pelo caso linear da BSS, embora tenha ligações com o ICA, surgiram a partir de outras idéias que não necessariamente estão ligadas à independência estatística. O caso da estimação por máxima verossimilhança é um dos exemplos mais consagrados deste grupo. Apresentaremos, nesta seção, os conceitos acerca da verossimilhança e como a mesma se relaciona com o problema de BSS. 
-    O objetivo por traz da ML é determinar um conjunto de parâmetros $\mathbf{\theta} = [\theta_1, \dots, \theta_n]$ a partir de um conjunto de amostras $\mathbf{e} = [e(1), \dots, e(P)]$ que contém informações sobre eles. As estimativas de $\mathbf{\theta}$ são denotadas por $\hat{\theta}$ e deter,determinadas através da maximização da chamada função de máxima verossimilhança $\mathbf{L(\theta)}$, conforme
+    O objetivo por trás da ML é determinar um conjunto de parâmetros $\mathbf{\theta} = [\theta_1, \dots, \theta_n]$ a partir de um conjunto de amostras $\mathbf{e} = [e(1), \dots, e(P)]$ que contém informações sobre eles. As estimativas de $\mathbf{\theta}$ são denotadas por $\hat{\theta}$ e deter,determinadas através da maximização da chamada função de máxima verossimilhança $\mathbf{L(\theta)}$, conforme
     
     \begin{equation}\label{eq:argmax}
     \hat{\theta} = \operatorname*{arg\,max}_{\theta} \mathbf{L(\theta)}
@@ -270,7 +296,7 @@
     
     O algoritmo Bell-Sejnowski converge muito lentamente, devido à inversão da matriz separadora $\mathbf{W}$. Este é um caso onde o processo de branqueamento, apresentado na Seção \ref{sec:separability} e que será visto novamente à frente, ajuda bastante na convergência. Entretanto, o Natural ICA possui uma convergência melhor sem precisar necessariamente de um pré-processamento, tornando o algoritmo Bell-Sejnowski obsoleto.
     
-    O gradiente, segundo a definição matemática tradicional, aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana \cite{Riemenn}. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em \ref{eq:logverossimilance}, dá origem ao algoritmo Natural ICA.
+    O gradiente, segundo a definição matemática tradicional, aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana \cite{Riemenn}. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em \ref{eq:veroForW}, dá origem ao algoritmo Natural ICA.
     
     Definindo-se por $\mathcal{J}$ a função objetivo em função do parâmetro $\mathbf{W}$, temos que o gradiente usual e o gradiente natural são representados, respectivamente, por
     
@@ -293,21 +319,20 @@
     \mathbf{W} \leftarrow \mathbf{W} + \eta(I - \mathpzc{E}\{\phi({\mathbf{y})\mathbf{y^T}}\})\mathbf{W}
     \end{equation}
     
-    A função $\phi$ é chamada de \textit{score} e é calculada baseada na densidade de probabilidade das fontes através da equação \ref{eq:score}
+    A função $\phi$ é chamada de \textit{score} e é calculada baseada na densidade de probabilidade das fontes através da equação
     
         \begin{equation}
     \label{eq:score}
-    \mathbf{\phi({\mathpzc{y_i}})} = - \frac{\partial}{\partial \mathpzc{y_i}} \log(p_y(\mathpzc{y_i}))
+    \mathbf{\phi({\mathpzc{y_i}})} = - \frac{\partial}{\partial \mathpzc{y_i}} \log(p_y(\mathpzc{y_i})).
     \end{equation}
     
     A densidade de probabilidade das fontes deve ser estimada, e deve ser não-gaussiana. Apesar de não precisarem ser exatas, há um limite para o quão erradas estas densidades podem estar. Uma análise quantitativa deste erro é dada em \cite{ICA3}, considerando o algoritmo Bell-Sejnowski, e para passos de adaptação pequenos.
     
-    Vale ressaltar que supor que a distribuição das fontes é conhecida é uma desvantagem dos
-    algoritmos baseados em ML em relação aos algoritmos que utilizam maximização da não-gaussianidade, por exemplo. No caso em que a distribuição estimada é bem diferente da distribuição real, os algoritmos baseados em ML terão desempenho inferior aos algoritmos baseados em maximização da não-gaussianidade, mesmo sem a restrição de que a matriz separadora seja unitária. A figura \ref{fig:score} relaciona algumas das densidades de probabilidade para fontes reais utilizadas no algoritmo Natural ICA e suas respectivas funções score.
+    Vale ressaltar que supor que a distribuição das fontes é conhecida é uma desvantagem dos algoritmos baseados em ML em relação aos algoritmos que utilizam maximização da não-gaussianidade. No caso em que a distribuição estimada é bem diferente da distribuição real, os algoritmos baseados em ML terão desempenho inferior aos algoritmos baseados em maximização da não-gaussianidade, mesmo sem a restrição de que a matriz separadora seja unitária. A figura \ref{fig:score2} relaciona algumas das densidades de probabilidade para fontes reais utilizadas no algoritmo Natural ICA e suas respectivas funções score.
     
-    \begin{figure}\label{fig:score}
+    \begin{figure}\label{fig:score2}
         \centering
-        \includegraphics{table.JPG}
+        \includegraphics[scale=0.7]{table.JPG}
         \caption{Funções score para diferentes densidades de probabilidade de fontes reais.}
     \end{figure}
     

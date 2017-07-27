@@ -1,14 +1,15 @@
+\label{chap:3}
 
 \section{Relação Tempo-Frequência}
     
     \subsection{Contexto}
-        Para o caso real, os sinais de áudio convoluem com a resposta ao impulso de um filtro, que representa o percurso realizado pelos mesmos entre as fontes e os sensores. Isto caracteriza um caso de misturas convolutivas (conforme visto na seção [referência]). 
+        Para o caso real, os sinais de áudio convoluem com a resposta ao impulso de um filtro, que representa o percurso realizado pelos mesmos entre as fontes e os sensores. Isto caracteriza um caso de misturas convolutivas (conforme visto na Seção \ref{sec:separability}). 
         
         Com o conhecimento de que podemos representar uma operação de convolução no domínio tempo da mesma forma do que uma multiplicação no domínio da frequência, uma forma de simplificar este problema seria aplicar a transformada de Fourier à estes sinais, resolver múltiplos casos de misturas instântaneas e aplicar a transformada inversa de Fourier para levar os sinais de volta ao domínio do tempo. Uma das vantagens desta abordagem reside na redução da complexidade computacional e qualquer algoritimo ICA que trabalhe com números complexos e misturas instantâneas está apto para ser usado.
         
-        Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção [~\href{cap1}]), se tornam elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as as componentes de cada fonte não forem devidamente agrupadas antes de serem levadas para o domínio do tempo novamente. Isto é crucial para obter uma solução aceitável.
+        Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção \ref{sec:separability}), se tornam elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as as componentes de cada fonte não forem devidamente agrupadas antes de serem levadas para o domínio do tempo novamente. Isto é crucial para obter uma solução aceitável.
         
-        Também é relevante citar o problema da circularidade da DFT. No caso discreto, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o caso em que os filtros no domínio do tempo sejam periódicos, o que não é condizente com a realidade. Para fazer com que a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que a representação do sinal no domínio do tempo deve ter um número de raias de frequência maior ou igual ao tamanho do filtro somado ao trecho do sinal, além do sinal ter de ser reconstruído através da técnica de Overlap-Add [referência]. Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar convolução rápida de um filtro com um sinal longo. Quando isto não é respeitado, o sinal provinente do tratamento na frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
+        Também é relevante citar o problema da circularidade da DFT. No caso discreto, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o caso em que os filtros no domínio do tempo sejam periódicos, o que não é condizente com a realidade. Para fazer com que a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que a representação do sinal no domínio do tempo deve ter um número de raias de frequência maior ou igual ao tamanho do filtro somado ao trecho do sinal, além do sinal ter de ser reconstruído através da técnica de Overlap-Add. Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar convolução rápida de um filtro com um sinal longo. Quando isto não é respeitado, o sinal provinente do tratamento na frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
     
     \subsection{Sumário}
         O processo de tratamento do problema de FDBSS está ilustrado na Figura ~\ref{fig:frequencymodel} e pode ser estruturado da seguinte forma:
@@ -16,11 +17,11 @@
         \begin{enumerate}
             \item Inicialmente, transforma-se os vetores de misturas $\mathpzc{x_j}(n)$, j = 1,$\dots$,M em suas representações no domínio da frequência $\mathpzc{x_j}(m,k)$ , k = 0, $\dots$, K-1 (sendo \texit{m} o índice do \textit{frame} e K o número de raias de frequência), através da \textit{STFT}
             
-            \item Como uma etapa de pré-processamento, realiza-se um branqueamento nos sinais, obtendo-se os sinais branqueados no domínio da frequência  $\mathpzc{z_j}(m,k)$ e a matriz branqueadora $\mathcal{V}$($\mathpzc{k}$).
+            \item Como uma etapa de pré-processamento, realiza-se um branqueamento nos sinais, obtendo-se os sinais branqueados no domínio da frequência  $\mathpzc{z_j}(m,k)$ e a matriz branqueadora $\mathbf{V}$($\mathpzc{k}$).
             
-            \item A etapa de processamento, que consiste na separação propriamente dita, é realizada, gerando uma matriz separadora $\mathcal{W}$($\mathpzc{k}$) para cada raia de frequência \texit{k}, além do vetor com as saídas separadas $\mathbf{y}$($\mathpzc{m,k})$ = [$\mathpzc{y_1}$($\mathpzc{m,k})$, $\dots$, $\mathpzc{y_N}$($\mathpzc{m,k})$]$^T$, sendo que tanto este quanto aquela estão fora de ordem e de magnitude.
+            \item A etapa de processamento, que consiste na separação propriamente dita, é realizada, gerando uma matriz separadora $\mathbf{W}$($\mathpzc{k}$) para cada raia de frequência \texit{k}, além do vetor com as saídas separadas $\mathbf{y}$($\mathpzc{m,k})$ = [$\mathpzc{y_1}$($\mathpzc{m,k})$, $\dots$, $\mathpzc{y_N}$($\mathpzc{m,k})$]$^T$, sendo que tanto este quanto aquela estão fora de ordem e de magnitude.
             
-            \item Já como um pós-processamento, são resolvidas as questões de permutação e escalamento, através das matries $\mathcal{P}$($\mathpzc{k})$ e $\Lambda$($\mathpzc{k})$.
+            \item Já como um pós-processamento, são resolvidas as questões de permutação e escalamento, através das matries $\mathbf{P}$($\mathpzc{k})$ e $\Lambda$($\mathpzc{k})$.
             
             \item Por fim, é necessário levar o vetor com as saídas separadas novamente para o domínio do tempo através da \textit{ISTFT}.
             
@@ -37,7 +38,7 @@
 
     %STFT
     \begin{equation}\label{eq:STFT}
-        \mathcal{X}(\mathpzc{m},\mathpzc{k})
+        \mathbf{X}(\mathpzc{m},\mathpzc{k})
         = \sum_{n} \mathbf{x}(\mathpzc{n})
         \mathpzc{win}_\mathpzc{a}(\mathpzc{n} - \mathpzc{mJ})
         exp \left( -j \frac{2\pi\mathpzc{kn}}{K} \right), \mathpzc{k} = 0, \dots, K-1
@@ -65,7 +66,7 @@
 
 
         \begin{equation}\label{eq:practiceSTFT}
-            \mathcal{X}(\mathpzc{m})
+            \mathbf{X}(\mathpzc{m})
             = DFT(diag(\mathbf{x_{frame}}(\mathpzc{m})\mathbf{win_a}))
          \end{equation}
     
@@ -75,7 +76,7 @@
             
             \item O vetor $\mathbf{x_{frame}}$(m) = [$\mathpzc{x}$($\mathpzc{mJ}$), $\dots$, $\mathpzc{x(mJ + L - 1)}$]$^T$ tem comprimento L e representa o \textit{frame m} no domínio do tempo
             
-            \item O vetor $\mathcal{X}(\mathpzc{m})$ = [$\mathcal{X}$($\mathpzc{f_0,m})$, $\dots$, $\mathcal{X}$($\mathpzc{f_{K-1},m}$)]$^T$ tem comprimento K e é o vetor com a representação em
+            \item O vetor $\mathbf{X}(\mathpzc{m})$ = [$\mathbf{X}$($\mathpzc{f_0,m})$, $\dots$, $\mathbf{X}$($\mathpzc{f_{K-1},m}$)]$^T$ tem comprimento K e é o vetor com a representação em
             frequência do \texit{frame m}.
             
             \item O vetor $\mathbf{win_a}$ contém os elementos não nulos da janela mostrada em ~\ref{eq:STFT}. Assim sendo, tem comprimento L. O produto diag($\mathbf{x}$($\mathpzc{mJ}$))$\mathbf{win_a}$ resulta em um vetor de comprimento L. Por conta disos, se K $>$ L, devem ser realizado um \texit{zero-padding} de K - L amostras no final do vetor antes de aplicar a DFT.
@@ -85,7 +86,7 @@
         
         \begin{equation}\label{eq:practiceISTFT}
             \mathbf{y_{frame}}(\mathpzc{m})
-            = diag(\mathbf{win_s}IDFT(\mathcal{Y}(\mathpzc{m}))
+            = diag(\mathbf{win_s}IDFT(\mathbf{Y}(\mathpzc{m}))
          \end{equation}
         
         \begin{equation}\label{eq:practiceISTFT2}
@@ -119,7 +120,7 @@
         \end{equation}
         
 \section{Pré-Processamento}
-    O estágio de pré-processamento pode surgir de três formas: necessário, auxiliar ou desnecessário, dependendo do método de separação a ser empregado no processamento propriamente dito. O método mais comum de pré-processamento é o de \textit{branqueamento}, que se baseia na média do vetor de amostras.
+        O estágio de pré-processamento pode surgir de três formas: necessário, auxiliar ou desnecessário, dependendo do método de separação a ser empregado no processamento propriamente dito. O método mais comum de pré-processamento é o de \textit{branqueamento}, que se baseia na média do vetor de amostras.
     
     \subsection{Branqueamento}
         Em geral, branquear os vetores é uma boa prática, visto que faz grande parte do trabalho de separação, a descorrelação. Dependendo do método utilizado na etapa de separação, o branqueamento pode ser obrigatório (\textit{FastICA}) ou melhorar a velocidade e robustez da convergência do algoritmo ICA no domínio da frequência (\textit{Natural ICA}). A normalização do vetor de misturas desempenha um papel importante em sinais de áudio devido à sua característica de não-brancura (ou colorido), ou seja, a energia varia bastante entre as frequências.
@@ -162,11 +163,32 @@
 \section{Processamento}
 
     \subsection{Separação por Natural ICA}
-    A separação dos sinais é realizada em cada raia de frequência, utilizando um algoritmo ICA que trabalhe com números complexos. O algoritmo Natural ICA, por não possuir restrições com relação à matriz separadora, é uma boa escolha.
-    No Natural ICA, após o branqueamento das amostras, a matriz de branqueamento $\mathbf{V_K}$ é utilizada como solução inicial $\mathbf{W_k = V_k}$ e a matriz $\mathbf{W_k}$ é atualizada iterativamente, utilizando o algoritmo apresentado em \ref{eq:matrixrefresh}
+        A separação dos sinais é realizada em cada raia de frequência, utilizando um algoritmo ICA que trabalhe com números complexos. O algoritmo Natural ICA, por não possuir restrições com relação à matriz separadora, é uma boa escolha. No Natural ICA, após o branqueamento das amostras, a matriz de branqueamento $\mathbf{V_K}$ é utilizada como solução inicial $\mathbf{W_k = V_k}$ e a matriz $\mathbf{W_k}$ é atualizada iterativamente, utilizando o algoritmo apresentado em \ref{eq:refresh}
     
+        Em \cite{real}, é proposto que, uma vez escolhida uma das funções \textit{score} apresentadas na tabela \ref{tab:score}, seja aplicada independentemente à parte real e imaginária:
+        
+        \begin{equation}
+            \phi(\mathpzc{y_{ik}}) =\phi(\mathcal{R}(\mathpzc{y_{ik}})) + j\phi(\mathcal{F}(\matphzc{y_{ik}}))
+        \end{equation}
+    
+        A conclusão de utilizar o Natural ICA com números complexos diretamente e aplicar a função \textit{score} às partes real e imaginária separadamente também foi obtida por outra abordagem que decidiu derivar o algoritmo direamtente no domínio complexo. Isto implica em uma restrição: as partes real e imaginária de $\mathpzc{y_{ik}}$ devem ser independentes. Uma forma de contornar esta situação é utilizar o Natural ICA não-holonômico ou também aplicar a função \textit{score} de uma outra forma à fonte $\mathpzc{y_{ik}}$:
+        
+        \begin{equation}
+               \phi(\mathpzc{y_{ik}}) =\phi(|\mathpzc{y_{ik}}|)e^{j\theta(\mathpzc{y_{ik}})}
+        \end{equation}
+        
+        onde 
+        
+        \begin{equation}
+            \phi(\mathpzc{y_{ik}}) = - \frac{\partial}{\partial |\mathpzc{y_i}| }log(p_{y_i}(|\mathpzc{y_i}|))
+        \end{equation}
+        
+        que é conhecido como função score de coordenadas polares. o autor \cite{LuizVictorio} faz um estudo acerca da utilização das coordenadas polares em relação às cartesianas e chega a conclusão de que as polares possuem melhor resultado. Assim sendo, vamos assumir coordenadas polares para a implementação do Natural ICA. Recomendamos ao leitor interessado no aprofundamento destas diferenças a leitura da referência.
+        
+        Também se pode aliar a velocidade do FastICA com a precisão do Natural ICA. Podemos utilizar o FastICA e aproveitar da sua velocidade de convergência para gerar a matriz inicial $\mathbf{W}$ para o método Natural ICA. Esta abordagem será utilizada na simulação.
+        
     \subsection{Separação por JADE}
-    Na Seção \ref{secondorder} apresentamos que as informações de estatísticas de segunda ordem podem ser úteis em um processo de branqueamento e pode ser feito por meio da diagonalização da matriz de correlação relativa ao vetor de misturas $\mathbf{x}$. A JADE (\textit{Joint Approximate Diagonalization of Eigenmatrices})\cite{JADE} é uma abordagem em BSS que leva em consideração informações de \textit{HOS} através de processos de diagonalização das entidades que contenham tais informações, como o tensor de cumultantes e a matriz de cumultantes associada ao vetor aleatório. Relembramos a definição de um cumultante de quarta ordem (utilizado pela JADE):
+        Na Seção \ref{secondorder} apresentamos que as informações de estatísticas de segunda ordem podem ser úteis em um processo de branqueamento e pode ser feito por meio da diagonalização da matriz de correlação relativa ao vetor de misturas $\mathbf{x}$. A JADE (\textit{Joint Approximate Diagonalization of Eigenmatrices})\cite{JADE} é uma abordagem em BSS que leva em consideração informações de \textit{HOS} através de processos de diagonalização das entidades que contenham tais informações, como o tensor de cumultantes e a matriz de cumultantes associada ao vetor aleatório. Relembramos a definição de um cumultante de quarta ordem (utilizado pela JADE):
     
     \begin{equation}
         \label{cumJADE}
@@ -175,8 +197,7 @@
         \end{split}
     \end{equation}
     
-    A definição de uma estrutura semelhante à matriz de correlação necessita do conceito de tensor, que pode ser entendido como uma extrapolação do conceito de matriz, no sentido de que um tensor pode apresentar um número de  entradas maior do que dois. Neste contexto, define-se o tensor de cumulante como um conjunto de elementos, sendo
-que o elemento $\mathbf{ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, e com $\matphzc{i,j,k,l}$ variando de 1 a p.
+    A definição de uma estrutura semelhante à matriz de correlação necessita do conceito de tensor, que pode ser entendido como uma extrapolação do conceito de matriz, no sentido de que um tensor pode apresentar um número de  entradas maior do que dois. Neste contexto, define-se o tensor de cumulante como um conjunto de elementos, sendo que o elemento $\mathbf{ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, e com $\matphzc{i,j,k,l}$ variando de 1 a p.
     Um outro conceito que utilizaremos é o de matriz de cumulante associada a um vetor aleatório $\mathbf{x}$ = [$\mathpzc{x_1}$, $\dots$,  $\mathpzc{x_N}$] e a uma matriz M de dimensão N x N. No caso, o elemento ij da matriz de cumulante é dado por
     
     \begin{equation}
@@ -193,7 +214,7 @@ que o elemento $\mathbf{ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, 
     
     Onde $\mathbf{U}$ é a matriz branqueadora ortogonal e  $\mathbf{\Delta(M)}$ é uma matriz ortogonal cujos parâmetros dependem de $\mathbf{M}$ e das curtoses das fontes.
 
-    Obviamente, a matria $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonialização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos (Cardoso & Souloumiac, 1993). Como não se tem essa informação à priori da matriz $\mathbf{U}$, é impossível estabelecer qualquer tipo de garantia sobre esses autovalores.
+    Obviamente, a matria $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonialização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos (\ref{JADE}). Como não se tem essa informação à priori da matriz $\mathbf{U}$, é impossível estabelecer qualquer tipo de garantia sobre esses autovalores.
     Assim sendo, em vez de se realizar a diagonalização considerando apenas uma matriz de cumulante, adota-se um esquema de diagonalização conjunta de diferentes matrizes de cumulante, sendo cada uma delas definida por uma matriz $\mathbf{M_i}$. Dessa forma, a função custo a ser minimizada no algoritmo JADE é dada por
     
     \begin{equation}\label{eq:optimize}
@@ -214,9 +235,45 @@ que o elemento $\mathbf{ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, 
         \mathpzc{r_{ii} = cos \theta, r_{ij} = sin \theta, r_{ji} = -sin \theta, r_{jj} = cos \theta}
     \end{equation}
     
-    Onde $\theta$ é o ângulo de rotação. Em (Cardoso & Souloumiac, 1996) é proposta uma forma de determinar analiticamente qual o ângulo de rotação que minimiza a expressão [\ref{eq:optimize}]. A despeito do reduzido número de iterações necessárias para a convergência deste procedimento de diagonalização conjunta, tal técnica se torna consideravelmente ineficiente em cenários com um elevado número de fontes, devido ao aumento de complexidade presente na determinação analítica dos ângulos de rotação.
+    Onde $\theta$ é o ângulo de rotação. Em (\cite{JADE}) é proposta uma forma de determinar analiticamente qual o ângulo de rotação que minimiza a expressão [\ref{eq:optimize}]. A despeito do reduzido número de iterações necessárias para a convergência deste procedimento de diagonalização conjunta, tal técnica se torna consideravelmente ineficiente em cenários com um elevado número de fontes, devido ao aumento de complexidade presente na determinação analítica dos ângulos de rotação.
     
-    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste [\ref{eq:optimize}], quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos (Cardoso & Souloumiac,1993). 
+    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste [\ref{eq:optimize}], quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos (\cite{JADE}). 
+
+    \subsection{Análise dos métodos}
+    
+    Nas condições de simulação descritas em \ref{app:A}, comparamos os métodos JADE e Natural ICA em relação à performance quanto à separação dos sinais. Vale ressaltar que o objetivo foi avaliar unicamente a etapa de separação dos sinais e, por isso, não houve qualquer alteração no método de resolução da permutação e de escalonamento. 
+    Os sinais das fontes e dos sensores é mostrado em  \ref{fig:sources} e \ref{fig:sensors}, respectivamente. Após o processo de transformação para o domínio da frequência e de separação, obtemos as estimativas das fontes em \ref{fig:JADE} e \ref{fig:NATICA} para os métodos JADE e Natural ICA, respectivamente É possível verificar em \ref{fig:comparision}, de forma grosseira, que o Natural ICA tem um desempenho melhor do que o JADE. Entretanto, a figura \ref{fig:T60natica} mostra que conforme aumentamos o tempo de reverberação, sua performance fica bastante comprometida.
+    
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.7]{sources.jpg}
+            \caption{Plot dos sinais em cada um dos sensores no domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
+        \label{fig:sources}
+        \includegraphics[scale=0.7]{sensors.jpg}
+            \caption{Plot dos sinais de cada uma das fontes no domínio do tempo.}
+        \label{fig:sensors}
+    \end{figure}
+    
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.7]{estimatives_JADE.jpg}
+        \caption{Plot dos sinais de estimativa das fontes obtidas por JADE domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
+        \label{fig:JADE}
+        \includegraphics[scale=0.7]{estimatives_NATICA.jpg}
+        \caption{Plot dos sinais de estimativa das fontes obtidas por Natural ICA domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
+        \label{fig:NATICA}
+    \end{figure}
+    
+    
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.7]{resultTs.jpg}
+        \caption{Evolução das métricas de desempenho em função do tempo de reverberação $\mathpzc{T_{60}}$ para o algoritmo Natural ICA.}
+        \label{fig:T60natica}
+    \end{figure}
+    
+
+    
 \section{Pós-Processamento}
     \subsection{Permutação}
     O principal desafio do ICA no domínio da frequência é o problema da permutação. Ele consiste em encontrar a matriz de permutação $\mathbf{P_k}$, definida na Seção \ref{sec:separability}, onde o índice $\mathpzc{k}$ indica a raia da frequência, de forma que se agrupe corretamente as frequências das fontes e a ISTFT gere resultados satisfatórios.
@@ -228,4 +285,4 @@ que o elemento $\mathbf{ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, 
     
     Ambos os métodos acima baseiam-se na idéia de estimar a localização das fontes através de informações sobre o sistema de mistura, além de classificar as fontes em cada raia de frequência baseado em sua localização.
     
-    Baseado em \cite{LuizVictorio}, utilizaremos a abordagem do TDOA por mostrar um resultado satisfatório para o caso proposto. Novamente, convidamos o leitor interessado em se aprofundar nas diferenças entre os métodos para resolver permutação a consultar a referência.
+    Baseado em \cite{LuizVictorio}, utilizaremos a abordagem do TDOA por mostrar um resultado satisfatório para o caso proposto. Por não ser o objetivo deste trabalho, convidamos o leitor interessado em se aprofundar nas diferenças entre os métodos para resolver permutação a consultar a referência.
