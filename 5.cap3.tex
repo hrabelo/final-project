@@ -10,9 +10,11 @@
         Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção \ref{sec:separability}), se tornam elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as as componentes de cada fonte não forem devidamente agrupadas antes de serem levadas para o domínio do tempo novamente. Isto é crucial para obter uma solução aceitável.
         
         Também é relevante citar o problema da circularidade da DFT. No caso discreto, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o caso em que os filtros no domínio do tempo sejam periódicos, o que não é condizente com a realidade. Para fazer com que a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que a representação do sinal no domínio do tempo deve ter um número de raias de frequência maior ou igual ao tamanho do filtro somado ao trecho do sinal, além do sinal ter de ser reconstruído através da técnica de Overlap-Add. Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar convolução rápida de um filtro com um sinal longo. Quando isto não é respeitado, o sinal provinente do tratamento na frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
-    
+        
+        Outro ponto fundamental sobre trabalhar no domínio da frequência é que introduzimos um caráter complexo aos sinais do nosso sistema, por meio das transformadas necessárias para a mudança de domínio. Conforme citado na Seção \ref{sec:ICA}, embora vários algoritmos ICA tenham sido desenvolvidos para trabalhar com sinais reais, eles podem ser estendidos para o caso complexo, desde que tenha sido devidamente escolhida a função \textit{G} (maximização da não-gaussianidade) ou \textit{score} (estimação da ML). 
+        
     \subsection{Sumário}
-        O processo de tratamento do problema de FDBSS está ilustrado na Figura ~\ref{fig:frequencymodel} e pode ser estruturado da seguinte forma:
+        O processo de tratamento do problema de FDBSS está ilustrado na Figura \ref{fig:frequencymodel} e pode ser estruturado da seguinte forma:
         
         \begin{enumerate}
             \item Inicialmente, transforma-se os vetores de misturas $\mathpzc{x_j}(n)$, j = 1,$\dots$,M em suas representações no domínio da frequência $\mathpzc{x_j}(m,k)$ , k = 0, $\dots$, K-1 (sendo \texit{m} o índice do \textit{frame} e K o número de raias de frequência), através da \textit{STFT}
@@ -21,7 +23,7 @@
             
             \item A etapa de processamento, que consiste na separação propriamente dita, é realizada, gerando uma matriz separadora $\mathbf{W}$($\mathpzc{k}$) para cada raia de frequência \texit{k}, além do vetor com as saídas separadas $\mathbf{y}$($\mathpzc{m,k})$ = [$\mathpzc{y_1}$($\mathpzc{m,k})$, $\dots$, $\mathpzc{y_N}$($\mathpzc{m,k})$]$^T$, sendo que tanto este quanto aquela estão fora de ordem e de magnitude.
             
-            \item Já como um pós-processamento, são resolvidas as questões de permutação e escalamento, através das matries $\mathbf{P}$($\mathpzc{k})$ e $\Lambda$($\mathpzc{k})$.
+            \item Já como um pós-processamento, são resolvidas as questões de permutação e escalamento, através das matrizes $\mathbf{P}$($\mathpzc{k})$ e $\Lambda$($\mathpzc{k})$.
             
             \item Por fim, é necessário levar o vetor com as saídas separadas novamente para o domínio do tempo através da \textit{ISTFT}.
             
@@ -33,7 +35,7 @@
             \label{fig:frequencymodel}
         \end{figure}
 
-    \subsection{STFT}
+    \subsection{STFT} \label{sec:stft}
         A STFT de um sinal x é dada pela equação abaixo (\ref{eq:STFT}), onde:
 
     %STFT
@@ -105,11 +107,11 @@
         \end{equation}
         
         \begin{equation}\label{eq:condition2}
-            \sum_m \mathpzc{win_a(n - mJ) = c , c} constante, \forall\mathpzc{n} \in \mathbb{Z}
+            \sum_m \mathpzc{win_a(n - mJ) = c},\text{c constante}, \forall\mathpzc{n} \in \mathbb{Z}
         \end{equation}
         
         \begin{equation}\label{eq:condition3}
-            \sum_m \mathpzc{win_a(n - mJ)}\mathpzc{win_s(n - mJ) = c , c} constante, \forall\mathpzc{n} \in \mathbb{Z}
+            \sum_m \mathpzc{win_a(n - mJ)}\mathpzc{win_s(n - mJ) = c}, \text{c constante}, \forall\mathpzc{n} \in \mathbb{Z}
         \end{equation}
         
         
@@ -119,13 +121,15 @@
             \mathpzc{w_{hanning}(n)} = 0,5 \left( 1 - cos\frac{2\pi\mathpzc{n}}{L}\right)
         \end{equation}
         
+        Em suma, quando trabalhamos no domínio da frequência utilizando STFT, para cada raia de frequência \textit{k}, buscaremos suas contribuições em todos os saltos de janela \textit{L} e aplicaremos o método de separação escolhido.
+        
 \section{Pré-Processamento}
         O estágio de pré-processamento pode surgir de três formas: necessário, auxiliar ou desnecessário, dependendo do método de separação a ser empregado no processamento propriamente dito. O método mais comum de pré-processamento é o de \textit{branqueamento}, que se baseia na média do vetor de amostras.
     
-    \subsection{Branqueamento}
-        Em geral, branquear os vetores é uma boa prática, visto que faz grande parte do trabalho de separação, a descorrelação. Dependendo do método utilizado na etapa de separação, o branqueamento pode ser obrigatório (\textit{FastICA}) ou melhorar a velocidade e robustez da convergência do algoritmo ICA no domínio da frequência (\textit{Natural ICA}). A normalização do vetor de misturas desempenha um papel importante em sinais de áudio devido à sua característica de não-brancura (ou colorido), ou seja, a energia varia bastante entre as frequências.
+    \subsection{Branqueamento} \label{sec:whitening}
+        Em geral, branquear os vetores é uma boa prática, visto que faz grande parte do trabalho de separação, a descorrelação. Dependendo do método utilizado na etapa de separação, o branqueamento pode ser obrigatório (FastICA) ou melhorar a velocidade e robustez da convergência do algoritmo ICA no domínio da frequência (Natural ICA). A normalização do vetor de misturas desempenha um papel importante em sinais de áudio devido à sua característica de não-brancura (ou colorido), ou seja, a energia varia bastante entre as frequências.
         
-        Matematicamente, é possivel mostrar que o processo de branqueamento faz aproximadamente metade do trabalho de separação, sem muito custo computacional. Entre outros benefícios, estão a rapidez e uniformidade na convergência para cada raia de frequência, quando utilizado um passo de adaptação fixo, além de ser pré-requistio dos algoritmos \textit{FastICA}.
+        Matematicamente, é possivel mostrar que o processo de branqueamento faz aproximadamente metade do trabalho de separação, sem muito custo computacional. Entre outros benefícios, estão a rapidez e uniformidade na convergência para cada raia de frequência, quando utilizado um passo de adaptação fixo, além de ser pré-requistio dos algoritmos FastICA.
         
         O processo é dividido em duas partes: A primeira consiste em fazer a centralização do vetor de misturas, isto é, fazer com que cada mistura possua média igual a zero. Feito isso, é necessário tornar a sua matriz de covariância igual à matriz identidade, resultando na descorrelação das componentes do vetor de amostras.
         
@@ -163,9 +167,10 @@
 \section{Processamento}
 
     \subsection{Separação por Natural ICA}
+    
         A separação dos sinais é realizada em cada raia de frequência, utilizando um algoritmo ICA que trabalhe com números complexos. O algoritmo Natural ICA, por não possuir restrições com relação à matriz separadora, é uma boa escolha. No Natural ICA, após o branqueamento das amostras, a matriz de branqueamento $\mathbf{V_K}$ é utilizada como solução inicial $\mathbf{W_k = V_k}$ e a matriz $\mathbf{W_k}$ é atualizada iterativamente, utilizando o algoritmo apresentado em \ref{eq:refresh}
     
-        Em \cite{real}, é proposto que, uma vez escolhida uma das funções \textit{score} apresentadas na tabela \ref{tab:score}, seja aplicada independentemente à parte real e imaginária:
+        Em \cite{real}, é proposto que, uma vez escolhida uma das funções \textit{score} apresentadas na figura \ref{fig:score2}, seja aplicada independentemente à parte real e imaginária:
         
         \begin{equation}
             \phi(\mathpzc{y_{ik}}) =\phi(\mathcal{R}(\mathpzc{y_{ik}})) + j\phi(\mathcal{F}(\matphzc{y_{ik}}))
@@ -185,8 +190,9 @@
         
         que é conhecido como função score de coordenadas polares. o autor \cite{LuizVictorio} faz um estudo acerca da utilização das coordenadas polares em relação às cartesianas e chega a conclusão de que as polares possuem melhor resultado. Assim sendo, vamos assumir coordenadas polares para a implementação do Natural ICA. Recomendamos ao leitor interessado no aprofundamento destas diferenças a leitura da referência.
         
-        Também se pode aliar a velocidade do FastICA com a precisão do Natural ICA. Podemos utilizar o FastICA e aproveitar da sua velocidade de convergência para gerar a matriz inicial $\mathbf{W}$ para o método Natural ICA. Esta abordagem será utilizada na simulação.
-        
+        Também se pode aliar a velocidade do FastICA com a precisão do Natural ICA. Podemos utilizar o FastICA e aproveitar da sua velocidade de convergência para gerar a matriz inicial $\mathbf{W}$ para o método Natural ICA. Esta abordagem será utilizada na simulação
+    
+ 
     \subsection{Separação por JADE}
         Na Seção \ref{secondorder} apresentamos que as informações de estatísticas de segunda ordem podem ser úteis em um processo de branqueamento e pode ser feito por meio da diagonalização da matriz de correlação relativa ao vetor de misturas $\mathbf{x}$. A JADE (\textit{Joint Approximate Diagonalization of Eigenmatrices})\cite{JADE} é uma abordagem em BSS que leva em consideração informações de \textit{HOS} através de processos de diagonalização das entidades que contenham tais informações, como o tensor de cumultantes e a matriz de cumultantes associada ao vetor aleatório. Relembramos a definição de um cumultante de quarta ordem (utilizado pela JADE):
     
@@ -206,7 +212,7 @@
     
     sendo que os índices i e j variam de 1 a N. A matriz de cumulante $\mathbf{Q^x(M)}$ pode ser entendida como o resultado da aplicação do tensor de cumulante de $\mathbf{x}$ à matriz $\mathbf{M}$, ou seja, $\mathbf{Q^x(M)}$ = $\mathbf{T(M)}$, onde $\mathbf{T(\cdot)}$ representa a transformação efetuada por um tensor.
     
-    Veremos como essas medidas são consideradas no problema de separação. No caso em que o vetor x representa os sinais misturados após um etapa de branqueamento \ref{secondorder}, é possível mostrar (Cardoso, 1999) que a matriz de cumulantes associada a $\mathbf{x}$ é dada por
+    Veremos como essas medidas são consideradas no problema de separação. No caso em que o vetor x representa os sinais misturados após um etapa de branqueamento \ref{secondorder}, é possível mostrar \cite{ICA3} que a matriz de cumulantes associada a $\mathbf{x}$ é dada por
     
     \begin{equation}
         \mathbf{[Q^x(M)]_{ij}} = \mathbf{U\Delta(M)U^T}
@@ -214,7 +220,7 @@
     
     Onde $\mathbf{U}$ é a matriz branqueadora ortogonal e  $\mathbf{\Delta(M)}$ é uma matriz ortogonal cujos parâmetros dependem de $\mathbf{M}$ e das curtoses das fontes.
 
-    Obviamente, a matria $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonialização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos (\ref{JADE}). Como não se tem essa informação à priori da matriz $\mathbf{U}$, é impossível estabelecer qualquer tipo de garantia sobre esses autovalores.
+    Obviamente, a matria $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonialização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos (\cite{JADE}). Como não se tem essa informação à priori da matriz $\mathbf{U}$, é impossível estabelecer qualquer tipo de garantia sobre esses autovalores.
     Assim sendo, em vez de se realizar a diagonalização considerando apenas uma matriz de cumulante, adota-se um esquema de diagonalização conjunta de diferentes matrizes de cumulante, sendo cada uma delas definida por uma matriz $\mathbf{M_i}$. Dessa forma, a função custo a ser minimizada no algoritmo JADE é dada por
     
     \begin{equation}\label{eq:optimize}
@@ -237,45 +243,170 @@
     
     Onde $\theta$ é o ângulo de rotação. Em (\cite{JADE}) é proposta uma forma de determinar analiticamente qual o ângulo de rotação que minimiza a expressão [\ref{eq:optimize}]. A despeito do reduzido número de iterações necessárias para a convergência deste procedimento de diagonalização conjunta, tal técnica se torna consideravelmente ineficiente em cenários com um elevado número de fontes, devido ao aumento de complexidade presente na determinação analítica dos ângulos de rotação.
     
-    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste [\ref{eq:optimize}], quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos (\cite{JADE}). 
+    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste \ref{eq:optimize}, quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos (\cite{JADE}). 
 
+   \subsection{Separação por ICA-EBM}
+        
+        Conforme mencionado na Seção \label{sec:ICA}, é necessário utilizar algoritmos ICA que lidem com sinais complexos para que tenhamos êxito na realização da separação no domínio da frequência. Em \cite{fasticaebm}, o autor propõe uma variação do FastICA tradicional, utilizando a minimização da entropia através das suas fronteiras (do inglês \textit{Entropy Bound Minimization}) para este fim.
+        
+        Este algoritmo baseia-se na abordagem da negentropia, no contexto da maximização da não-gaussianidade (Seção \ref{sec:negentropy}). A idéia principal reside em não calcular a entropia $\mathbf{H(x)}$ diretamente, mas sim através das suas fronteiras. Para obter uma estimativa confiável, é necessário resolver a distribuição máxima de entropia que maximiza a entropia e ao mesmo tempo respeitar as restrições que, na prática, são as estimativas obtidas através das amostras. 
+        
+        Dado um vetor $\mathpzc{z(n)}$ = $\mathpzc{z_R(n) + jz_I(n)}$, onde $\mathpzc{z_R(n)}$ corresponde à parte real e $\mathpzc{z_I(n)}$ corresponde à parte imaginária, considere a seguinte decomposição:
+        
+        \begin{equation}
+        \label{eq:decomposition1}
+            [\mathpzc{z_R}, \mathpzc{z_I}]^T =
+            \mathbf{B}[\mathpzc{u},\mathpzc{v}]^T
+        \end{equation}
+        
+        onde $\mathbf{B}$ é uma matriz 2 x 2 não-singular e $[\mathpzc{u,v}]^T$ = $\matbf{B^{-1}}[$ $\mathpzc{z_R},{z_I}]^T$ são um par de variáveis aleatórias de média zero, pois $\mathpzc{z}$ também é. É fácil observar que a decomposição proposta leva a uma fronteira superior da entropia $\mathbf{H(z)}$:
+        
+        \begin{equation}\label{eq:superiorbound}
+        \begin{split}
+            \mathpzc{H(z)} & =\text{log}|\text{det}(\mathbf{B})| + \mathpzc{H(u,v)} \\
+                          & \leq \text{log}|\text{det}(\mathbf{B})| + \mathpzc{H(u)} + \mathpzc{H(v)} \\
+                          & = \mathpzc{H^{[bound,I]}}(\mathpzc{z},\mathbf{B})
+            \end{split}
+        \end{equation}
+        
+        onde a igualdade só ocorre se $\mathpzc{u}$ e $\mathpzc{v}$ forem estatisticamente independentes. Esta fronteira da entropia \ref{eq:superiorbound} pode ser escrita em função da matriz $\mathbf{B}$ devido à decomposição \ref{eq:decomposition1} ser unicamente determinada por ela.
+        
+        Agora considere a seguinte decomposição:
+        
+        \begin{equation}
+        \label{eq:decomposition2}
+            [\mathpzc{z_R}, \mathpzc{z_I}]^T =
+            \mathbf{B}[\mathpzc{u},\mathpzc{v}]^T = \mathbf{B}\mathpzc{r}[\text{cos}\mathpzc{\theta},\text{sin}\mathpzc{\theta}]^T  
+        \end{equation}
+        
+        onde $\mathbf{B}$ é uma matriz 2 x 2 não-singular e $\mathpzc{r}$ = $\theta$ representam o módulo e o valor do principal argumento $\mathpzc{u + jv}$, respectivamente. Isto gera a próxima fronteira da entropia:
+        
+        \begin{equation}\label{eq:inferiorbound}
+        \begin{split}
+            \mathpzc{H(z)} & =\text{log}|\text{det}(\mathbf{B})| + \mathpzc{H(u,v)} \\
+                          &  = \text{log}|\text{det}(\mathbf{B})| + \matphzc{E}\{\text{log } \mathpzc{r}\} + \mathpzc{H(r,\theta)} \\
+                          & \leq \text{log}|\text{det}(\mathbf{B})| + \matphzc{E}\{\text{log } \mathpzc{r}\} + \mathpzc{H(r)} + \mathpzc{H(\theta)} \\
+                          & \leq \text{log}|\text{det}(\mathbf{B})| + \matphzc{E}\{\text{log } \mathpzc{r}\} + \mathpzc{H(r)} + \mathpzc{H(2\pi)} \\
+                          & = \mathpzc{H^{[bound,II]}}(\mathpzc{z},\mathbf{B})
+            \end{split}
+        \end{equation}
+        
+    que só resulta em igualdade no caso em que $\mathpzc{r}$ e $\mathpzc{\theta}$ são estatísticamente independentes e este está uniformemente distribuido em [$\mathpzc{-\pi,\pi}$) e, portanto, $\mathpzc{u + jv}$ é circular. Também é possível escrever esta fronteira \ref{eq:inferiorbound} apenas em função da matriz $\mathbf{B}$. 
+    
+    Conforme observado em \ref{eq:superiorbound} e \ref{eq:inferiorbound}, para uma dada matriz $\mathbf{B}$ não-singular, é preciso determinar os limites $\mathpzc{H(u)}$ e  $\mathpzc{H(v)}$. Em \cite{entropymaximum}, o autor diz ser possível encontrar essas fronteiras encontrando as distribuições de entropia máxima que maximizam as entropias e que são compatíveis com as restrições $\mathpzc{E[u]} = 0$, $\mathpzc{E[u^2]} = 1$, $\mathpzc{E[G_1^{[I]}(u)]}$ = $\mu_{G_I}$, $\mathpzc{E[v]} = 0$, $\mathpzc{E[v^2]} = 1$ e $\mathpzc{E[G_2^{[I]}(u)]}$ = $\mu_{G_{II}}$, onde $\mathbf{G_I^{[I]}}$($\cdot$) e $\matphzc{\mu_{G_i}^[I]}$, $\mathpzc{i}$ = 1,2, são, respectivamente, as funções de medição e valor esperado (que pode ser estimado apenas usando médias amostradas).
+    
+    A estimativa da entropia $\mathpzc{H(z)}$ em função das suas fronteiras é dada por
+    
+    \begin{equation}
+        \matphzc{\hat{H}(z)} = \text{min}\big(
+        \underset{1\leq\mathpzc{k_1,k_2}\leq K^{[I]}}{\mathrm{min}}\mathpzc{H_{k_1,k_2}^{[bound,I]}(z)}
+        ,
+        \underset{1 \leq \mathpzc{k}\leq K^{[II]}}{\mathrm{min}}\mathpzc{H_k^{[bound,II]}(z)}
+        \big)
+    \end{equation}
+    \bigskip
+    onde $\mathbf{K^{[I]}}$ e $\mathbf{K^{[II]}}$ são o número de funções de medição para os limites \ref{eq:superiorbound} e \ref{eq:inferiorbound} respectivamente.
+    
+    As funções de medição $\mathbf{G^{[I]}}$ e $\mathbf{G^{[II]}}$ e suas respectivas derivadas de primeira ordem estão representadas nas tabelas \ref{tb:g1} e \ref{tb:g2} respectivamente. 
+
+    O algoritmo é definido por:
+
+    \begin{equation}
+        \mathbf{w_n^+} = \mathbf{w_n} - \mu\mathbf{u_n}
+    \end{equation}
+    \begin{equation}
+        \mathbf{w_n^{[new]}} = \frac{\mathbf{w_n^+}}{||\mathbf{w_n^+}||}
+    \end{equation}
+    
+    Onde o valor de $\mathbf{u_n}$ vem de
+    
+    \begin{equation}
+        \mathbf{u_n^+} = \frac{\partial J_n(\mathbf{w_n})}{\partial \mathbf{w_n^*}} - \text{Re}\{\mathbf{w_n^T}\frac{\partial J_n(\mathbf{w_n})}{\partial \mathbf{w_n^*}}\}\mathbf{w_n}
+    \end{equation}
+    \begin{equation}
+        \mathbf{u_n} = \frac{\mathbf{u_n^+}}{||\mathbf{u_n^+}||}
+    \end{equation}
+    
+    e onde a expressão dos gradientes diferenciais é dadas por:
+    
+    \begin{equation}
+        \frac{\partial J_n(\mathbf{w_n})}{\partial \mathbf{w_n^*}} = \frac{\partial \hat{H}(\mathbf{z_n})}{\partial \mathbf{w_n^*}} - \frac{\mathbf{h_n}}{\mathbf{w_n^Th_n}}
+    \end{equation}
+    
+    tendo  $\mathbf{w_n}$ como os elementos da matriz separadora $\mathbf{W}$  e $\mathbf{h_n}$ como um vetor de norma unitária que satisfaz $\mathbf{W_nh_n}$ = 0.
+    
+    Com esta abordagem, o autor em \cite{fasticaebm} alcançou resultados melhores que os métodos JADE \cite{JADE} em alguns cenários, tal como quando o número de amostras é bem pequeno, por exemplo. Assim sendo, vamos utilizar este método para simulações neste trabalho.
+    
+        \begin{table}
+    \label{tb:g1}
+    \caption{Funções de medição para a fronteira I da entropia ($\mathpzc{H^{[bound,I]}(z)}$).}
+    \centering
+    $\begin{tabu}{|c||c|c|}\hline
+          & \mathpzc{G^{[I]}(x)}                         &      \mathpzc{g^{[I]}(x)} \\ \hline
+        1 & \mathpzc{x^4}                                &      \mathpzc{4x^3}       \\ \hline
+        2 & \mathpzc{\frac{|x|}{1+|x|}}                  &      \mathpzc{\frac{sgn(x)}{(1+|x|)^2}}       \\ \hline
+        3 & \mathpzc{\frac{x|x|}{10+|x|}}                &      \mathpzc{\frac{|x|(20+|x|)}{(10+|x|)^2}}       \\ \hline
+        4 & \mathpzc{\frac{x}{1+x^2}}                    &      \mathpzc{\frac{1 - x^2}{(1+x^2)^2}}       \\ \hline
+    \end{tabu}$
+    \end{table}
+    
+    \begin{table}
+    \label{tb:g2}
+    \caption{Funções de medição para a fronteira II da entropia ($\mathpzc{H^{[bound,II]}(z)}$).}
+    \centering
+    $\begin{tabu}{|c||c|c|}\hline
+          & \mathpzc{G^{[II]}(x)}                         &      \mathpzc{g^{[II]}(x)} \\ \hline
+        1 & \mathpzc{r^4}                                &      \mathpzc{4r^3}       \\ \hline
+        2 & \mathpzc{\frac{r}{1+r}}                  &      \mathpzc{\frac{1}{(1+r)^2}}       \\ \hline
+        \end{tabu}$
+    \end{table}
+    
+    
     \subsection{Análise dos métodos}
     
-    Nas condições de simulação descritas em \ref{app:A}, comparamos os métodos JADE e Natural ICA em relação à performance quanto à separação dos sinais. Vale ressaltar que o objetivo foi avaliar unicamente a etapa de separação dos sinais e, por isso, não houve qualquer alteração no método de resolução da permutação e de escalonamento. 
-    Os sinais das fontes e dos sensores é mostrado em  \ref{fig:sources} e \ref{fig:sensors}, respectivamente. Após o processo de transformação para o domínio da frequência e de separação, obtemos as estimativas das fontes em \ref{fig:JADE} e \ref{fig:NATICA} para os métodos JADE e Natural ICA, respectivamente É possível verificar em \ref{fig:comparision}, de forma grosseira, que o Natural ICA tem um desempenho melhor do que o JADE. Entretanto, a figura \ref{fig:T60natica} mostra que conforme aumentamos o tempo de reverberação, sua performance fica bastante comprometida.
+    Nas condições de simulação descritas no Apêndice \ref{app:A}, comparamos os métodos ICA-EBM e Natural ICA em relação aos resultados e à performance quanto à separação dos sinais. Vale ressaltar que o objetivo foi avaliar unicamente a etapa de separação dos sinais e, por isso, não houve qualquer alteração no método de resolução da permutação e de escalonamento. 
+    Inicialmente, a simulalação foi feita com tempo de reverberação $\mathpzc{T_{60}}$ igual a 0,1s. Neste cenário, os sinais das fontes e dos sensores são mostrados em \ref{fig:sources} e \ref{fig:sensors}, respectivamente.
+    
+    Após aplicar a STFT \ref{sec:stft} para levar para o domínio da frequência, tanto a etapa de pré-processamento (branqueamento) \ref{sec:whitening} quanto a de pós-processamento (resolução por TDOA \ref{sec:tdoa}), obtemos as estimativas das fontes em \ref{fig:icaebm} e \ref{fig:natica} para os métodos ICA-EBM e Natural ICA, respectivamente 
+    
+    Quanto aos resultados, ambos os métodos mostram boas estimativas. Isto pode ser facilmente observado olhando-se o plot das estimativas das fontes. Entretanto, quanto à performance, o algoritmo ICA-EBM levou consideravelmente mais tempo para obtenção do resultado que o Natural ICA associado ao Fast ICA.
+    Conforme aumentamos o tempo de reverberação $\mathpzc{T_{60}}$ do nosso ambiente de simulação, ambos os métodos passam a ter suas estimativas comprometidas, mas ainda assim, caminham bem próximo. Embora o algoritmo ICA-EBM apresente um desempenho um pouco melhor, como pode ser visto em \ref{fig:T60icaebm} e \ref{fig:T60natica}, por conta da lentidão da sua conversão em relação ao Natural ICA + FastICA, este se mostrou melhor do que aquele.
     
     \begin{figure}
         \centering
         \includegraphics[scale=0.7]{sources.jpg}
-            \caption{Plot dos sinais em cada um dos sensores no domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
+            \caption{Plot dos sinais de cada uma das fontes no domínio do tempo.}
         \label{fig:sources}
         \includegraphics[scale=0.7]{sensors.jpg}
-            \caption{Plot dos sinais de cada uma das fontes no domínio do tempo.}
+            \caption{Plot dos sinais em cada um dos sensores no domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
         \label{fig:sensors}
     \end{figure}
     
     \begin{figure}
         \centering
-        \includegraphics[scale=0.7]{estimatives_JADE.jpg}
-        \caption{Plot dos sinais de estimativa das fontes obtidas por JADE domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
-        \label{fig:JADE}
+        \includegraphics[scale=0.7]{estimatives_FASTICA.jpg}
+        \caption{Plot dos sinais de estimativa das fontes obtidas por ICA-EBM domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
+        \label{fig:icaebm}
         \includegraphics[scale=0.7]{estimatives_NATICA.jpg}
         \caption{Plot dos sinais de estimativa das fontes obtidas por Natural ICA domínio do tempo para $\mathpzc{T_{60}}$ = 0.1s.}
-        \label{fig:NATICA}
+        \label{fig:natica}
     \end{figure}
     
     
     \begin{figure}
         \centering
-        \includegraphics[scale=0.7]{resultTs.jpg}
-        \caption{Evolução das métricas de desempenho em função do tempo de reverberação $\mathpzc{T_{60}}$ para o algoritmo Natural ICA.}
+        \includegraphics[scale=0.7]{resultTsnaturalica.jpg}
+        \caption{Evolução das métricas de desempenho em função do tempo de reverberação $\mathpzc{T_{60}}$ para o algoritmo Natural ICA + FastICA.}
         \label{fig:T60natica}
+         \includegraphics[scale=0.7]{resultTsicaebm.jpg}
+        \caption{Evolução das métricas de desempenho em função do tempo de reverberação $\mathpzc{T_{60}}$ para o algoritmo ICA-EBM.}
+        \label{fig:T60icaebm}
     \end{figure}
     
 
     
 \section{Pós-Processamento}
-    \subsection{Permutação}
+    \subsection{Permutação} \label{sec:tdoa}
     O principal desafio do ICA no domínio da frequência é o problema da permutação. Ele consiste em encontrar a matriz de permutação $\mathbf{P_k}$, definida na Seção \ref{sec:separability}, onde o índice $\mathpzc{k}$ indica a raia da frequência, de forma que se agrupe corretamente as frequências das fontes e a ISTFT gere resultados satisfatórios.
     Este problema pode ser tratado de diferentes maneiras, entretanto, para este trabalho, iremos destacar o método TDOA (\textit{Time Difference Of Arrival}), que pode ser considerado uma extensão do DOA (\textit{Difference Of Arrival}).
     
