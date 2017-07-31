@@ -36,7 +36,7 @@
         \end{figure}
 
     \subsection{STFT} \label{sec:stft}
-        A STFT de um sinal x é dada pela equação abaixo (\ref{eq:STFT}), onde:
+        A STFT de um sinal x é dada pela equação abaixo \ref{eq:STFT}, onde:
 
     %STFT
     \begin{equation}\label{eq:STFT}
@@ -62,7 +62,7 @@
             \item $\mathpzc{win_a}$($\mathpzc{n}$) é a janela de análise, definida como sendo não-nula apenas no intervalo [0, L-1]. O salto J é obviamente menor ou igual L, ou haverá perda de observações. Este saldo deve ser bem escolhido para não haver distorções na síntese dos sinais.
         \end{itemize}
     
-        Pode-se notar que K=L na equação acima. Entretanto, há casos em que K$>$L, que são chamados de \textit{oversampled}. Nestes casos, é necessário fazer \textit{zero-padding} para preencher o sinal com zeros antes de passar para a frequência, conforme descrito em (\cite{STFT})
+        Pode-se notar que K=L na equação acima. Entretanto, há casos em que K$>$L, que são chamados de \textit{oversampled}. Nestes casos, é necessário fazer \textit{zero-padding} para preencher o sinal com zeros antes de passar para a frequência, conforme descrito em \cite{STFT}
         
         A notação prática do cálculo da STFT está em (~\ref{eq:practiceSTFT}), onde:
 
@@ -100,7 +100,7 @@
         
         A técnica de \textit{Overlap-Add} consiste em acrescentar \textit{frames} superpostos para formar o sinal completo novamente. Também conhecida como OLA, esta técnica possui algumas variações, tais como a WOLA (\textit{Weighted Overlap-Add}) e a COLA (\textit{Constant Overlap-Add}). Esta técnica utiliza-se de uma janela de síntese $\mathpzc{win_s}(n)$ para a realização da ISTFT. Relacionar a janela de síntese $\mathpzc{win_s}(n)$ com a janela de análise $\mathpzc{win_a}(n)$ e os tamanhos dos comprimentos das janelas e dos sinais é fundamental para criar condições para que a transformação de volta para o domínio do tempo não possua distorções. 
         
-        Para que a \textit{FFT Filtering} (necessária para resolver o problema de produto no domínio de  frequência discreta ser equivalente à convolução circular no domínio do tempo) gere um resultado satisfatório, as condições (\ref{eq:condition1}) e (\ref{eq:condition2}) devem ser satisfeitas. A condição (\ref{eq:condition2}) é chamada de condição COLA. Se não houver transformação ou a transformação for não-linear, a condição passa a ser (\ref{eq:condition3}). 
+        Para que a \textit{FFT Filtering} (necessária para resolver o problema de produto no domínio de  frequência discreta ser equivalente à convolução circular no domínio do tempo) gere um resultado satisfatório, as condições \ref{eq:condition1} e \ref{eq:condition2} devem ser satisfeitas. A condição \ref{eq:condition2} é chamada de condição COLA. Se não houver transformação ou a transformação for não-linear, a condição passa a ser \ref{eq:condition3}. 
         
         \begin{equation}\label{eq:condition1}
             K \geq L + Q - 1
@@ -115,7 +115,7 @@
         \end{equation}
         
         
-        Neste trabalho, iremos utilizar a janela de \texit{Hanning} (\ref{eq:hanning}) como janela de análise, atendendo à condição COLA (\ref{eq:condition2}). Para isto, usaremos J = $\frac{L}{2}$. Normalmente, a janela retangular é escolhida como a janela de síntese. Existem estudos acerca da utilização de outras janelas e em quais condições estas satisfazem ou não a COLA. Recomendamos a leitura de \cite{LuizVictorio} para maior aprofundamento no assunto.
+        Neste trabalho, iremos utilizar a janela de \texit{Hanning} \ref{eq:hanning} como janela de análise, atendendo à condição COLA \ref{eq:condition2}. Para isto, usaremos J = $\frac{L}{2}$. Normalmente, a janela retangular é escolhida como a janela de síntese. Existem estudos acerca da utilização de outras janelas e em quais condições estas satisfazem ou não a COLA. Recomendamos a leitura de \cite{LuizVictorio} para maior aprofundamento no assunto.
         
         \begin{equation}\label{eq:hanning}
             \mathpzc{w_{hanning}(n)} = 0,5 \left( 1 - cos\frac{2\pi\mathpzc{n}}{L}\right)
@@ -220,7 +220,7 @@
     
     Onde $\mathbf{U}$ é a matriz branqueadora ortogonal e  $\mathbf{\Delta(M)}$ é uma matriz ortogonal cujos parâmetros dependem de $\mathbf{M}$ e das curtoses das fontes.
 
-    Obviamente, a matria $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonialização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos (\cite{JADE}). Como não se tem essa informação à priori da matriz $\mathbf{U}$, é impossível estabelecer qualquer tipo de garantia sobre esses autovalores.
+    Obviamente, a matria $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonialização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos \cite{JADE}. Como não se tem essa informação à priori da matriz $\mathbf{U}$, é impossível estabelecer qualquer tipo de garantia sobre esses autovalores.
     Assim sendo, em vez de se realizar a diagonalização considerando apenas uma matriz de cumulante, adota-se um esquema de diagonalização conjunta de diferentes matrizes de cumulante, sendo cada uma delas definida por uma matriz $\mathbf{M_i}$. Dessa forma, a função custo a ser minimizada no algoritmo JADE é dada por
     
     \begin{equation}\label{eq:optimize}
@@ -241,9 +241,9 @@
         \mathpzc{r_{ii} = cos \theta, r_{ij} = sin \theta, r_{ji} = -sin \theta, r_{jj} = cos \theta}
     \end{equation}
     
-    Onde $\theta$ é o ângulo de rotação. Em (\cite{JADE}) é proposta uma forma de determinar analiticamente qual o ângulo de rotação que minimiza a expressão [\ref{eq:optimize}]. A despeito do reduzido número de iterações necessárias para a convergência deste procedimento de diagonalização conjunta, tal técnica se torna consideravelmente ineficiente em cenários com um elevado número de fontes, devido ao aumento de complexidade presente na determinação analítica dos ângulos de rotação.
+    Onde $\theta$ é o ângulo de rotação. Em \cite{JADE} é proposta uma forma de determinar analiticamente qual o ângulo de rotação que minimiza a expressão \ref{eq:optimize}. A despeito do reduzido número de iterações necessárias para a convergência deste procedimento de diagonalização conjunta, tal técnica se torna consideravelmente ineficiente em cenários com um elevado número de fontes, devido ao aumento de complexidade presente na determinação analítica dos ângulos de rotação.
     
-    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste \ref{eq:optimize}, quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos (\cite{JADE}). 
+    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste \ref{eq:optimize}, quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos \cite{JADE}. 
 
    \subsection{Separação por ICA-EBM}
         
