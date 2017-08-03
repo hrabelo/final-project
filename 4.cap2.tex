@@ -8,7 +8,7 @@
     Em 1994, Pierre Comon, utilizando-se dos resultados obtidos por Darmois na década de 1950, formalizou o conceito de ICA e relacionou a independência estatística com o problema da BSS. \cite{Comon}
     
     
-    Jean-François Cardoso e Amari obtiveram, de forma independente, um método de otimização frequentemente empregado em BSS, denominado ``\textit{gradiente relativo}" por Cardoso \cite{easi} e ``\textit{gradiente natural}" por Amari \cite{Riemenn}. Cardoso também introduziu os conceitos de maximização por verossimilhança no problema de BSS \cite{ICA3}.
+    Jean-François Cardoso e Amari obtiveram, de forma independente, um método de otimização frequentemente empregado em BSS, denominado ``\textit{gradiente relativo}'' por Cardoso \cite{easi} e ``\textit{gradiente natural}'' por Amari \cite{Riemenn}. Cardoso também introduziu os conceitos de maximização por verossimilhança no problema de BSS \cite{ICA3}.
     
     
     O trabalho de Bell e Sejnowski \cite{ICAML} popularizou o problema do BSS na comunidade de processamento de sinais devido à sua simplicade de implementação combinada com a capacidade de separar uma quantidade considerável de fontes.
@@ -20,7 +20,7 @@
     
 \section{Descrição do Problema}
     
-    Consideremos a situação representada na Figura \ref{fig:structure}, onde temos um conjunto de N sinais de fontes submetido à ação de um sistema misturador, isto é, um sistema cujas M saídas correspondem à misturas das suas entradas. O problema de separação cega de fontes reside em recuperar os sinais da entrada deste sistema através apenas das observações dos sinais de saída, ou seja, sem nenhum conhecimento do processo de mistura. Esta é uma peculiaridade da BSS em relação aos outros temas de filtragem, o que a torna particularmente útil em aplicações que são não-supervisionadas. Nestes casos, é inviável ou até mesmo impossível utilizar algum sinal no canal para tentar ajustar o sistema separador. Dessa falta de informação sobre o processo de mistura é que provem a nomenclatura \textit{cega}.
+    Consideremos a situação representada na Figura \ref{fig:structure}, onde temos um conjunto de N sinais de fontes submetido à ação de um sistema misturador, isto é, um sistema cujas M saídas correspondem a misturas das suas entradas. O problema de separação cega de fontes reside em recuperar os sinais da entrada deste sistema através apenas das observações dos sinais de saída, ou seja, sem nenhum conhecimento do processo de mistura. Esta é uma peculiaridade da BSS em relação aos outros temas de filtragem, o que a torna particularmente útil em aplicações que são não-supervisionadas. Nestes casos, é inviável ou até mesmo impossível utilizar algum sinal no canal para tentar ajustar o sistema separador. Dessa falta de informação sobre o processo de mistura é que provem a nomenclatura \textit{cega}.
     
     \begin{figure}
        \hfill\includegraphics[scale=0.6]{model.PNG}\hspace*{\fill}
@@ -33,7 +33,7 @@
     Devido à generalidade do problema de BSS, várias aplicações podem se beneficiar dos métodos desenvolvidos para encontrar as melhores soluções. Veremos, nesta seção, algumas aplicações de destaque das técnicas de BSS nas diferentes áreas.
     
 \subsection{Biomedicina}
-    Na biomedicina, a busca por métodos não-invasivos que ainda se mostrem confiáveis é um desafio. O EEG (Eletroencefalograma) e o ECG (Eletrocardiograma) são dois exemplos bem comuns de técnicas que satisfazem esta necessidade. Entretanto, é relativamente difícil captar apenas os sinais desejados quando os sensores são posicionados em uma determinada região do corpo humano, principalmente devido à interferência proveniente de sinais gerados por outras atividades fisiológicas.
+    Na biomedicina, a busca por métodos não-invasivos que sejam confiáveis é um desafio. O EEG (Eletroencefalograma) e o ECG (Eletrocardiograma) são dois exemplos bem comuns de técnicas que satisfazem esta necessidade. Entretanto, é relativamente difícil captar apenas os sinais desejados quando os sensores são posicionados em uma determinada região do corpo humano, principalmente devido à interferência proveniente de sinais gerados por outras atividades fisiológicas.
        
     Uma forma de resolver este problema está na repetição da realização do exame, o que pode não ser viável em certas ocasiões, além de causar fadiga nos pacientes. O emprego de técnicas de BSS oferece uma alternativa eficiente, uma vez que o processamento é dado após a coleta dos dados e requer apenas um experimento.
     
@@ -60,7 +60,7 @@
     \end{equation}
     onde o operador $\mathcal{F}$($\cdot$) descreve a ação do sistema misturador, $L$ corresponde ao número de amostras passadas (memória) do vetor de fontes e o vetor $\mathbf{v}$($\mathpzc{n}$) corresponde ao ruído associado às fontes ou sensores do sistema.
     
-    Vale ressaltar que a representação \ref{eq:mixer} tem caráter puramente didático, uma vez que não existem técnicas de BSS que lidem com todos estes efeitos representados e uma só vez. Em geral, as técnicas são aplicadas a casos específicos, isto é, versões simplificadas da formulação citada. Desta forma, torna-se necessário introduzir os conceitos de classificação de um sistema misturador para auxiliar na adequação do problema para o caso proposto por este trabalho.
+    Vale ressaltar que a representação (\ref{eq:mixer}) tem caráter puramente didático, uma vez que não existem técnicas de BSS que lidem com todos estes efeitos representados e uma só vez. Em geral, as técnicas são aplicadas a casos específicos, isto é, versões simplificadas da formulação citada. Desta forma, torna-se necessário introduzir os conceitos de classificação de um sistema misturador para auxiliar na adequação do problema para o caso proposto por este trabalho.
     
     \textbf{Sistemas Lineares e Não-Lineares} O sistema misturador é dito linear se o operador  $\mathcal{F}$($\cdot$) respeita o princípio da superposição, conforme descrito abaixo:
         % Linearidade
@@ -107,7 +107,7 @@
 
 \subsection{Separabilidade}\label{sec:separability}
 
-    O modelo descrito na Seção \ref{sec:model} é dito separável se, para toda matriz separadora $\mathbf{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre sim, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambiguidades associadas a este modelo: A ordem das fontes e seus ganhos de escala. Mediante este problema, Comon \cite{Comon} formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
+    O modelo descrito na Seção \ref{sec:model} é dito separável se, para toda matriz separadora $\mathbf{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre sim, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambiguidades associadas a este modelo: a ordem das fontes e seus ganhos de escala. Mediante este problema, Comon \cite{Comon} formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
     
     \bigskip
     
@@ -161,7 +161,7 @@
     
     Entretanto, se consideramos o caso em que o sistema separador é dado pela expressão $\mathbf{QW}$, onde $\mathbf{Q}$ corresponde a uma matriz ortogonal (i.e., sua inversa coincide com sua transposta). Substituindo na solução da equação (\ref{eq:correlationmatrixfory}), fica claro ver que o resultado permanece o mesmo. Isto mostra que a recuperação das fontes utilizando apenas a informação da descorrelação apresenta uma indeterminação relacionada a um fator ortogonal.
     
-    A seguir, ilustramos geometricamente o problema. Com este objetivo, exibimos as Figuras \ref{fig:first_sub}, \ref{fig:second_sub} e \ref{fig:third_sub} as distribuições conjuntas de duas fontes, as misturas e suas estimativas obtidas pelo processo de branqueamento, respectivamente. Como o sistema misturador linear é modelado por uma matriz, as misturas são geradas a partir de rotações e escalonamentos das fontes. Apesar do braqueamento conseguir recuperar as escalas das fontes, ele não consegue recuperar a rotação devido à indeterminação referente a uma matriz ortogonal, cujo efeito é a rotação dos dados.
+    A seguir, ilustramos geometricamente o problema. Com este objetivo, exibimos nas Figuras \ref{fig:first_sub}, \ref{fig:second_sub} e \ref{fig:third_sub} as distribuições conjuntas de duas fontes, as misturas e suas estimativas obtidas pelo processo de branqueamento, respectivamente. Como o sistema misturador linear é modelado por uma matriz, as misturas são geradas a partir de rotações e escalonamentos das fontes. Apesar do braqueamento conseguir recuperar as escalas das fontes, ele não consegue recuperar a rotação devido à indeterminação referente a uma matriz ortogonal, cujo efeito é a rotação dos dados.
     
     Esta ineficácia na recuperação de fontes gaussianas mostra a limitação da estatística de segunda ordem. Entretanto, a aplicação do branqueamento como um pré-processamento pode ajudar bastante no processo de separação, visto que este faz aproximadamente metade do trabalho de separação.
     
@@ -202,7 +202,7 @@
 
 \subsubsection{Curtose}
     
-    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussiana, subgaussiana e super-gaussiana. Também pode ser interpretada como o grau de desvio da inclinação em relação à curva de uma distribuição gaussiana e é definida como
+    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussiana, subgaussiana e super-gaussiana. Também pode ser interpretada como o grau de desvio da inclinação em relação à curva de uma distribuição gaussiana, sendo definida como
     
     \begin{equation}
         \mathpzc{k_4} = \mathpzc{E}\{\mathpzc{x^4}\} - 3(\mathpzc{E}\{\mathpzc{x^2}\})^2.
@@ -255,7 +255,7 @@
         \mathpzc{J(x) = H(x_g) - H(x)},
     \end{equation}
     onde $\mathpzc{x_g}$ representa uma variável aleatória gaussiana com a mesma variância de $\mathpzc{x}$. Desta forma, a negentropia é sempre não-negativa e só é igual à zero quando $\mathpzc{x}$ for uma variável gaussiana. Uma vantagem da negentropia é que esta medida de gaussianidade é consideravelmente mais robusta a \textit{outliers} se comparada à curtose.
-    Entretanto, há uma dificuldade em relação à sua aplicação devido à necessidade de estimação da entropia. Para tentar contornar isto, é comum escolher uma função não-linear não-quadrática $G(\cdot)$ e incorpora-la à formulação tradicional do método \cite{fastica1}, dada por:
+    Entretanto, há uma dificuldade em relação à sua aplicação devido à necessidade de estimação da entropia. Para tentar contornar isto, é comum escolher uma função não-linear não-quadrática $G(\cdot)$ e incorporá-la à formulação tradicional do método \cite{fastica1}, dada por:
     \begin{equation}
         \mathpzc{J(y)} = \alpha(\mathpzc{E}\{\mathpzc{G(y)}\} - \mathpzc{E}\{\mathpzc{G(\nu)}\})^2,
     \end{equation}
@@ -312,7 +312,7 @@
                                 & =\prod_{p=1}^P\frac{\prod_{n=1}^N\mathpzc{p_{s_n}}(\mathbf{\tilde{a_n}}\mathbf{x}(\mathpzc{p}))}{| det(\mathbf{A}) |},
         \end{split}
     \end{equation} 
-    onde termo $\mathbf{\tilde{a}_n}$ corresponde a $\mathpzc{n}$-ésima linha da matriz inversa de $\mathbf{A}$. Também é possível descrever a função de máxima verossimilhança em termos da matriz separadora $\mathbf{W}$, dada por:
+    onde o termo $\mathbf{\tilde{a}_n}$ corresponde a $\mathpzc{n}$-ésima linha da matriz inversa de $\mathbf{A}$. Também é possível descrever a função de máxima verossimilhança em termos da matriz separadora $\mathbf{W}$, dada por:
     \begin{equation}
         \label{eq:veroForW}
         \mathbf{L(W)} = \prod_{p=1}^{P}\prod_{i=1}^N\mathpzc{p_{s_n}}(\mathbf{w_nx}(\mathpzc{p}))|\text{det}(\mathbf{W})|
@@ -324,8 +324,7 @@
         \label{eq:logverossimilance}
         log(\mathbf{L(W)}) = \mathpzc{E}\{\sum_{i=1}^Nlog(\mathpzc{p_{s_n}}(\mathbf{w_nx}(\mathpzc{p})) + \text{P log}(|det(\mathbf{W})|)\}
     \end{equation}
-    
-    onde o operador $\mathpzc{E}\{\cdot\}$ representa a estimativa do valor esperado. O valor máximo da verossimilhança pode ser encontrado iterativamente, utilizando-se o gradiente estocástico da verossimilhança. Dois dos principais algoritmos que utilizam a estimativa da ML são o Natural ICA \cite{NaturalICA} e o algoritmo Bell-Sejnowski \cite{ICAML}.
+    onde o operador $\mathpzc{E}\{\cdot\}$ representa a estimativa do valor esperado. O valor máximo da verossimilhança pode ser encontrado iterativamente, utilizando-se o gradiente estocástico da verossimilhança. Dois dos principais algoritmos que utilizam a estimativa ML são o Natural ICA \cite{NaturalICA} e o algoritmo Bell-Sejnowski \cite{ICAML}.
     
     O algoritmo Bell-Sejnowski converge muito lentamente, devido à inversão da matriz separadora $\mathbf{W}$. Este é um caso onde o processo de branqueamento, apresentado na Seção \ref{sec:separability}, e que será visto novamente à frente, ajuda bastante na convergência. Entretanto, o Natural ICA possui uma convergência melhor sem precisar necessariamente de um pré-processamento, tornando o algoritmo Bell-Sejnowski obsoleto.
     
@@ -361,14 +360,14 @@
     
     Vale ressaltar que supor que a distribuição das fontes é conhecida é uma desvantagem dos algoritmos baseados em ML em relação aos algoritmos que utilizam maximização da não-gaussianidade. No caso em que a distribuição estimada é bem diferente da distribuição real, os algoritmos baseados em ML terão desempenho inferior aos algoritmos baseados em maximização da não-gaussianidade, mesmo sem a restrição de que a matriz separadora seja unitária. A Figura \ref{fig:scoretable} relaciona algumas das densidades de probabilidade para fontes reais utilizadas no algoritmo Natural ICA e suas respectivas funções score.
     
-    Existem particularidades de certos casos que geram a necessidade de certas modificações no algoritmo. No caso do Natural ICA, para fontes cujas potências variam muito de um instante do tempo para o outro, o algoritmo pode ter problemas para convergir, devido à sua relação com o gradiente. Isto acontece em uma implementação on-line, por exemplo. Para este caso, em \cite{holonomic}, é derivado o Natural ICA com restrições não-holonômicas. Entretanto, por não fazer parte do escopo deste trabalho, esta abordagem não será discutida.
+    Existem particularidades de certos casos que geram a necessidade de certas modificações no algoritmo. No caso do Natural ICA, para fontes cujas potências variam muito de um instante do tempo para o outro, o algoritmo pode ter problemas para convergir, devido à sua relação com o gradiente. Isto acontece em uma implementação on-line, por exemplo. Para este caso, em \cite{holonomic} é derivado o Natural ICA com restrições não-holonômicas. Entretanto, por não fazer parte do escopo deste trabalho, esta abordagem não será discutida.
 
 
 \section{Avaliação de Desempenho}
     Utilizamos a avaliação de desempenho proposta por \cite{performance}, sendo:
     
     \begin{equation}
-         \mathbf{y_i} = [s_{target}]_i(\mathpzc{n})  + [e_{art}]_i(\mathpzc{n})  +  [e_{noise}]_i(\mathpzc{n}) +  [e_{interf}]_i(\mathpzc{n})
+         y_i(n) = [s_{target}]_i(\mathpzc{n})  + [e_{art}]_i(\mathpzc{n})  +  [e_{noise}]_i(\mathpzc{n}) +  [e_{interf}]_i(\mathpzc{n})
     \end{equation}
     e as métricas propostas:
     
@@ -378,7 +377,7 @@
         \item SAR (Razão Sinal-Artefatos) - mede a razão entre as potências do sinal de saída (com interferências e ruído) e dos artefatos, que são todas as distorções do sinal excluídas as interferências de outras fontes e o ruído dos sensores.
     \end{enumerate}
     
-    Estas medidas podem ser expressas da seguinte forma:
+    Estas medidas podem ser expressas pelas seguinte forma:
     
     \begin{equation}
         \label{eq:sir}
@@ -396,7 +395,7 @@
     \end{equation}
     onde $s_{target}$ é a fonte real, com alguma distorção aceitável, $e_{interf}$  é a parcela do erro
 proveniente de interferências de outras fontes $i`$ $\neq$ i na estimativa $y_i$ da fonte, $e_{noise}$
-é a parcela do erro proveniente de ruído dos sensores, e $e_{art}$ é a parcela do erro que não provém nem de interferências nem de ruído. Estes podem ser obtidos das seguintes formas
+é a parcela do erro proveniente de ruído dos sensores, e $e_{art}$ é a parcela do erro que não provém nem de interferências nem de ruído. Estes podem ser obtidos pelas seguintes equações:
 
     \begin{equation}
         \label{eq:star}
@@ -421,7 +420,7 @@ proveniente de interferências de outras fontes $i`$ $\neq$ i na estimativa $y_i
     
         \begin{equation}
         \label{eq:eart}
-         [e_{art}]_i  = \mathbf{y_i} -  [e_{noise}]_i -  [e_{interf}]_i - [s_{target}]_i 
+         [e_{art}]_i  = y_i -  [e_{noise}]_i -  [e_{interf}]_i - [s_{target}]_i 
     \end{equation}
     
     Como não consideramos ruído nos sensores neste trabalho, temos $e_{noise}$ = 0.

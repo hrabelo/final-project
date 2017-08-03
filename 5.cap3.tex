@@ -3,13 +3,13 @@
 \section{Relação Tempo-Frequência}
     
     \subsection{Contexto}
-        Para o caso real, os sinais de áudio convoluem com a resposta ao impulso de um filtro, que representa o percurso percorrido pelos mesmos das fontes aos sensores. Isto caracteriza um caso de misturas convolutivas (conforme visto na Seção \ref{sec:separability}). 
+        Para o caso real, os sinais de áudio convoluem com a resposta ao impulso de um filtro, que representa o caminho percorrido pelos mesmos das fontes aos sensores. Isto caracteriza um caso de misturas convolutivas (conforme visto na Seção \ref{sec:separability}). 
         
-        Com o conhecimento de que podemos implementar a operação de convolução de sinais no domínio tempo pela  multiplicação no domínio da frequência, uma forma de simplificar este problema seria aplicar a transformada de Fourier a estes sinais, resolver a separação de misturas instântaneas e aplicar a transformada inversa de Fourier para levar os sinais de volta ao domínio do tempo. Uma das vantagens desta abordagem reside na redução da complexidade computacional, estando algoritimo ICA que trabalhe com números complexos e misturas instantâneas apto para ser usado.
+        Com o conhecimento de que podemos implementar a operação de convolução de sinais no domínio tempo pela  multiplicação no domínio da frequência, uma forma de simplificar este problema seria aplicar a transformada de Fourier a estes sinais, resolver a separação de misturas instântaneas e aplicar a transformada inversa de Fourier para levar os sinais de volta ao domínio do tempo. Uma das vantagens desta abordagem reside na redução da complexidade computacional, estando qualquer algoritimo ICA que trabalhe com números complexos e misturas instantâneas apto para ser usado.
         
-        Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção \ref{sec:separability}) tornam elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as componentes de cada fonte devem ser corretamente agrupadas antes de serem levadas para o domínio do tempo. Isto é crucial para obter uma solução aceitável.
+        Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção \ref{sec:separability}) tornam-se elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as componentes de cada fonte devem ser corretamente agrupadas antes de serem levadas para o domínio do tempo. Isto é crucial para obter uma solução aceitável.
         
-        Também é relevante citar o problema da circularidade da DFT. No caso mais geral de sinais e sistemas discretos, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o uso dessa propriedade ao caso em que os filtros no domínio do tempo são periódicos, o que não é condizente com a realidade. Para fazer com que na nossa aplicação a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que o de raias de frequência (tamanho da DFT) seja maior ou igual ao tamanho do filtro somado ao trecho do sinal que está sendo processado, além do sinal ter de ser reconstruído através da técnica de \textit{Overlap-Add} \cite{signalprocessing} . Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar convolução rápida de um filtro de ordem elevada com um sinal longo. Quando esta condição no tamanho da DFT não é respeitada, o sinal provinente do tratamento no domínio da frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
+        Também é relevante citar o problema da circularidade da DFT. No caso mais geral de sinais e sistemas discretos, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o uso dessa propriedade ao caso em que os filtros no domínio do tempo são periódicos, o que não é condizente com a realidade. Para fazer com que na nossa aplicação a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que o número de raias de frequência (tamanho da DFT) seja maior ou igual ao comprimento da resposta ao impulso do filtro somado ao tamanho do trecho do sinal que está sendo processado, além do sinal ter de ser reconstruído através da técnica de \textit{Overlap-Add} \cite{signalprocessing} . Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar a convolução rápida de um filtro de ordem elevada com um sinal longo. Quando esta condição no tamanho da DFT não é respeitada, o sinal provinente do tratamento no domínio da frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
         
         Outro ponto fundamental sobre trabalhar no domínio da frequência é que introduzimos um caráter complexo aos sinais do nosso sistema devido às transformadas necessárias para a mudança de domínio. Conforme citado na Seção \ref{sec:ICA}, embora vários algoritmos ICA tenham sido desenvolvidos para trabalhar com sinais reais, eles podem ser estendidos para o caso complexo, desde que tenha sido apropriadamente escolhida a função $G$ (maximização da não-gaussianidade) ou a função \textit{score} (estimação da ML). 
         
@@ -17,11 +17,11 @@
         O processo de tratamento do problema de FDBSS, ilustrado na Figura \ref{fig:frequencymodel}, pode ser estruturado da seguinte forma:
         
         \begin{enumerate}
-            \item Inicialmente, transformam-se os vetores de misturas $\mathpzc{x_j}(n)$, $j = 1,\dots,M$ em suas representações no domínio da frequência $\mathpzc{x_j}(m,k)$, $k = 0, \dots, K-1$ (sendo $m$ o índice do \textit{frame} e $K$ o número de raias de frequência), através da \textit{STFT} (do inglês \textit{Short Time Fourier Transform});
+            \item Inicialmente, transformam-se os sinais de misturas $\mathpzc{x_j}(n)$, $j = 1,\dots,M$ em suas representações no domínio da frequência $\mathpzc{x_j}(m,k)$, $k = 0, \dots, K-1$ (sendo $m$ o índice do \textit{frame} e $K$ o número de raias de frequência), através da \textit{STFT} (do inglês \textit{Short Time Fourier Transform});
             
             \item Como etapa de pré-processamento, realiza-se o branqueamento dos sinais, obtendo-se os sinais $\mathpzc{z_j}(m,k)$ e a matriz branqueadora $\mathbf{V}$($\mathpzc{k}$);
             
-            \item A etapa de processamento, que consiste na separação propriamente dita, é realizada gerando uma matriz separadora $\mathbf{W}$($\mathpzc{k}$) para cada raia de frequência $k$, além do vetor com as saídas separadas $\mathbf{y}$($\mathpzc{m,k})$ = [$\mathpzc{y_1}$($\mathpzc{m,k})$, $\dots$, $\mathpzc{y_N}$($\mathpzc{m,k})$]$^T$;
+            \item A etapa de processamento, que consiste na separação propriamente dita, é realizada gerando uma matriz separadora $\mathbf{W}$($\mathpzc{k}$) para cada raia de frequência $k$, além dos vetores com as saídas separadas $\mathbf{y}$($\mathpzc{m,k})$ = [$\mathpzc{y_1}$($\mathpzc{m,k})$, $\dots$, $\mathpzc{y_N}$($\mathpzc{m,k})$]$^T$;
             
             \item Como pós-processamento, são resolvidas as questões de permutação e escalamento, através das matrizes $\mathbf{P}$($\mathpzc{k})$ e $\mathbf{\Lambda}$($\mathpzc{k})$;
             
@@ -40,7 +40,7 @@
 
     %STFT
     \begin{equation}\label{eq:STFT}
-        \mathbf{X}(\mathpzc{m},\mathpzc{k})
+        X(\mathpzc{m},\mathpzc{k})
         = \sum_{n} x(\mathpzc{n})
         \mathpzc{win}_\mathpzc{a}(\mathpzc{n} - \mathpzc{mJ})
         exp \left( -j \frac{2\pi\mathpzc{kn}}{K} \right), \mathpzc{k} = 0, \dots, K-1
@@ -77,10 +77,10 @@
             
             \item O vetor $\mathbf{x_{frame}}$(m) = [$\mathpzc{x}$($\mathpzc{mJ}$), $\dots$, $\mathpzc{x(mJ + L - 1)}$]$^T$ tem comprimento $L$ e representa o \textit{frame m} no domínio do tempo;
             
-            \item O vetor $\mathbf{X}(\mathpzc{m})$ = [${X}$($\mathpzc{f_0,m})$, $\dots$, $\mathbf{X}$(${f_{K-1},m}$)]$^T$ tem comprimento $K$ e corresponde à representação em
+            \item O vetor $\mathbf{X}(\mathpzc{m})$ = [${X}$($\mathpzc{f_0,m})$, $\dots$, ${X}$(${f_{K-1},m}$)]$^T$ tem comprimento $K$ e corresponde à representação em
             frequência do \texit{frame m};
             
-            \item O vetor $\mathbf{win_a}$ contém os elementos não nulos da janela mostrada na equação (\ref{eq:STFT}). Assim sendo, tem comprimento $L$. O produto diag($\mathbf{x}$($\mathpzc{mJ}$))$\mathbf{win_a}$ resulta em um vetor de comprimento $L$. Por conta disso, se $K>L$, devem ser realizado \texit{zero-padding} de $K-L$ amostras no final do vetor, antes de aplicar a DFT.
+            \item O vetor $\mathbf{win_a}$ contém os elementos não nulos da janela mostrada na equação (\ref{eq:STFT}). Assim sendo, tem comprimento $L$. O produto diag($\mathbf{x}$($\mathpzc{mJ}$))$\mathbf{win_a}$ resulta em um vetor de comprimento $L$. Por conta disso, se $K>L$, deve ser realizado \texit{zero-padding} de $K-L$ amostras no final do vetor, antes de aplicar a DFT.
         
         \end{enumerate}
         
@@ -100,7 +100,7 @@
         
         A técnica de \textit{Overlap-Add} consiste em acrescentar \textit{frames} superpostos para formar o sinal completo. Também conhecida como OLA, esta técnica possui algumas variações, tais como a WOLA (\textit{Weighted Overlap-Add}) e a COLA (\textit{Constant Overlap-Add}). Esta técnica utiliza-se de uma janela de síntese $\mathpzc{win_s}(n)$ para a realização da ISTFT. Relacionar a janela de síntese $\mathpzc{win_s}(n)$ com a janela de análise $\mathpzc{win_a}(n)$ é fundamental para criar condições para que a transformação de volta para o domínio do tempo não possua distorções. 
         
-        Para que a \textit{FFT Filtering} gere um resultado satisfatório, as condições \ref{eq:condition1} e \ref{eq:condition2} devem ser satisfeitas. A condição \ref{eq:condition2} é chamada de COLA.
+        Para que a \textit{FFT Filtering} gere um resultado satisfatório, as condições (\ref{eq:condition1}) e (\ref{eq:condition2}) devem ser satisfeitas. A condição \ref{eq:condition2} é chamada de COLA.
         
         \begin{equation}\label{eq:condition1}
             K \geq L + Q - 1
@@ -109,13 +109,9 @@
         \begin{equation}\label{eq:condition2}
             \sum_m \mathpzc{win_a(n - mJ) = c},\text{c constante}, \forall\mathpzc{n} \in \mathbb{Z}
         \end{equation}
+ 
         
-        \begin{equation}\label{eq:condition3}
-            \sum_m \mathpzc{win_a(n - mJ)}\mathpzc{win_s(n - mJ) = c}, \text{c constante}, \forall\mathpzc{n} \in \mathbb{Z}
-        \end{equation}
-        
-        
-        Neste trabalho, iremos utilizar a janela de \texit{Hanning}, representada em \ref{eq:hanning}, como janela de análise, atendendo à condição COLA \ref{eq:condition2}. Para isto, usaremos J = $\frac{L}{2}$. Normalmente, a janela retangular é escolhida como a janela de síntese. Existem estudos acerca da utilização de outras janelas e em quais condições estas satisfazem ou não à condição COLA. Recomendamos a leitura de \cite{LuizVictorio} para maior aprofundamento no assunto.
+        Neste trabalho, iremos utilizar a janela de \texit{Hanning}, representada em (\ref{eq:hanning}), como janela de análise, atendendo à condição COLA (\ref{eq:condition2}). Para isto, usaremos J = $\frac{L}{2}$. Normalmente, a janela retangular é escolhida como a janela de síntese. Existem estudos acerca da utilização de outras janelas e em quais condições estas satisfazem ou não à condição COLA. Recomendamos a leitura de \cite{LuizVictorio} para maior aprofundamento no assunto.
         
         \begin{equation}\label{eq:hanning}
             \mathpzc{w_{hanning}(n)} = 0,5 \left( 1 - cos\frac{2\pi\mathpzc{n}}{L}\right)
@@ -182,7 +178,7 @@
         \begin{equation}
             \phi(\mathpzc{y_{ik}}) = - \frac{\partial}{\partial |\mathpzc{y_i}| }log(p_{y_i}(|\mathpzc{y_i}|))
         \end{equation}
-        a qual é conhecida como função \textit{score} de coordenadas polares. Em \cite{LuizVictorio}, é apresentado um estudo acerca da utilização das coordenadas polares em relação às cartesianas, onde se chega à conclusão de que as coordenadas polares geram melhores resultados. Assim sendo, vamos utilizar neste trabalho coordenadas polares para a implementação do Natural ICA.
+        a qual é conhecida como função \textit{score} de coordenadas polares. Em \cite{LuizVictorio}, é apresentado um estudo acerca da utilização das coordenadas polares em relação às cartesianas, onde se chega à conclusão de que as coordenadas polares geram melhores resultados. Assim sendo, vamos utilizar neste trabalho coordenadas polares na implementação do Natural ICA.
         
         Também se pode aliar a velocidade do FastICA com a precisão do Natural ICA, empregando-se o FastICA para gerar a matriz inicial $\mathbf{W}$ para o método Natural ICA. Esta abordagem foi utilizada nas nossas simulações.
     
@@ -192,13 +188,13 @@
         
     Este algoritmo baseia-se na abordagem da negentropia, no contexto da maximização da não-gaussianidade (Seção \ref{sec:negentropy}). A idéia principal reside em não calcular a entropia $\mathbf{H(x)}$ diretamente, mas sim através das suas fronteiras. Para obter uma estimativa confiável, é necessário resolver a distribuição máxima de entropia que maximiza a entropia e ao mesmo tempo respeitar as restrições que, na prática, são as estimativas obtidas através das amostras. 
         
-    Dado um sinal complex $\mathpzc{z(n)}$ = $\mathpzc{z_R(n) + jz_I(n)}$, onde $\mathpzc{z_R(n)}$ corresponde à sua parte real e $\mathpzc{z_I(n)}$ à parte imaginária, considere a seguinte decomposição:
+    Dado um sinal complexo $\mathpzc{z(n)}$ = $\mathpzc{z_R(n) + jz_I(n)}$, onde $\mathpzc{z_R(n)}$ corresponde à sua parte real e $\mathpzc{z_I(n)}$ à sua parte imaginária, considere a seguinte decomposição:
     \begin{equation}
         \label{eq:decomposition1}
             [\mathpzc{z_R}, \mathpzc{z_I}]^T =
             \mathbf{B}[\mathpzc{u},\mathpzc{v}]^T
     \end{equation}
-    onde $\mathbf{B}$ é uma matriz 2 x 2 não-singular e $[\mathpzc{u,v}]^T$ = $\matbf{B^{-1}}[$ $\mathpzc{z_R},{z_I}]^T$ são um par de variáveis aleatórias de média zero, pois $\mathpzc{z}$ também é. É fácil observar que a decomposição proposta leva a uma fronteira superior da entropia ${H(z)}$\cite{entropy}:
+    onde $\mathbf{B}$ é uma matriz 2 x 2 não-singular e $[\mathpzc{u,v}]^T$ = $\matbf{B^{-1}}[$ $\mathpzc{z_R},{z_I}]^T$ são um par de variáveis aleatórias de média zero, pois $\mathpzc{z}$ também é. É fácil observar que a decomposição proposta leva a uma fronteira superior da entropia ${H(z)}$ \cite{entropy}:
         
     \begin{equation}\label{eq:superiorbound}
         \begin{split}
@@ -261,7 +257,7 @@
     \end{equation}
     tendo  $\mathbf{w_n}$ como os elementos da matriz separadora $\mathbf{W_n}$  e $\mathbf{h_n}$ como um vetor de norma unitária que satisfaz $\mathbf{W_nh_n = 0}$.
     
-    Com esta abordagem, em \cite{fasticaebm} alcançou resultados melhores que os foram obtidos em comparação com os métodos JADE \cite{JADE} para alguns cenários, como quando o número de amostras é bem pequeno. Assim sendo, utilizamos este método nas simulações apresentadas neste trabalho.
+    Com esta abordagem, em \cite{fasticaebm} resultados melhores foram obtidos em comparação com os métodos JADE \cite{JADE} para alguns cenários, como quando o número de amostras é bem pequeno. Assim sendo, utilizamos este método nas simulações apresentadas neste trabalho.
     
     \begin{table}
     \caption{Funções de medição para a fronteira I da entropia ($\mathpzc{H^{[bound,I]}(z)}$).}
@@ -297,15 +293,14 @@
     \end{equation}
     
     A definição de uma estrutura semelhante à matriz de correlação necessita do conceito de tensor, que pode ser entendido como uma extrapolação do conceito de matriz, no sentido de que um tensor pode apresentar um número de  entradas maior do que dois. Neste contexto, define-se o tensor de cumulante como um conjunto de elementos, sendo que o elemento ${ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, e com $\matphzc{i,j,k,l}$ variando de 1 a p.
-    Um outro conceito que utilizaremos é o de matriz de cumulante associada a um vetor aleatório $\mathbf{x}$ = [$\mathpzc{x_1}$, $\dots$,  $\mathpzc{x_N}$] e a uma matriz M de dimensão $NxN$. No caso, o elemento $ij$ da matriz de cumulante é dado por
+    Um outro conceito que utilizaremos é o de matriz de cumulante associada a um vetor aleatório $\mathbf{x}$ = [$\mathpzc{x_1}$, $\dots$,  $\mathpzc{x_N}$] e a uma matriz M de dimensão $N \times N$. No caso, o elemento $ij$ da matriz de cumulante é dado por
     
     \begin{equation}
         \mathbf{[Q^x(M)]_{ij}} = \sum_{k,l=1}^N Cum(\mathpzc{x_i,x_j,x_k,x_l)M_{kl}}
     \end{equation}
-    
     sendo que os índices $i$ e $j$ variam de 1 a $N$. A matriz de cumulante $\mathbf{Q^x(M)}$ pode ser entendida como o resultado da aplicação do tensor de cumulante de $\mathbf{x}$ à matriz $\mathbf{M}$, ou seja, $\mathbf{Q^x(M)}$ = $\mathbf{T(M)}$, onde $\mathbf{T(\cdot)}$ representa a transformação efetuada por um tensor.
     
-    Veremos como essas medidas são consideradas no problema de separação. No caso em que o vetor $\mathbf{x}$ representa os sinais misturados após uma etapa de branqueamento (\ref{secondorder}), é possível mostrar \cite{ICA3} que a matriz de cumulantes associada a $\mathbf{x}$ é dada por:
+    Veremos como essas medidas são consideradas no problema de separação. No caso em que o vetor $\mathbf{x}$ representa os sinais misturados após a etapa de branqueamento (descrita na Seção \ref{secondorder}), é possível mostrar \cite{ICA3} que a matriz de cumulantes associada a $\mathbf{x}$ é dada por:
     \begin{equation}
         \mathbf{[Q^x(M)]_{ij}} = \mathbf{U\Delta(M)U^T}
     \end{equation}
