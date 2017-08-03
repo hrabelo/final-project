@@ -17,7 +17,7 @@
         O processo de tratamento do problema de FDBSS, ilustrado na Figura \ref{fig:frequencymodel}, pode ser estruturado da seguinte forma:
         
         \begin{enumerate}
-            \item Inicialmente, transformam-se os vetores de misturas $\mathpzc{x_j}(n)$, $j = 1,\dots,M$ em suas representações no domínio da frequência $\mathpzc{x_j}(m,k)$, $k = 0, \dots, K-1$ (sendo $m$ o índice do \textit{frame} e $K$ o número de raias de frequência), através da \textit{STFT} (do inglês, \textit{Short Time Fourier Transform});
+            \item Inicialmente, transformam-se os vetores de misturas $\mathpzc{x_j}(n)$, $j = 1,\dots,M$ em suas representações no domínio da frequência $\mathpzc{x_j}(m,k)$, $k = 0, \dots, K-1$ (sendo $m$ o índice do \textit{frame} e $K$ o número de raias de frequência), através da \textit{STFT} (do inglês \textit{Short Time Fourier Transform});
             
             \item Como etapa de pré-processamento, realiza-se o branqueamento dos sinais, obtendo-se os sinais $\mathpzc{z_j}(m,k)$ e a matriz branqueadora $\mathbf{V}$($\mathpzc{k}$);
             
@@ -25,7 +25,7 @@
             
             \item Como pós-processamento, são resolvidas as questões de permutação e escalamento, através das matrizes $\mathbf{P}$($\mathpzc{k})$ e $\mathbf{\Lambda}$($\mathpzc{k})$;
             
-            \item Por fim, é necessário levar o vetor com as saídas separadas para o domínio do tempo através da \textit{ISTFT} (do inglês, \textit{Inverse Short Time Fourier Transform}).
+            \item Por fim, é necessário levar o vetor com as saídas separadas para o domínio do tempo através da \textit{ISTFT} (do inglês \textit{Inverse Short Time Fourier Transform}).
             
         \end{enumerate}
 
@@ -186,55 +186,9 @@
         
         Também se pode aliar a velocidade do FastICA com a precisão do Natural ICA, empregando-se o FastICA para gerar a matriz inicial $\mathbf{W}$ para o método Natural ICA. Esta abordagem foi utilizada nas nossas simulações.
     
- 
-    \subsection{Separação por JADE}
-        Conforme descrito na Seção \ref{secondorder}, as informações de estatísticas de segunda ordem podem ser úteis em um processo de branqueamento, o qual pode ser realizado por meio da diagonalização da matriz de correlação relativa ao vetor de misturas $\mathbf{x}$. A JADE (\textit{Joint Approximate Diagonalization of Eigenmatrices})\cite{JADE} é uma abordagem em BSS que leva em consideração informações de \textit{HOS}, através de processos de diagonalização das entidades que contenham tais informações, como o tensor de cumulantes e a matriz de cumulantes associada ao vetor aleatório. A definição do cumulante de quarta ordem utilizado pela JADE é dada por:
-    \begin{equation}
-        \label{cumJADE}
-        \begin{split}
-        \mathpzc{cum(z_1,z_2,\dots,z_p)} = \mathpzc{E}\{\mathpzc{z_1z_2z_3z_4}\} - \mathpzc{E}\{\mathpzc{z_1z_2}\}\mathpzc{E}\{\mathpzc{z_3z_4}\} & \\ - \mathpzc{E}\{\mathpzc{z_1z_3}\}\mathpzc{E}\{\mathpzc{z_2z_4}\} - \mathpzc{E}\{\mathpzc{z_1z_4}\}\mathpzc{E}\{\mathpzc{z_2z_3}\}    
-        \end{split}
-    \end{equation}
-    
-    A definição de uma estrutura semelhante à matriz de correlação necessita do conceito de tensor, que pode ser entendido como uma extrapolação do conceito de matriz, no sentido de que um tensor pode apresentar um número de  entradas maior do que dois. Neste contexto, define-se o tensor de cumulante como um conjunto de elementos, sendo que o elemento ${ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, e com $\matphzc{i,j,k,l}$ variando de 1 a p.
-    Um outro conceito que utilizaremos é o de matriz de cumulante associada a um vetor aleatório $\mathbf{x}$ = [$\mathpzc{x_1}$, $\dots$,  $\mathpzc{x_N}$] e a uma matriz M de dimensão $NxN$. No caso, o elemento $ij$ da matriz de cumulante é dado por
-    
-    \begin{equation}
-        \mathbf{[Q^x(M)]_{ij}} = \sum_{k,l=1}^N Cum(\mathpzc{x_i,x_j,x_k,x_l)M_{kl}}
-    \end{equation}
-    
-    sendo que os índices $i$ e $j$ variam de 1 a $N$. A matriz de cumulante $\mathbf{Q^x(M)}$ pode ser entendida como o resultado da aplicação do tensor de cumulante de $\mathbf{x}$ à matriz $\mathbf{M}$, ou seja, $\mathbf{Q^x(M)}$ = $\mathbf{T(M)}$, onde $\mathbf{T(\cdot)}$ representa a transformação efetuada por um tensor.
-    
-    Veremos como essas medidas são consideradas no problema de separação. No caso em que o vetor $\mathbf{x}$ representa os sinais misturados após uma etapa de branqueamento (\ref{secondorder}), é possível mostrar \cite{ICA3} que a matriz de cumulantes associada a $\mathbf{x}$ é dada por:
-    \begin{equation}
-        \mathbf{[Q^x(M)]_{ij}} = \mathbf{U\Delta(M)U^T}
-    \end{equation}
-    onde $\mathbf{U}$ é a matriz branqueadora ortogonal e  $\mathbf{\Delta(M)}$ é uma matriz ortogonal cujos parâmetros dependem de $\mathbf{M}$ e das curtoses das fontes.
-
-    Obviamente, a matriz $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonalização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos \cite{JADE}. Como não se tem essa informação da matriz $\mathbf{U}$ a priori, é impossível estabelecer qualquer tipo de garantia sobre os autovalores.
-    Assim sendo, em vez de se realizar a diagonalização considerando apenas uma matriz de cumulante, adota-se um esquema de diagonalização conjunta de diferentes matrizes de cumulante, sendo cada uma delas definida por uma matriz $\mathbf{M_i}$. Dessa forma, a função custo a ser minimizada no algoritmo JADE é dada por
-    
-    \begin{equation}\label{eq:optimize}
-        \mathbf{D(U)} = \sum_i \Omega(\mathbf{U^TQ^X(M_i)U})
-    \end{equation}
-    
-    onde o operador $\Omega(\cdot)$ expressa a soma quadrática dos elementos que não estão na diagonal principal. Sobre a escolha das matrizes $\mathbf{M_i}$, utilizam-se automatrizes relativas ao tensor de cumulante, ou seja, as N matrizes $\mathbf{M_i}$ tal que $\mathbf{Q^x(M_i)}$ = $\lambda$ $\mathbf{M_i}$.
-    
-    O método de Jacobi para diagonalização de matrizes pode ser utilizado para otimizar a função (\ref{eq:optimize}). A idéia essencial é representar a matriz $\mathbf{U}$ como um produto de matrizes de rotação:
-    \begin{equation}
-        \mathbf{U} = \sum_{i,j=1,i\neqj}^N \mathbf{R_{ij}},
-    \end{equation}
-    onde a matriz de rotação $\mathbf{R_{ij}}$, de dimensões $NxN$, tem todos os seus elementos nulos exceto os das posições $\mathpzc{(i,i), (i,j), (j,i), (j,j)}$, que são dados por:
-    \begin{equation}
-        \mathpzc{r_{ii} = cos \theta, r_{ij} = sin \theta, r_{ji} = -sin \theta, r_{jj} = cos \theta}
-    \end{equation}
-    onde $\theta$ é o ângulo de rotação. Em \cite{JADE} é proposta uma forma de determinar analiticamente qual o ângulo de rotação que minimiza a expressão (\ref{eq:optimize}). A despeito do reduzido número de iterações necessárias para a convergência deste procedimento de diagonalização conjunta, tal técnica se torna consideravelmente ineficiente em cenários com um elevado número de fontes, devido ao aumento de complexidade presente na determinação analítica dos ângulos de rotação.
-    
-    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste (\ref{eq:optimize}) quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos \cite{JADE}. 
-
-   \subsection{Separação por ICA-EBM}
+    \subsection{Separação por ICA-EBM}
         
-    Conforme mencionado na Seção \ref{sec:ICA}, é necessário utilizar algoritmos ICA que lidem com sinais complexos para que tenhamos êxito na realização da separação no domínio da frequência. Em \cite{fasticaebm}, é proposta uma variação do FastICA tradicional, utilizando a minimização da entropia através das suas fronteiras, resultando no algoritmo ICA-EBM (do inglês, \textit{Entropy Bound Minimization}).
+    Conforme mencionado na Seção \ref{sec:ICA}, é necessário utilizar algoritmos ICA que lidem com sinais complexos para que tenhamos êxito na realização da separação no domínio da frequência. Em \cite{fasticaebm}, é proposta uma variação do FastICA tradicional, utilizando a minimização da entropia através das suas fronteiras, resultando no algoritmo ICA-EBM (do inglês \textit{Entropy Bound Minimization}).
         
     Este algoritmo baseia-se na abordagem da negentropia, no contexto da maximização da não-gaussianidade (Seção \ref{sec:negentropy}). A idéia principal reside em não calcular a entropia $\mathbf{H(x)}$ diretamente, mas sim através das suas fronteiras. Para obter uma estimativa confiável, é necessário resolver a distribuição máxima de entropia que maximiza a entropia e ao mesmo tempo respeitar as restrições que, na prática, são as estimativas obtidas através das amostras. 
         
@@ -333,7 +287,53 @@
     \label{tb:g2}
     \end{table}
     
+    \subsection{Separação por JADE}
+        Conforme descrito na Seção \ref{secondorder}, as informações de estatísticas de segunda ordem podem ser úteis em um processo de branqueamento, o qual pode ser realizado por meio da diagonalização da matriz de correlação relativa ao vetor de misturas $\mathbf{x}$. A JADE (\textit{Joint Approximate Diagonalization of Eigenmatrices})\cite{JADE} é uma abordagem em BSS que leva em consideração informações de \textit{HOS}, através de processos de diagonalização das entidades que contenham tais informações, como o tensor de cumulantes e a matriz de cumulantes associada ao vetor aleatório. A definição do cumulante de quarta ordem utilizado pela JADE é dada por:
+    \begin{equation}
+        \label{cumJADE}
+        \begin{split}
+        \mathpzc{cum(z_1,z_2,\dots,z_p)} = \mathpzc{E}\{\mathpzc{z_1z_2z_3z_4}\} - \mathpzc{E}\{\mathpzc{z_1z_2}\}\mathpzc{E}\{\mathpzc{z_3z_4}\} & \\ - \mathpzc{E}\{\mathpzc{z_1z_3}\}\mathpzc{E}\{\mathpzc{z_2z_4}\} - \mathpzc{E}\{\mathpzc{z_1z_4}\}\mathpzc{E}\{\mathpzc{z_2z_3}\}    
+        \end{split}
+    \end{equation}
+    
+    A definição de uma estrutura semelhante à matriz de correlação necessita do conceito de tensor, que pode ser entendido como uma extrapolação do conceito de matriz, no sentido de que um tensor pode apresentar um número de  entradas maior do que dois. Neste contexto, define-se o tensor de cumulante como um conjunto de elementos, sendo que o elemento ${ijkl}$ é dado por $\matbpzc{cum(z_i, z_j, z_k, z_l)}$, e com $\matphzc{i,j,k,l}$ variando de 1 a p.
+    Um outro conceito que utilizaremos é o de matriz de cumulante associada a um vetor aleatório $\mathbf{x}$ = [$\mathpzc{x_1}$, $\dots$,  $\mathpzc{x_N}$] e a uma matriz M de dimensão $NxN$. No caso, o elemento $ij$ da matriz de cumulante é dado por
+    
+    \begin{equation}
+        \mathbf{[Q^x(M)]_{ij}} = \sum_{k,l=1}^N Cum(\mathpzc{x_i,x_j,x_k,x_l)M_{kl}}
+    \end{equation}
+    
+    sendo que os índices $i$ e $j$ variam de 1 a $N$. A matriz de cumulante $\mathbf{Q^x(M)}$ pode ser entendida como o resultado da aplicação do tensor de cumulante de $\mathbf{x}$ à matriz $\mathbf{M}$, ou seja, $\mathbf{Q^x(M)}$ = $\mathbf{T(M)}$, onde $\mathbf{T(\cdot)}$ representa a transformação efetuada por um tensor.
+    
+    Veremos como essas medidas são consideradas no problema de separação. No caso em que o vetor $\mathbf{x}$ representa os sinais misturados após uma etapa de branqueamento (\ref{secondorder}), é possível mostrar \cite{ICA3} que a matriz de cumulantes associada a $\mathbf{x}$ é dada por:
+    \begin{equation}
+        \mathbf{[Q^x(M)]_{ij}} = \mathbf{U\Delta(M)U^T}
+    \end{equation}
+    onde $\mathbf{U}$ é a matriz branqueadora ortogonal e  $\mathbf{\Delta(M)}$ é uma matriz ortogonal cujos parâmetros dependem de $\mathbf{M}$ e das curtoses das fontes.
+
+    Obviamente, a matriz $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonalização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos \cite{JADE}. Como não se tem essa informação da matriz $\mathbf{U}$ a priori, é impossível estabelecer qualquer tipo de garantia sobre os autovalores.
+    Assim sendo, em vez de se realizar a diagonalização considerando apenas uma matriz de cumulante, adota-se um esquema de diagonalização conjunta de diferentes matrizes de cumulante, sendo cada uma delas definida por uma matriz $\mathbf{M_i}$. Dessa forma, a função custo a ser minimizada no algoritmo JADE é dada por
+    
+    \begin{equation}\label{eq:optimize}
+        \mathbf{D(U)} = \sum_i \Omega(\mathbf{U^TQ^X(M_i)U})
+    \end{equation}
+    
+    onde o operador $\Omega(\cdot)$ expressa a soma quadrática dos elementos que não estão na diagonal principal. Sobre a escolha das matrizes $\mathbf{M_i}$, utilizam-se automatrizes relativas ao tensor de cumulante, ou seja, as N matrizes $\mathbf{M_i}$ tal que $\mathbf{Q^x(M_i)}$ = $\lambda$ $\mathbf{M_i}$.
+    
+    O método de Jacobi para diagonalização de matrizes pode ser utilizado para otimizar a função (\ref{eq:optimize}). A idéia essencial é representar a matriz $\mathbf{U}$ como um produto de matrizes de rotação:
+    \begin{equation}
+        \mathbf{U} = \sum_{i,j=1,i\neqj}^N \mathbf{R_{ij}},
+    \end{equation}
+    onde a matriz de rotação $\mathbf{R_{ij}}$, de dimensões $NxN$, tem todos os seus elementos nulos exceto os das posições $\mathpzc{(i,i), (i,j), (j,i), (j,j)}$, que são dados por:
+    \begin{equation}
+        \mathpzc{r_{ii} = cos \theta, r_{ij} = sin \theta, r_{ji} = -sin \theta, r_{jj} = cos \theta}
+    \end{equation}
+    onde $\theta$ é o ângulo de rotação. Em \cite{JADE} é proposta uma forma de determinar analiticamente qual o ângulo de rotação que minimiza a expressão (\ref{eq:optimize}). A despeito do reduzido número de iterações necessárias para a convergência deste procedimento de diagonalização conjunta, tal técnica se torna consideravelmente ineficiente em cenários com um elevado número de fontes, devido ao aumento de complexidade presente na determinação analítica dos ângulos de rotação.
+    
+    Uma das razões pela qual o JADE é bastante atrativo é o fato de que tanto o desenvolvimento da função contraste (\ref{eq:optimize}) quanto o do processo de diagonalização conjunta são válidos para vetores aleatórios complexos \cite{JADE}. 
+
 \section{Pós-Processamento}
+
     \subsection{Permutação} \label{sec:tdoa}
     O principal desafio do ICA no domínio da frequência é o problema da permutação. Ele consiste em encontrar a matriz de permutação $\mathbf{P_k}$, definida na Seção \ref{sec:separability}, onde o índice $\mathpzc{k}$ indica a raia da frequência, de forma que se agrupe corretamente as frequências das fontes e a ISTFT gere resultados satisfatórios.
     Este problema pode ser tratado de diferentes maneiras; entretanto, para este trabalho, iremos destacar o método TDOA (\textit{Time Difference Of Arrival}), que pode ser considerado uma extensão do DOA (\textit{Difference Of Arrival}).
@@ -342,6 +342,4 @@
     
     O TDOA é uma alternativa mais robusta ao DOA. Baseando-se na diferença de tempos de chegada de cada fonte aos sensores, este não sofre a limitação de ângulo que o DOA sofre, além de não ser computacionalmente mais custoso. Através do TDOA de cada fonte entre todos os pares de sensores, é possível identificá-las em cada uma das raias de frequência.
     
-    Ambos os métodos acima baseiam-se na idéia de estimar a localização das fontes através de informações sobre o sistema de mistura, além de classificar as fontes em cada raia de frequência baseado em sua direção.
-    
-    Baseado em \cite{LuizVictorio}, utilizaremos a abordagem do TDOA por mostrar um resultado satisfatório para o caso proposto.
+    Ambos os métodos acima baseiam-se na idéia de estimar a localização das fontes através de informações sobre o sistema de mistura, além de classificar as fontes em cada raia de frequência baseado em sua direção. Baseado em \cite{LuizVictorio}, utilizaremos a abordagem do TDOA por mostrar um resultado satisfatório para o caso proposto.

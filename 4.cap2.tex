@@ -2,7 +2,7 @@
 
 \section{Contexto Histórico}
 
-    Um problema de biologia relacionado à maneira com que o sistema nervoso central codifica um impulso muscular foi o que levou Hérault, Jutten e Ans a publicarem o trabalho que é considerado a origem da formulação do problema de BSS \cite{french}. O trabalho consistia em tentar obter um modelo computacional que se comportasse como o cérebro humano no momento em que este, a partir de apenas um único sinal nervoso, interpreta duas funções importantes: a translação e a velocidade angular do movimento muscular. Pode-se dizer que este trabalho teve dois principais resultados. O primeiro foi evidenciar a necessidade da aplicação de \textit{HOS} (do inglês, \textit{Higher Order Statistics}) ao problema. Isto foi fundamental na concepção dos métodos para resolução do problema da BSS. O segundo foi a modelagem algébrica dos sistemas de mistura e separação, a matéria-prima do caso BSS/ICA.
+    Um problema de biologia relacionado à maneira com que o sistema nervoso central codifica um impulso muscular foi o que levou Hérault, Jutten e Ans a publicarem o trabalho que é considerado a origem da formulação do problema de BSS \cite{french}. O trabalho consistia em tentar obter um modelo computacional que se comportasse como o cérebro humano no momento em que este, a partir de apenas um único sinal nervoso, interpreta duas funções importantes: a translação e a velocidade angular do movimento muscular. Pode-se dizer que este trabalho teve dois principais resultados. O primeiro foi evidenciar a necessidade da aplicação de \textit{HOS} (do inglês \textit{Higher Order Statistics}) ao problema. Isto foi fundamental na concepção dos métodos para resolução do problema da BSS. O segundo foi a modelagem algébrica dos sistemas de mistura e separação, a matéria-prima do caso BSS/ICA.
 
 
     Em 1994, Pierre Comon, utilizando-se dos resultados obtidos por Darmois na década de 1950, formalizou o conceito de ICA e relacionou a independência estatística com o problema da BSS. \cite{Comon}
@@ -46,7 +46,7 @@
     
 \subsection{Separação de sinais de áudio}
 
-    Imagine a seguinte situação: uma pessoa se encontra em uma sala onde existem diversos grupos de pessoas conversando concomitantemente, como, por exemplo, em uma reunião. Além disso, há ruído de fundo gerado, por exemplo, por música ambiente e ecos no recinto. Apesar de todas essas interferências, o ser humano é capaz de distinguir a voz ou o som de interesse em um determinado momento. Essa habilidade é conhecida na literatura como \textit{cocktail-party effect}\cite{cocktail}, justamente pela analogia com o cenário descrito.
+    Imagine a seguinte situação: uma pessoa se encontra em uma sala onde existem diversos grupos de pessoas conversando concomitantemente, como, por exemplo, em uma reunião. Além disso, há ruído de fundo gerado, por exemplo, por música ambiente e ecos no recinto. Apesar de todas essas interferências, o ser humano é capaz de distinguir a voz ou o som de interesse em um determinado momento. Essa habilidade é conhecida na literatura como \textit{cocktail-party effect} \cite{cocktail}, justamente pela analogia com o cenário descrito.
 
     Este caso levou ao questionamento: será possível a um sistema de processamento artificial alimentado apenas por gravações de microfones posicionados pela sala distinguir o sinal de voz de uma pessoa qualquer? Ao passo que o cérebro humano resolve com certa facilidade este problema, o desenvolvimento de sistemas automáticos para realizar tal tarefa ainda corresponde a um complexo desafio.
 
@@ -56,14 +56,13 @@
     Considere que cada elemento do vetor $\mathbf{s}$($\mathpzc{n}$) = [${s_1}$($\mathpzc{n}$) ${s_2}$($\mathpzc{n}$) \dots  $s_N$($\mathpzc{n}$)]$^T$ corresponde a um sinal da fonte emissora. Analogamente, representamos os sinais misturados pelo vetor  $\mathbf{x}$($\mathpzc{n}$) = [${x_1}$($\mathpzc{n}$) ${x_2}$($\mathpzc{n}$) \dots  ${x_M}$($\mathpzc{n}$)]$^T$. De forma generalizada, o sistema misturador pode ser representado pela expressão:
 
     \begin{equation}\label{eq:mixer}
-        \mathbf{x}(\mathpzc{n}) = \mathcal{F}(\mathbf{s}(\mathpzc{n}), \mathbf{s}(\mathpzc{n-1}), \dots, \mathbf{s}(\mathpzc{n - L}), \mathbf{v}(\mathpzc{n})),
+        \mathbf{x}(\mathpzc{n}) = \mathcal{F}(\mathbf{s}(\mathpzc{n}), \mathbf{s}(\mathpzc{n-1}), \dots, \mathbf{s}(\mathpzc{n - L}), \mathbf{v}(\mathpzc{n}))
     \end{equation}
     onde o operador $\mathcal{F}$($\cdot$) descreve a ação do sistema misturador, $L$ corresponde ao número de amostras passadas (memória) do vetor de fontes e o vetor $\mathbf{v}$($\mathpzc{n}$) corresponde ao ruído associado às fontes ou sensores do sistema.
     
     Vale ressaltar que a representação \ref{eq:mixer} tem caráter puramente didático, uma vez que não existem técnicas de BSS que lidem com todos estes efeitos representados e uma só vez. Em geral, as técnicas são aplicadas a casos específicos, isto é, versões simplificadas da formulação citada. Desta forma, torna-se necessário introduzir os conceitos de classificação de um sistema misturador para auxiliar na adequação do problema para o caso proposto por este trabalho.
     
     \textbf{Sistemas Lineares e Não-Lineares} O sistema misturador é dito linear se o operador  $\mathcal{F}$($\cdot$) respeita o princípio da superposição, conforme descrito abaixo:
-
         % Linearidade
         \begin{equation}\label{eq:linearity}
             \mathcal{F}(\mathbf{a_1}\mathbf{s_1}(\mathpzc{n}) + \mathbf{a_2}\mathbf{s_2}(\mathpzc{n})) = \mathpzc{a_1}\mathcal{F}(\mathbf{s_1}(\mathpzc{n})) + \mathpzc{a_2}\mathcal{F}(\mathbf{s_2}(\mathpzc{n}))
@@ -76,16 +75,16 @@
      
      Apesar da característica principal da BSS ser a falta de informação sobre o processo de mistura, é fundamental ao menos ter-se um certo conhecimento sobre a estrutura do sistema misturador. Assim, é possível definir um separador estruturalmente capaz de reverter a ação do processo de mistura. Geralmente, este tipo de informação é obtido com base na aplicação de interesse. No caso deste trabalho, o problema de separação de sinais de áudio, o processo de mistura é geralmente convolutivo, devido à presença de reverberações no ambiente.
      
-     A maioria dos trabalhos acerca de BSS abordam cenários com sistemas misturadores lineares e com o mesmo número de fontes e sensores, diferenciando-se basicamente no contexto de misturas instantâneas ou convolutivas. Apesar desta última classificaçãço desempenhar um papel fundamental na abordagem do problema, o  processo de mistura pode ser igualmente descrito matematicamente da seguinte forma:
+     A maioria dos trabalhos acerca de BSS abordam cenários com sistemas misturadores lineares e com o mesmo número de fontes e sensores, diferenciando-se basicamente no contexto de misturas instantâneas ou convolutivas. Apesar desta última classificaçãço desempenhar um papel fundamental na abordagem do problema, o  processo de mistura pode ser igualmente descrito matematicamente da seguinte forma
      
      % Notação Matricial
      \begin{equation}\label{eq:xn}
-        \mathbf{x} = \mathbf{A}\mathbf{s},
+        \mathbf{x} = \mathbf{A}\mathbf{s}
     \end{equation}
     onde a matriz $\mathbf{A}$ de dimensão ${N \times N}$ é chamada de matriz de mistura. A diferença é que, no caso linear, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são, geralmente, filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor, devido à presença de reverberação. Assim, tem-se a convolução de cada uma das respostas ao impulso desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS \cite{ICA}. Além disso, é possível recuperar as fontes através da Análise de Componentes Independentes, que será visto na próxima seção.
 
 \section{Análise de Componentes Independentes} \label{sec:ICA}
-    Nesta seção serão apresentados os aspectos básicos da ICA (do inglês, \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear e convolutivo, trataremos apenas do caso linear, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências  \cite{ICA3}, \cite{ICA}.
+    Nesta seção serão apresentados os aspectos básicos da ICA (do inglês \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear e convolutivo, trataremos apenas do caso linear, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências \cite{ICA3} e \cite{ICA}.
     
     Os algoritmos ICA podem ser derivados através da estimativa da máxima verossimilhança \cite{ICAML}, \cite{ML}, \cite{NaturalICA} e da maximização da não-gaussianidade \cite{fastica1}, \cite{fastica2}, \cite{fastica3} e \cite{fasticaebm}. Apesar da maioria dos algoritmos serem desenvolvidos para trabalhar com números reais, podemos estende-los para lidar com números complexos. Para isto, é preciso escolher apropriadamente uma função não-linear \textit{G} que, relacionada à formulação dos algoritmos para sinais reais, permita o emprego dos mesmos para sinais complexos.
 
@@ -94,15 +93,13 @@
     
     \medskip
     
-    \textbf{Definição 2.5.1 (ICA)} A ICA de um vetor aleatório $\mathbf{x}$ = [${x_1}$ ${x_2}$ $\dots$  ${x_M}]^T$ consiste em determinar o segundo modelo generativo linear (ou modelo ICA):
-    
+    \textbf{Definição 2.5.1 (ICA)} A ICA de um vetor aleatório $\mathbf{x}$ = [${x_1}$ ${x_2}$ $\dots$  ${x_M}]^T$ consiste em determinar o seguinte modelo generativo linear (ou modelo ICA):
     \begin{equation}\label{eq:simplifiedmixer}
         % Notação Matricial
-        \mathbf{x} = \mathbf{A}\mathbf{s},
+        \mathbf{x} = \mathbf{A}\mathbf{s}
     \end{equation}
     onde os elementos de $\mathbf{s}$ = [${s_1}$ ${s_2}$ \dots  ${s_N}$]$^T$ são estatisticamente independentes entre si e $\mathbf{A}$ corresponde a uma matriz constante de dimensão $M\times N$.
-    \bigskip 
-    
+
     Sob a hipótese de que os sinais fontes são estatisticamente independentes entre si, fica claro que os elementos de $\mathbf{x}$ não são mais independentes, devido ao processo de mistura. O ponto fundamental da aplicação da ICA diz respeito exatamente a esta constatação, no sentido de que essa metodologia se propõe a separar as fontes a partir da recuperação da independência. O sistema separador, implementado pela matriz $\mathbf{W}$, é ajustado de modo que as compomentes do vetor $\mathbf{y}$ de estimativas das fontes sejam as mais independentes possíveis entre si.
     
     Entretanto, esta abordagem levanta a seguinte questão: tornar as estimativas das fontes independentes implica necessariamente na recuperação das fontes? Foi Pierre Comon \cite{Comon} que não só respondeu a esta pergunta, mas também forneceu todo o respaldo matemático necessário para o desenvolvimento da ICA e, por consequência, da BSS.
@@ -110,7 +107,7 @@
 
 \subsection{Separabilidade}\label{sec:separability}
 
-    O modelo descrito na Seção \ref{sec:model} é dito separável se, para toda matriz separadora $\mathbf{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre sim, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambiguidades associadas a este modelo: A ordem das fontes e seus ganhos de escala. Mediante este problema, Comon \cite{Common} formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
+    O modelo descrito na Seção \ref{sec:model} é dito separável se, para toda matriz separadora $\mathbf{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre sim, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambiguidades associadas a este modelo: A ordem das fontes e seus ganhos de escala. Mediante este problema, Comon \cite{Comon} formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
     
     \bigskip
     
@@ -293,7 +290,7 @@
 \subsection{Modelo de estimação por máxima verossimilhança}
 
     A maioria dos critérios utilizados pelo caso linear da BSS, embora tenha ligações com o ICA, surgiram a partir de outras idéias que não necessariamente estão ligadas à independência estatística. O caso da estimação por máxima verossimilhança é um dos exemplos mais consagrados deste grupo. Apresentaremos, nesta seção, seus conceitos e como a mesma se relaciona com o problema de BSS. 
-    O objetivo por trás da ML (do inglês, \textit{Maximum Likelihood}) é determinar um conjunto de parâmetros $\mathbf{\theta} = [\theta_1, \dots, \theta_n]$ a partir de um conjunto de amostras $\mathbf{e} = [e(1), \dots, e(P)]$ que contém informações sobre eles. As estimativas de $\mathbf{\theta}$ são denotadas por $\hat{\theta}$ e determinadas através da maximização da chamada função de máxima verossimilhança $\mathbf{L(\theta)}$, conforme    
+    O objetivo por trás da ML (do inglês \textit{Maximum Likelihood}) é determinar um conjunto de parâmetros $\mathbf{\theta} = [\theta_1, \dots, \theta_n]$ a partir de um conjunto de amostras $\mathbf{e} = [e(1), \dots, e(P)]$ que contém informações sobre eles. As estimativas de $\mathbf{\theta}$ são denotadas por $\hat{\theta}$ e determinadas através da maximização da chamada função de máxima verossimilhança $\mathbf{L(\theta)}$, conforme    
     \begin{equation}\label{eq:argmax}
     \hat{\theta} = \operatorname*{arg\,max}_{\theta} \mathbf{L(\theta)}
     = \operatorname*{arg\,max}_{\theta}

@@ -1,5 +1,4 @@
-\ref{chap:4}
-
+\label{chap:4}
 \section{Simulação}\label{sec:simulation}
 
 Simulamos a resposta de frequência de uma sala utilizando o algoritmo Image-Source Model \cite{simulation}.
@@ -7,7 +6,7 @@ Simulamos a resposta de frequência de uma sala utilizando o algoritmo Image-Sou
 A sala utilizada nas simulações tem dimensões $4,45m \times 3,55m \times 2,5m$ (largura × comprimento × altura) e é completamente selada. Além disso, o coeficiente de absorção de todos os lados é o mesmo, como se todos fossem feitos do mesmo material. O material utilizado varia com o tempo de reverberação, e o algoritmo de simulação calcula o coeficiente de absorção de cada lado da sala dependendo do
 tempo de reverberação escolhido. O arranjo de microfones é linear e foi montado em torno do ponto $\mathpzc{Mic_c = [2 1,5 1,6]^T}$. São 2 microfones e fontes. As fontes foram distribuídas em torno do centro do arranjo, com dois parâmetros para identificá-las: o DOA de cada uma, e a distância delas até o arranjo. O parâmetro mais importante da sala é o tempo de reverberação. O tempo utilizado nesta dissertação é o $\mathpzc{T_60}$, que é o tempo requerido para que as reflexões cheguem a 60 dB abaixo do nível do som direto.
 
-As fontes utilizadas foram do SASSEC e são trechos de sinal de voz de 10 segundos de duração cada, amostrados a 16 kHz. Decimamos os sinais para que a frequência de amostragem caísse para 8 kHz. As projeções do ambiente estão representados na Figura \ref{fig:environment}
+As fontes utilizadas foram do SASSEC e são trechos de sinal de voz de 10 segundos de duração cada, amostrados a 16 kHz. Decimamos os sinais para que a frequência de amostragem caísse para 8 kHz. As projeções do ambiente estão representados na Figura \ref{fig:environment}.
 
 \begin{figure}
     \centering
@@ -23,7 +22,7 @@ As fontes utilizadas foram do SASSEC e são trechos de sinal de voz de 10 segund
     
     Após aplicar a STFT (definida na Seção \ref{sec:stft}) para transformar os sinais para o domínio da frequência, tanto a etapa de pré-processamento (descrita na Seção \ref{sec:whitening}) quanto a de pós-processamento (apresentada na Seção \ref{sec:tdoa}), obtemos as estimativas das fontes mostradas nas Figuras \ref{fig:icaebm} e \ref{fig:natica} para os métodos ICA-EBM e Natural ICA, respectivamente.
     
-    Quanto aos resultados, ambos os métodos mostram boas estimativas. Isto pode ser facilmente observado nos gráficos das estimativas das fontes mostrados nas Figuras \ref{fig:icaebm} e \ref{fig:natica} . Entretanto, o algoritmo ICA-EBM levou consideravelmente mais tempo para obtenção do resultado que o algoritmo Natural ICA associado ao FastICA. Conforme aumentamos o tempo de reverberação $\mathpzc{T_{60}}$ do ambiente de simulação, ambos os métodos passaram a ter suas estimativas degradadas, mas ainda assim, se mantêm bem próximos. Nas Figuras \ref{fig:natica} e \ref{fig:icaebm} são apresentados os valores da SIR, SAR e SDR obtidos com os algoritmos Natural ICA + FastICA e ICA-EBM, respectivamente, para diferentes tempos de reverberação. Pode-se observar destas figuras que o algoritmo ICA-EBM apresenta um desempenho ligeiramente superior ao do Natural ICA+FastICA,no entanto com convergência mais lenta.
+    Quanto aos resultados, ambos os métodos mostram boas estimativas. Isto pode ser facilmente observado nos gráficos das estimativas das fontes mostrados nas Figuras \ref{fig:icaebm} e \ref{fig:natica} . Entretanto, o algoritmo ICA-EBM levou consideravelmente mais tempo para obtenção do resultado que o algoritmo Natural ICA associado ao FastICA. Conforme aumentamos o tempo de reverberação $\mathpzc{T_{60}}$ do ambiente de simulação, ambos os métodos passaram a ter suas estimativas degradadas, mas ainda assim, se mantêm bem próximos. Nas Figuras \ref{fig:natica} e \ref{fig:icaebm} são apresentados os valores da SIR, SAR e SDR obtidos com os algoritmos Natural ICA + FastICA e ICA-EBM, respectivamente, para diferentes tempos de reverberação. Pode-se observar destas figuras que o algoritmo ICA-EBM apresenta um desempenho ligeiramente superior ao do Natural ICA + FastICA, no entanto com convergência mais lenta.
     
     \begin{figure}
         \centering
