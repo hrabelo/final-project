@@ -1,16 +1,16 @@
 \label{chap:4}
 \section{Simulação}\label{sec:simulation}
 
-Simulamos a resposta de frequência de uma sala utilizando o algoritmo Image-Source Model \cite{simulation}.
+Simulamos a resposta em frequência de uma sala utilizando o algoritmo Image-Source Model \cite{simulation}.
 
-A sala utilizada nas simulações tem dimensões $4,45m \times 3,55m \times 2,5m$ (largura × comprimento × altura) e é completamente selada. Além disso, o coeficiente de absorção de todas as suas paredes é o mesmo, considerando que todas são feitas do mesmo material. O material utilizado altera o tempo de reverberação, sendo que o algoritmo de simulação calcula o coeficiente de absorção das paredes da sala dependendo do tempo de reverberação escolhido. O arranjo de microfones é linear e foi posicionado em torno do ponto $\mathpzc{Mic_c = [2 1,5 1,6]^T}$. Foi simulado apenas o cenário com 2 microfones e 2 fontes. As fontes foram distribuídas em torno do centro do arranjo, com dois parâmetros para identificá-las: o DOA de cada uma, e a distância delas até o arranjo. O parâmetro mais importante da sala é o tempo de reverberação. O tempo utilizado nesta dissertação é o ${T_{60}}$, que é o tempo requerido para que a energia das componentes relativas a reflexões do sinal caia a 60 dB abaixo do nível do som direto.
+A sala utilizada nas simulações tem dimensões $4,45m \times 3,55m \times 2,5m$ (largura × comprimento × altura) e é completamente selada. Além disso, o coeficiente de absorção de todas as suas paredes é o mesmo, considerando que todas são feitas do mesmo material. O material utilizado altera o tempo de reverberação, sendo que o algoritmo de simulação calcula o coeficiente de absorção das paredes da sala dependendo do tempo de reverberação escolhido. O arranjo de microfones é linear e foi posicionado em torno do ponto $Mic_c$ = [2 1,5 1,6]$^T$. Foi simulado apenas o cenário com 2 microfones e 2 fontes. As fontes foram distribuídas em torno do centro do arranjo, com dois parâmetros para identificá-las: o DOA de cada uma, e a distância delas até o arranjo. O parâmetro mais importante da sala é o tempo de reverberação. O tempo utilizado nesta dissertação é o ${T_{60}}$, que é o tempo requerido para que a energia das componentes relativas a reflexões do sinal caia a 60 dB abaixo do nível do som direto.
 
 As fontes utilizadas foram do SASSEC, correspondendo a trechos de sinais de voz de 10 segundos de duração cada, amostrados a 16 kHz. Decimamos os sinais para que a frequência de amostragem fosse reduzida para 8 kHz. As informações do ambiente simulado são dadas na Figura \ref{fig:environment}.
 
 \begin{figure}
     \centering
     \includegraphics{environment.JPG}
-    \caption{Configuração da sala utilizada nos testes.}
+    \caption{Configuração da sala utilizada nos testes. A sala possui as dimensões $4,45m \times 3,55m \times 2,5m$ (comprimento, largura e altura). Todo o ambiente é selado, i.e., não há portas ou janelas. Os microfones (sensores) encontram-se separados por uma distância de $4cm$ e o centro deste arranjo é representado pelo vetor $Mic_c$ = [2 1,5 1,6]$^T$. As fontes estão à distância de $1m$ do centro do arranjo de microfones e estão dispostas a $\frac{2\pi}{3}$ e $\frac{\pi}{3}$ em relação à ordenada.}
     \label{fig:environment}
 \end{figure}
 

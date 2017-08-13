@@ -9,7 +9,7 @@
         
         Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção \ref{sec:separability}) tornam-se elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as componentes de cada fonte devem ser corretamente agrupadas antes de serem levadas para o domínio do tempo. Isto é crucial para obter uma solução aceitável.
         
-        Também é relevante citar o problema da circularidade da DFT. No caso mais geral de sinais e sistemas discretos, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o uso dessa propriedade ao caso em que os filtros no domínio do tempo são periódicos, o que não é condizente com a realidade. Para fazer com que na nossa aplicação a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que o número de raias de frequência (tamanho da DFT) seja maior ou igual ao comprimento da resposta ao impulso do filtro somado ao tamanho do trecho do sinal que está sendo processado, além do sinal ter de ser reconstruído através da técnica de \textit{Overlap-Add} \cite{signalprocessing} . Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar a convolução rápida de um filtro de ordem elevada com um sinal longo. Quando esta condição no tamanho da DFT não é respeitada, o sinal provinente do tratamento no domínio da frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
+        Também é relevante citar o problema da circularidade da DFT. No caso mais geral de sinais e sistemas discretos, o produto no domínio da frequência corresponde à convolução circular no domínio do tempo. Isto restringe o uso dessa propriedade ao caso em que os filtros no domínio do tempo são periódicos, o que não é condizente com a realidade. Para fazer com que na nossa aplicação a multiplicação no domínio da frequência seja equivalente à convolução linear no domínio do tempo, é necessário que o número de raias de frequência (tamanho da DFT) seja maior ou igual ao comprimento da resposta ao impulso do filtro somado ao tamanho do trecho do sinal que está sendo processado, além do sinal ter de ser reconstruído através da técnica de \textit{Overlap-Add} \cite{signalprocessing} . Este processo é conhecido como \textit{FFT Filtering} e é amplamente utilizada para realizar a convolução rápida de um filtro de ordem elevada com um sinal longo. Quando esta condição no tamanho da DFT não é respeitada, o sinal proveniente do tratamento no domínio da frequência, seguido da sua IDFT será uma versão distorcida do sinal equivalente à convolução no domínio do tempo.
         
         Outro ponto fundamental sobre trabalhar no domínio da frequência é que introduzimos um caráter complexo aos sinais do nosso sistema devido às transformadas necessárias para a mudança de domínio. Conforme citado na Seção \ref{sec:ICA}, embora vários algoritmos ICA tenham sido desenvolvidos para trabalhar com sinais reais, eles podem ser estendidos para o caso complexo, desde que tenha sido apropriadamente escolhida a função $G$ (maximização da não-gaussianidade) ou a função \textit{score} (estimação da ML). 
         
@@ -48,7 +48,7 @@
     onde:
     \begin{itemize}
         
-        \item $k$ é a raia de frequência, com intervalo [0, $K$-1]. Pode ser interpretada como a frequência discreta $\mathpzc{f_k}$ $\in$ \big\{0,$\frac{1}{K}$ $\mathpzc{f_s}$, \dots, $\frac{K-1}{K}$ $\mathpzc{f_s}$ \big\};
+        \item $k$ é a raia de frequência, com intervalo $[0, K-1]$. Pode ser interpretada como a frequência discreta $\mathpzc{f_k}$ $\in$ \big\{0,$\frac{1}{K}$ $\mathpzc{f_s}$, \dots, $\frac{K-1}{K}$ $\mathpzc{f_s}$ \big\};
                     
         \item $K$ é o número de raias de frequência da DFT;
                     
@@ -58,7 +58,7 @@
         
         \item  $\mathpzc{f_s}$ é a frequência de amostragem;
         
-        \item $\mathpzc{win_a}$($\mathpzc{n}$) é a janela de análise, definida como sendo não-nula apenas no intervalo [0, L-1]. O salto J é obviamente menor ou igual L, ou haverá perda de observações. Este salto deve ser bem escolhido para não haver distorções na síntese dos sinais.
+        \item $\mathpzc{win_a}$($\mathpzc{n}$) é a janela de análise, definida como sendo não-nula apenas no intervalo $[0, L-1]$. O salto J é obviamente menor ou igual L, ou haverá perda de observações. Este salto deve ser bem escolhido para não haver distorções na síntese dos sinais.
     \end{itemize}
     
         Em geral, utiliza-se $K=L$ na equação acima. Entretanto, há casos em que $K>L$, chamados de \textit{oversampled}. Nestes casos, é necessário utilizar \textit{zero-padding} para preencher o sinal com zeros antes de passar para a frequência, conforme descrito em \cite{STFT}.

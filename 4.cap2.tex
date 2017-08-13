@@ -2,7 +2,7 @@
 
 \section{Contexto Histórico}
 
-    Um problema de biologia relacionado à maneira com que o sistema nervoso central codifica um impulso muscular foi o que levou Hérault, Jutten e Ans a publicarem o trabalho que é considerado a origem da formulação do problema de BSS \cite{french}. O trabalho consistia em tentar obter um modelo computacional que se comportasse como o cérebro humano no momento em que este, a partir de apenas um único sinal nervoso, interpreta duas funções importantes: a translação e a velocidade angular do movimento muscular. Pode-se dizer que este trabalho teve dois principais resultados. O primeiro foi evidenciar a necessidade da aplicação de \textit{HOS} (do inglês \textit{Higher Order Statistics}) ao problema. Isto foi fundamental na concepção dos métodos para resolução do problema da BSS. O segundo foi a modelagem algébrica dos sistemas de mistura e separação, a matéria-prima do caso BSS/ICA.
+    Um problema de biologia relacionado à maneira com que o sistema nervoso central codifica um impulso muscular foi o que levou Hérault, Jutten e Ans a publicarem o trabalho que é considerado a origem da formulação do problema de BSS \cite{french}. O trabalho consistia em tentar obter um modelo computacional que se comportasse como o cérebro humano no momento em que este, a partir de apenas um único sinal nervoso, interpreta duas funções importantes: a translação e a velocidade angular do movimento muscular. Pode-se dizer que este trabalho teve dois principais resultados. O primeiro foi evidenciar a necessidade da aplicação de \textit{HOS} (do inglês \textit{Higher Order Statistics}) ao problema. Isto foi fundamental na concepção dos métodos para resolução do problema da BSS. O segundo foi a modelagem algébrica dos sistemas de mistura e separação, a matéria-prima do caso BSS (do inglês \textit{Blind Source Separation}) e ICA (do inglês \textit{Independent Component Analysis}).
 
 
     Em 1994, Pierre Comon, utilizando-se dos resultados obtidos por Darmois na década de 1950, formalizou o conceito de ICA e relacionou a independência estatística com o problema da BSS. \cite{Comon}
@@ -13,14 +13,14 @@
     
     O trabalho de Bell e Sejnowski \cite{ICAML} popularizou o problema do BSS na comunidade de processamento de sinais devido à sua simplicade de implementação combinada com a capacidade de separar uma quantidade considerável de fontes.
     
-    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja \cite{ICA} possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA, já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduz o conceito de maximização da não-gaussianidade \cite{ICAML}, dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
+    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja \cite{ICA} possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA (do inglês \textit{Principal Component Analysis}, já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduz o conceito de maximização da não-gaussianidade \cite{ICAML}, dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
     
     
     Atualmente, uma das principais vertentes de estudo do problema de BSS é considerada a dissociação entre BSS e ICA, que pode ser evidenciada por estudos tais como o do algoritmo TRINICON \cite{trinicon}
     
 \section{Descrição do Problema}
     
-    Consideremos a situação representada na Figura \ref{fig:structure}, onde temos um conjunto de N sinais de fontes submetido à ação de um sistema misturador, isto é, um sistema cujas M saídas correspondem a misturas das suas entradas. O problema de separação cega de fontes reside em recuperar os sinais da entrada deste sistema através apenas das observações dos sinais de saída, ou seja, sem nenhum conhecimento do processo de mistura. Esta é uma peculiaridade da BSS em relação aos outros temas de filtragem, o que a torna particularmente útil em aplicações que são não-supervisionadas. Nestes casos, é inviável ou até mesmo impossível utilizar algum sinal no canal para tentar ajustar o sistema separador. Dessa falta de informação sobre o processo de mistura é que provem a nomenclatura \textit{cega}.
+    Consideremos a situação representada na Figura \ref{fig:structure}, onde temos um conjunto de $N$ sinais de fontes submetido à ação de um sistema misturador, isto é, um sistema cujas $M$ saídas correspondem a misturas das suas entradas. O problema de separação cega de fontes reside em recuperar os sinais da entrada deste sistema através apenas das observações dos sinais de saída, ou seja, sem nenhum conhecimento do processo de mistura. Esta é uma peculiaridade da BSS em relação aos outros temas de filtragem, o que a torna particularmente útil em aplicações que são não-supervisionadas. Nestes casos, é inviável ou até mesmo impossível utilizar algum sinal no canal para tentar ajustar o sistema separador. Dessa falta de informação sobre o processo de mistura é que provem a nomenclatura \textit{cega}.
     
     \begin{figure}
        \hfill\includegraphics[scale=0.6]{model.PNG}\hspace*{\fill}
@@ -62,7 +62,7 @@
     
     Vale ressaltar que a representação (\ref{eq:mixer}) tem caráter puramente didático, uma vez que não existem técnicas de BSS que lidem com todos estes efeitos representados e uma só vez. Em geral, as técnicas são aplicadas a casos específicos, isto é, versões simplificadas da formulação citada. Desta forma, torna-se necessário introduzir os conceitos de classificação de um sistema misturador para auxiliar na adequação do problema para o caso proposto por este trabalho.
     
-    \textbf{Sistemas Lineares e Não-Lineares} O sistema misturador é dito linear se o operador  $\mathcal{F}$($\cdot$) respeita o princípio da superposição, conforme descrito abaixo:
+    \textbf{Sistemas Lineares e Não-Lineares} Para fins de simplificação, considera-se uma mistura linear ($L=0$) e que não haja ruídos no ambiente ($\mathbf{v}(n)=0$). O sistema misturador é dito linear se o operador  $\mathcal{F}(\cdot)$ respeita o princípio da superposição, conforme descrito abaixo:
         % Linearidade
         \begin{equation}\label{eq:linearity}
             \mathcal{F}(\mathpzc{a_1}\mathbf{s_1}(\mathpzc{n}) + \mathpzc{a_2}\mathbf{s_2}(\mathpzc{n})) = \mathpzc{a_1}\mathcal{F}(\mathbf{s_1}(\mathpzc{n})) + \mathpzc{a_2}\mathcal{F}(\mathbf{s_2}(\mathpzc{n}))
@@ -73,20 +73,20 @@
     
      \textbf{Sistemas Sub-Determinados, Determinados e Sobre-Determinados} Quando o número de sensores é maior que o número de fontes ($M>N$), tem-se o caso sobre-determinado. Analogamente, o caso sub-determinado corresponde ao caso em que $M<N$. O caso em que $M=N$ é chamado de determinado.
      
-     Apesar da característica principal da BSS ser a falta de informação sobre o processo de mistura, é fundamental ao menos ter-se um certo conhecimento sobre a estrutura do sistema misturador. Assim, é possível definir um separador estruturalmente capaz de reverter a ação do processo de mistura. Geralmente, este tipo de informação é obtido com base na aplicação de interesse. No caso deste trabalho, o problema de separação de sinais de áudio, o processo de mistura é geralmente convolutivo, devido à presença de reverberações no ambiente.
+     Apesar de a característica principal da BSS ser a falta de informação sobre o processo de mistura, é fundamental ao menos ter-se um certo conhecimento sobre a estrutura do sistema misturador. Assim, é possível definir um separador estruturalmente capaz de reverter a ação do processo de mistura. Geralmente, este tipo de informação é obtido com base na aplicação de interesse. No caso deste trabalho, o problema de separação de sinais de áudio, o processo de mistura é geralmente convolutivo, devido à presença de reverberações no ambiente.
      
-     A maioria dos trabalhos acerca de BSS abordam cenários com sistemas misturadores lineares e com o mesmo número de fontes e sensores, diferenciando-se basicamente no contexto de misturas instantâneas ou convolutivas. Apesar desta última classificaçãço desempenhar um papel fundamental na abordagem do problema, o  processo de mistura pode ser igualmente descrito matematicamente da seguinte forma
+     A maioria dos trabalhos acerca de BSS aborda cenários com sistemas misturadores lineares e com o mesmo número de fontes e sensores, diferenciando-se basicamente no contexto de misturas instantâneas ou convolutivas. Apesar de esta última classificaçãço desempenhar um papel fundamental na abordagem do problema, o  processo de mistura pode ser igualmente descrito matematicamente da seguinte forma
      
      % Notação Matricial
      \begin{equation}\label{eq:xn}
         \mathbf{x} = \mathbf{A}\mathbf{s}
     \end{equation}
-    onde a matriz $\mathbf{A}$ de dimensão ${N \times N}$ é chamada de matriz de mistura. A diferença é que, no caso linear, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são, geralmente, filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor, devido à presença de reverberação. Assim, tem-se a convolução de cada uma das respostas ao impulso desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS \cite{ICA}. Além disso, é possível recuperar as fontes através da Análise de Componentes Independentes, que será visto na próxima seção.
+    onde a matriz $\mathbf{A}$ de dimensão ${N \times N}$ é chamada de matriz de mistura. A diferença é que, no caso instantâneo, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são, geralmente, filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor, devido à presença de reverberação. Assim, tem-se a convolução de cada uma das respostas ao impulso desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS \cite{ICA}. Além disso, é possível recuperar as fontes através da ICA, que será vista na próxima seção.
 
 \section{Análise de Componentes Independentes} \label{sec:ICA}
     Nesta seção serão apresentados os aspectos básicos da ICA (do inglês \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear e convolutivo, trataremos apenas do caso linear, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências \cite{ICA3} e \cite{ICA}.
     
-    Os algoritmos ICA podem ser derivados através da estimativa da máxima verossimilhança \cite{ICAML}, \cite{ML}, \cite{NaturalICA} e da maximização da não-gaussianidade \cite{fastica1}, \cite{fastica2}, \cite{fastica3} e \cite{fasticaebm}. Apesar da maioria dos algoritmos serem desenvolvidos para trabalhar com números reais, podemos estende-los para lidar com números complexos. Para isto, é preciso escolher apropriadamente uma função não-linear \textit{G} que, relacionada à formulação dos algoritmos para sinais reais, permita o emprego dos mesmos para sinais complexos.
+    Os algoritmos ICA podem ser derivados através da estimativa da máxima verossimilhança \cite{ICAML}, \cite{ML}, \cite{NaturalICA} e da maximização da não-gaussianidade \cite{fastica1}, \cite{fastica2}, \cite{fastica3} e \cite{fasticaebm}. Apesar de a maioria dos algoritmos serem desenvolvidos para trabalhar com números reais, podemos estendê-los para lidar com números complexos. Para isto, é preciso escolher apropriadamente uma função não-linear que, relacionada à formulação dos algoritmos para sinais reais, permita o emprego dos mesmos para sinais complexos.
 
 \subsection{Definição}
     Devido à sua natureza recente, não é difícil encontrar ao menos duas definições distintas para a ICA na literatura. Entretanto, utilizaremos a definição que mais se aproxima com a aplicação que é o objetivo deste trabalho.
@@ -100,22 +100,22 @@
     \end{equation}
     onde os elementos de $\mathbf{s}$ = [${s_1}$ ${s_2}$ \dots  ${s_N}$]$^T$ são estatisticamente independentes entre si e $\mathbf{A}$ corresponde a uma matriz constante de dimensão $M\times N$.
 
-    Sob a hipótese de que os sinais fontes são estatisticamente independentes entre si, fica claro que os elementos de $\mathbf{x}$ não são mais independentes, devido ao processo de mistura. O ponto fundamental da aplicação da ICA diz respeito exatamente a esta constatação, no sentido de que essa metodologia se propõe a separar as fontes a partir da recuperação da independência. O sistema separador, implementado pela matriz $\mathbf{W}$, é ajustado de modo que as compomentes do vetor $\mathbf{y}$ de estimativas das fontes sejam as mais independentes possíveis entre si.
+    Sob a hipótese de que os sinais fontes são estatisticamente independentes entre si, fica claro que os elementos de $\mathbf{x}$ não são mais independentes, devido ao processo de mistura. O ponto fundamental da aplicação da ICA diz respeito exatamente a esta constatação, no sentido de que essa metodologia se propõe a separar as fontes a partir da recuperação da independência. O sistema separador, implementado pela matriz $\mathbf{W}$, é ajustado de modo que as compomentes do vetor $\mathbf{y}$ de estimativas das fontes sejam as mais independentes possível entre si.
     
     Entretanto, esta abordagem levanta a seguinte questão: tornar as estimativas das fontes independentes implica necessariamente na recuperação das fontes? Foi Pierre Comon \cite{Comon} que não só respondeu a esta pergunta, mas também forneceu todo o respaldo matemático necessário para o desenvolvimento da ICA e, por consequência, da BSS.
     A partir do teorema de Darmois, ele mostrou que é possível separar as fontes com base na recuperação da independência estatística, respeitando algumas condições para as fontes e para o sistema separador.
 
 \subsection{Separabilidade}\label{sec:separability}
 
-    O modelo descrito na Seção \ref{sec:model} é dito separável se, para toda matriz separadora $\mathbf{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre sim, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambiguidades associadas a este modelo: a ordem das fontes e seus ganhos de escala. Mediante este problema, Comon \cite{Comon} formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
+    O modelo descrito na Seção \ref{sec:model} é dito separável se, para toda matriz separadora $\mathbf{W}$ que resulte em um vetor $\mathbf{y}$ que tem os elementos estatísticamente independentes entre si, tem-se que $\mathbf{y}$ = $\mathbf{Wx}$ = $\mathbf{\Lambda P s}$, onde $\mathbf{\Lambda}$ e $\mathbf{P}$ representam matrizes diagonal e de permutação, respectivamente. Assim, em um modelo separável, é possível obter as fontes através da ICA. Entretanto, é importante ressaltar que surgem duas ambiguidades associadas a este modelo: a ordem das fontes e seus ganhos de escala. Mediante este problema, Comon \cite{Comon} formulou o seguinte teorema, evidenciando as condições necessárias para que um sistema misturador linear seja separável:
     
     \bigskip
     
-    \textbf{Teorema 2.5.1 (Separabilidade)} O modelo $\mathbf{x} = \mathbf{As}$ é separável se e somente se a matriz $\mathbf{A}$ possuir posto completo e, no máximo, um dos elementos do vetor $\mathbf{s}$ for gaussiano.
+    \textbf{Teorema 2.5.1 (Separabilidade)} Para o caso determinado ($M=N$), o modelo $\mathbf{x=As}$ é separável se e somente se a matriz $\mathbf{A}$ possuir posto completo e, no máximo, um dos elementos do vetor $\mathbf{s}$ for gaussiano.
     
     \bigskip
     
-    Este teorema inclui mais uma restrição à aplicação da ICA, que é a incapacidade de recuperar fontes gaussianas. Na próxima seção, trataremos da utilização de estatísticas de segunda ordem para realizar a separação e este problema será melhor ilustrado. Também discutiremos porque a utilização da correlação, uma medida mais ``fraca", não é capaz de resolver o problema, mas pode ser bastante útil numa etapa de pré-processamento.
+    Este teorema inclui mais uma restrição à aplicação da ICA, que é a incapacidade de recuperar fontes gaussianas. Na próxima seção, trataremos da utilização de estatísticas de segunda ordem para realizar a separação e este problema será mais bem ilustrado. Também discutiremos porque a utilização da correlação, uma medida mais ``fraca", não é capaz de resolver o problema, mas pode ser bastante útil numa etapa de pré-processamento.
   
 \subsection{Técnicas baseadas em estatístiscas de segunda ordem aplicadas à BSS}\label{secondorder}
 
@@ -152,14 +152,14 @@
         \end{split}
     \end{equation}
     
-    Assim, para descorrelacionarmos as saídas do sistema separador, precisamos determinar $\mathbf{W}$ tal que $\mathbf{R_y = I}$. Solucionando a equação, chegamos à conclusão de que:
-    
+    Assim, para descorrelacionarmos as saídas do sistema separador, precisamos determinar $\mathbf{W}$ tal que $\mathbf{R_y = I}$. Solucionando a equação, chegamos à conclusão que
     \begin{equation}
-        \label{separationmatrixsolution}
+        \label{eq:separationmatrixsolution}
         \mathbf{W} = \mathbf{D}^{-\frac{1}{2}}\mathbf{E^T}
     \end{equation}
+    onde $\mathbf{E}$ e $\mathbf{D}$ representam as matrizes de autovetores e autovalores da matriz de correlação $\mathbf{R_x}$, respectivamente.
     
-    Entretanto, se consideramos o caso em que o sistema separador é dado pela expressão $\mathbf{QW}$, onde $\mathbf{Q}$ corresponde a uma matriz ortogonal (i.e., sua inversa coincide com sua transposta). Substituindo na solução da equação (\ref{eq:correlationmatrixfory}), fica claro ver que o resultado permanece o mesmo. Isto mostra que a recuperação das fontes utilizando apenas a informação da descorrelação apresenta uma indeterminação relacionada a um fator ortogonal.
+    Entretanto, se consideramos o caso em que o sistema separador é dado pela expressão $\mathbf{QW}$, onde $\mathbf{Q}$ corresponde a uma matriz ortogonal (i.e., sua inversa coincide com sua transposta), substituindo na solução da equação (\ref{eq:correlationmatrixfory}), é possível verificar que o resultado obtido na equação (\ref{eq:separationmatrixsolution}) permanece o mesmo. Isto mostra que a recuperação das fontes utilizando apenas a informação da descorrelação apresenta uma indeterminação relacionada a um fator ortogonal.
     
     A seguir, ilustramos geometricamente o problema. Com este objetivo, exibimos nas Figuras \ref{fig:first_sub}, \ref{fig:second_sub} e \ref{fig:third_sub} as distribuições conjuntas de duas fontes, as misturas e suas estimativas obtidas pelo processo de branqueamento, respectivamente. Como o sistema misturador linear é modelado por uma matriz, as misturas são geradas a partir de rotações e escalonamentos das fontes. Apesar do braqueamento conseguir recuperar as escalas das fontes, ele não consegue recuperar a rotação devido à indeterminação referente a uma matriz ortogonal, cujo efeito é a rotação dos dados.
     
@@ -183,18 +183,14 @@
         \includegraphics[scale=0.8]{distrib_estimat.JPG}
         \label{fig:third_sub}
     }
-    \caption{Tratamento da BSS considerando estatística de segunda ordem.}
+    \caption{Tratamento da BSS considerando estatística de segunda ordem. Na Figura (a), as distribuições de probabilidade de duas fontes $\mathbf{s_1}$ e $\mathbf{s_2}$ estão representadas nos eixos da abscissa e ordenada, respectivamente. Para estas duas fontes, obtemos uma distribuição conjunta que fica inteiramente contida dentro de um quadrado de lado 2. Na Figura (b), as distribuições de probabilidade de duas misturas $\mathbf{x_1}$ e $\mathbf{x_2}$ obtidas a partir das fontes $\mathbf{s_1}$ e $\mathbf{s_2}$ estão representadas nos eixos da abscissa e ordenada, respectivamente. O processo de mistura resultou em uma mudança de escala e de rotação das densidades de probabilidade das fontes originais $\mathbf{s_1}$ e $\mathbf{s_2}$. Na Figura (c), as distribuições de probabilidade dos vetores estimados $\mathbf{y_1}$ e $\mathbf{y_2}$, obtidos através da descorrelação, estão representadas nos eixos da abscissa e ordenada, respectivamente. Nota-se que apenas a escala das fontes originais foi recuperada. }
     \label{fig:sample_subfigures}
 \end{figure}
 
 
 \subsection{Modelo de maximização da não-gaussianidade}
     
-    Um dos principais atrativos presentes nessa estratégia é a possibilidade de recuperar cada uma das fontes individualmente. Um dos algoritmos mais conhecidos em BSS, o FastICA \cite{fastica1}, se baseia neste critério. Para entendermos a abordagem via maximização da não-gaussianidade, precisamos introduzir o conceito de medição da independência entre duas estimativas de fontes, observando sua não-gaussianidade.Para issso, utiliza-se o Teorema Central do Limite \cite{cetrallimit}
-    
-    \medskip
-    
-    \textbf{Teorema 2.5.2 (Teorema Central do Limite)} Dadas ${n}$ variáveis aleatórias independentes $\mathpzc{x_i}$, formamos sua soma $\mathpzc{x = x_1 + \dots + x_n.}$. Esta é uma variável aleatória com média $\mathpzc{\eta = \eta_1 + \dots + \eta_n}$ e variância $\mathpzc{\sigma^2 = \sigma_1^2 + \dots + \sigma_n^2}$. O Teorema Central do Limite diz que, dentro de certas condições gerais, a distribuição ${F(x)}$ de $\mathpzc{x}$  se aproxima de uma distribuição normal com a mesma média e variância à medida que ${n}$ cresce.
+    Um dos principais atrativos presentes nessa estratégia é a possibilidade de recuperar cada uma das fontes individualmente. Um dos algoritmos mais conhecidos em BSS, o FastICA \cite{fastica1}, se baseia neste critério. Para entendermos a abordagem via maximização da não-gaussianidade, precisamos introduzir o conceito de medição da independência entre duas estimativas de fontes, observando sua não-gaussianidade. Para isso, utiliza-se o Teorema Central do Limite \cite{cetrallimit}, que diz que dadas $n$ variáveis aleatórias independentes $\mathpzc{x_i}$, se formamos sua soma $\mathpzc{x = x_1 + \dots + x_n}$, sendo esta uma variável aleatória com média $\mathpzc{\eta = \eta_1 + \dots + \eta_n}$ e variância $\mathpzc{\sigma^2 = \sigma_1^2 + \dots + \sigma_n^2}$, dentro de certas condições gerais, a distribuição ${F(x)}$ de $\mathpzc{x}$  se aproxima de uma distribuição normal com a mesma média e variância à medida que ${n}$ cresce.
     
     \medskip
     
@@ -223,7 +219,7 @@
         curt_{ICA} = \mathpzc{E}\{(\mathpzc(y - \mu_y)^4\} -3\sigma_y^4
     \end{equation}
 
-    Existem basicamente duas abordagens para este caso: a baseada em um gradiente (que faz com que o mesmo necessite uma sábia escolha de um passo de adaptação, podendo resultar em convergência lenta ou até mesmo divergência) e a de ponto fixo, que é a base do FastICA \cite{fastica1}. 
+    Existem basicamente duas abordagens para este caso: a baseada em um gradiente (que faz com que o mesmo necessite de uma escolha eficiente para passo de adaptação, podendo resultar em convergência lenta ou até mesmo divergência) e a de ponto fixo, que é a base do FastICA \cite{fastica1}. 
     
     Sobre a abordagem de ponto fixo, seja $\mathpzc{f}$ uma função definida para todos os números reais. A partir de um ponto inicial $\mathpzc{x_0}$, a regra de iteração para o ponto fixo se dá através de 
     \begin{equation}
@@ -250,7 +246,7 @@
     
 \subsubsection{Negentropia} \label{sec:negentropy}
 
-    Já a abordagem da negentropia é mais robusta, apesar de ser computacionalmente mais intensa. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada à uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância \cite{entropy}. Assim, uma forma de maximizar a não-gaussianidade seria minimizar as entropias marginais das estimativas das fontes. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma normalização da entropia de forma que fique invariante à qualquer transformação linear invertível. A negentropia de uma variável aleatória $\mathpzc{x}$ é dada por:
+    Já a abordagem da negentropia é mais robusta, apesar de ser computacionalmente mais intensa. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada a uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância \cite{entropy}. Assim, uma forma de maximizar a não-gaussianidade seria minimizar as entropias marginais das estimativas das fontes. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma normalização da entropia de forma que fique invariante a qualquer transformação linear invertível. A negentropia de uma variável aleatória $\mathpzc{x}$ é dada por:
     \begin{equation}
         \mathpzc{J(x) = H(x_g) - H(x)},
     \end{equation}
@@ -289,7 +285,7 @@
     
 \subsection{Modelo de estimação por máxima verossimilhança}
 
-    A maioria dos critérios utilizados pelo caso linear da BSS, embora tenha ligações com o ICA, surgiram a partir de outras idéias que não necessariamente estão ligadas à independência estatística. O caso da estimação por máxima verossimilhança é um dos exemplos mais consagrados deste grupo. Apresentaremos, nesta seção, seus conceitos e como a mesma se relaciona com o problema de BSS. 
+    A maioria dos critérios utilizados pelo caso linear da BSS, embora tenha ligações com o ICA, surgiu a partir de outras idéias que não necessariamente estão ligadas à independência estatística. O caso da estimação por máxima verossimilhança é um dos exemplos mais consagrados deste grupo. Apresentaremos, nesta seção, seus conceitos e como a mesma se relaciona com o problema de BSS. 
     O objetivo por trás da ML (do inglês \textit{Maximum Likelihood}) é determinar um conjunto de parâmetros $\mathbf{\theta} = [\theta_1, \dots, \theta_n]$ a partir de um conjunto de amostras $\mathbf{e} = [e(1), \dots, e(P)]$ que contém informações sobre eles. As estimativas de $\mathbf{\theta}$ são denotadas por $\hat{\theta}$ e determinadas através da maximização da chamada função de máxima verossimilhança $\mathbf{L(\theta)}$, conforme    
     \begin{equation}\label{eq:argmax}
     \hat{\theta} = \operatorname*{arg\,max}_{\theta} \mathbf{L(\theta)}
@@ -305,7 +301,7 @@
         =\prod_{p=1}^P \mathpzc{p_e}(\mathbf{e}(\mathpzc{p}) | \mathbf{\theta})
     \end{equation}
 
-    Com relação ao emprego da estimação por máxima verossimilhança no problema de BSS, os parâmetros a serem determinados são os elementos elementos da matriz de mistura $\mathbf{A}$ e os dados disponíveis são as amostras do vetor de misturas $\mathbf{x}$. Assim, segundo \cite{cetrallimit} e considerando a hipótese de independência entre as fontes, temos:
+    Com relação ao emprego da estimação por máxima verossimilhança no problema de BSS, os parâmetros a serem determinados são os elementos da matriz de mistura $\mathbf{A}$ e os dados disponíveis são as amostras do vetor de misturas $\mathbf{x}$. Assim, segundo \cite{cetrallimit} e considerando a hipótese de independência entre as fontes, temos:
         \begin{equation}\label{eq:verobss}
           \begin{split}
          \mathbf{L(A)} & =\prod_{p=1}^P \mathpzc{p_x}(\mathbf{x}(\mathpzc{p}) | \mathbf{A})\\
@@ -328,7 +324,7 @@
     
     O algoritmo Bell-Sejnowski converge muito lentamente, devido à inversão da matriz separadora $\mathbf{W}$. Este é um caso onde o processo de branqueamento, apresentado na Seção \ref{sec:separability}, e que será visto novamente à frente, ajuda bastante na convergência. Entretanto, o Natural ICA possui uma convergência melhor sem precisar necessariamente de um pré-processamento, tornando o algoritmo Bell-Sejnowski obsoleto.
     
-    O gradiente, segundo a definição matemática tradicional, aponta para a direção de maior inclinação em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana \cite{Riemenn}. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em (\ref{eq:veroForW}), dá origem ao algoritmo Natural ICA.
+    O gradiente, segundo a definição matemática tradicional, aponta para a direção de maior crescimento em um espaço Euclidiano. Porém, o espaço de busca de parâmetros no ICA não é sempre Euclidiano, mas tem uma estrutura métrica Riemaniana \cite{Riemenn}. Neste caso, deve ser utilizado o chamado gradiente natural, que aplicado à verossimilhança em (\ref{eq:veroForW}), dá origem ao algoritmo Natural ICA.
     
     Definindo-se por $\mathcal{J}$ a função objetivo em função do parâmetro $\mathbf{W}$, temos que o gradiente usual e o gradiente natural são dados, respectivamente, por
     
