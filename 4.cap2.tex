@@ -62,16 +62,16 @@
     
     Vale ressaltar que a representação (\ref{eq:mixer}) tem caráter puramente didático, uma vez que não existem técnicas de BSS que lidem com todos estes efeitos representados e uma só vez. Em geral, as técnicas são aplicadas a casos específicos, isto é, versões simplificadas da formulação citada. Desta forma, torna-se necessário introduzir os conceitos de classificação de um sistema misturador para auxiliar na adequação do problema para o caso proposto por este trabalho.
     
-    \textbf{Sistemas Lineares e Não-Lineares} Para fins de simplificação, considera-se uma mistura linear ($L=0$) e que não haja ruídos no ambiente ($\mathbf{v}(n)=0$). O sistema misturador é dito linear se o operador  $\mathcal{F}(\cdot)$ respeita o princípio da superposição, conforme descrito abaixo:
+    \textbf{Sistemas Lineares e Não-Lineares}: Para fins de simplificação, considera-se uma mistura linear ($L=0$) e que não haja ruídos no ambiente ($\mathbf{v}(n)=0$). O sistema misturador é dito linear se o operador  $\mathcal{F}(\cdot)$ respeita o princípio da superposição, conforme descrito abaixo:
         % Linearidade
         \begin{equation}\label{eq:linearity}
             \mathcal{F}(\mathpzc{a_1}\mathbf{s_1}(\mathpzc{n}) + \mathpzc{a_2}\mathbf{s_2}(\mathpzc{n})) = \mathpzc{a_1}\mathcal{F}(\mathbf{s_1}(\mathpzc{n})) + \mathpzc{a_2}\mathcal{F}(\mathbf{s_2}(\mathpzc{n}))
         \end{equation}
     para quaisquer constantes $\mathpzc{a_1}$ e $\mathpzc{a_2}$ e vetores $\mathbf{s_1}$ e $\mathbf{s_2}$. Caso contrário, o sistema é classificado como não-linear. 
     
-     \textbf{Sistemas Instântaneos e Convolutivos} Nos casos em que o sistema depende de amostras passadas, isto é, $L>0$, o sistema é dito convolutivo. No caso em que $L=0$, o sistema é dito instantâneo.
+     \textbf{Sistemas Instântaneos e Convolutivos}: Nos casos em que o sistema depende de amostras passadas, isto é, $L>0$, o sistema é dito convolutivo. No caso em que $L=0$, o sistema é dito instantâneo.
     
-     \textbf{Sistemas Sub-Determinados, Determinados e Sobre-Determinados} Quando o número de sensores é maior que o número de fontes ($M>N$), tem-se o caso sobre-determinado. Analogamente, o caso sub-determinado corresponde ao caso em que $M<N$. O caso em que $M=N$ é chamado de determinado.
+     \textbf{Sistemas Sub-Determinados, Determinados e Sobre-Determinados}: Quando o número de sensores é maior que o número de fontes ($M>N$), tem-se o caso sobre-determinado. Analogamente, o caso sub-determinado corresponde ao caso em que $M<N$. O caso em que $M=N$ é chamado de determinado.
      
      Apesar de a característica principal da BSS ser a falta de informação sobre o processo de mistura, é fundamental ao menos ter-se um certo conhecimento sobre a estrutura do sistema misturador. Assim, é possível definir um separador estruturalmente capaz de reverter a ação do processo de mistura. Geralmente, este tipo de informação é obtido com base na aplicação de interesse. No caso deste trabalho, o problema de separação de sinais de áudio, o processo de mistura é geralmente convolutivo, devido à presença de reverberações no ambiente.
      
@@ -81,7 +81,7 @@
      \begin{equation}\label{eq:xn}
         \mathbf{x} = \mathbf{A}\mathbf{s}
     \end{equation}
-    onde a matriz $\mathbf{A}$ de dimensão ${N \times N}$ é chamada de matriz de mistura. A diferença é que, no caso instantâneo, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são, geralmente, filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor, devido à presença de reverberação. Assim, tem-se a convolução de cada uma das respostas ao impulso desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS \cite{ICA}. Além disso, é possível recuperar as fontes através da ICA, que será vista na próxima seção.
+    onde a matriz $\mathbf{A}$ de dimensão ${N \times N}$ é chamada de matriz de mistura. A diferença é que, no caso instantâneo, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são, geralmente, respostas ao impulso de filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor devido à presença de reverberação. Assim, tem-se a convolução de cada uma das respostas ao impulso desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS \cite{ICA}. Além disso, é possível recuperar as fontes através da ICA, que será vista na próxima seção.
 
 \section{Análise de Componentes Independentes} \label{sec:ICA}
     Nesta seção serão apresentados os aspectos básicos da ICA (do inglês \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear e convolutivo, trataremos apenas do caso linear, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências \cite{ICA3} e \cite{ICA}.
@@ -278,7 +278,7 @@
     
     \begin{figure}
         \centering
-        \includegraphics[scale=0.7]{table.JPG}
+        \includegraphics[scale=0.6]{table.PNG}
         \caption{Funções score para diferentes densidades de probabilidade de fontes reais.}
         \label{fig:scoretable}
     \end{figure}
