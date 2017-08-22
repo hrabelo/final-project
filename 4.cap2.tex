@@ -2,7 +2,7 @@
 
 \section{Contexto Histórico}
 
-    Um problema de biologia relacionado à maneira com que o sistema nervoso central codifica um impulso muscular foi o que levou Hérault, Jutten e Ans a publicarem o trabalho que é considerado a origem da formulação do problema de BSS \cite{french}. O trabalho consistia em tentar obter um modelo computacional que se comportasse como o cérebro humano no momento em que este, a partir de apenas um único sinal nervoso, interpreta duas funções importantes: a translação e a velocidade angular do movimento muscular. Pode-se dizer que este trabalho teve dois principais resultados. O primeiro foi evidenciar a necessidade da aplicação de \textit{HOS} (do inglês \textit{Higher Order Statistics}) ao problema. Isto foi fundamental na concepção dos métodos para resolução do problema da BSS. O segundo foi a modelagem algébrica dos sistemas de mistura e separação, a matéria-prima do caso BSS (do inglês \textit{Blind Source Separation}) e ICA (do inglês \textit{Independent Component Analysis}).
+    Um problema de biologia relacionado à maneira com que o sistema nervoso central codifica um impulso muscular foi o que levou Hérault, Jutten e Ans a publicarem o trabalho que é considerado a origem da formulação do problema de BSS \cite{french}. O trabalho consistia em obter um modelo computacional que se comportasse como o cérebro humano no momento em que este, a partir de apenas um único sinal nervoso, interpreta duas funções importantes: a translação e a velocidade angular do movimento muscular. Pode-se dizer que este trabalho teve dois principais resultados. O primeiro foi evidenciar a necessidade da aplicação de \textit{HOS} (do inglês \textit{Higher Order Statistics}) ao problema. Isto foi fundamental na concepção dos métodos para resolução do problema da BSS. O segundo foi a modelagem algébrica dos sistemas de mistura e separação, a matéria-prima do caso BSS (do inglês \textit{Blind Source Separation}) e ICA (do inglês \textit{Independent Component Analysis}).
 
 
     Em 1994, Pierre Comon, utilizando-se dos resultados obtidos por Darmois na década de 1950, formalizou o conceito de ICA e relacionou a independência estatística com o problema da BSS. \cite{Comon}
@@ -11,16 +11,16 @@
     Jean-François Cardoso e Amari obtiveram, de forma independente, um método de otimização frequentemente empregado em BSS, denominado ``\textit{gradiente relativo}'' por Cardoso \cite{easi} e ``\textit{gradiente natural}'' por Amari \cite{Riemenn}. Cardoso também introduziu os conceitos de maximização por verossimilhança no problema de BSS \cite{ICA3}.
     
     
-    O trabalho de Bell e Sejnowski \cite{ICAML} popularizou o problema do BSS na comunidade de processamento de sinais devido à sua simplicade de implementação combinada com a capacidade de separar uma quantidade considerável de fontes.
+    O trabalho de Bell e Sejnowski \cite{ICAML} popularizou o problema da BSS na comunidade de processamento de sinais devido à sua simplicade de implementação combinada com a capacidade de separar uma quantidade considerável de fontes.
     
-    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja \cite{ICA} possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA (do inglês \textit{Principal Component Analysis}, já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduz o conceito de maximização da não-gaussianidade \cite{ICAML}, dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
+    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja \cite{ICA} possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA (do inglês \textit{Principal Component Analysis}), já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduz o conceito de maximização da não-gaussianidade \cite{ICAML}, dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
     
     
     Atualmente, uma das principais vertentes de estudo do problema de BSS é considerada a dissociação entre BSS e ICA, que pode ser evidenciada por estudos tais como o do algoritmo TRINICON \cite{trinicon}
     
 \section{Descrição do Problema}
     
-    Consideremos a situação representada na Figura \ref{fig:structure}, onde temos um conjunto de $N$ sinais de fontes submetido à ação de um sistema misturador, isto é, um sistema cujas $M$ saídas correspondem a misturas das suas entradas. O problema de separação cega de fontes reside em recuperar os sinais da entrada deste sistema através apenas das observações dos sinais de saída, ou seja, sem nenhum conhecimento do processo de mistura. Esta é uma peculiaridade da BSS em relação aos outros temas de filtragem, o que a torna particularmente útil em aplicações que são não-supervisionadas. Nestes casos, é inviável ou até mesmo impossível utilizar algum sinal no canal para tentar ajustar o sistema separador. Dessa falta de informação sobre o processo de mistura é que provem a nomenclatura \textit{cega}.
+    Consideremos a situação representada na Figura \ref{fig:structure}, onde temos um conjunto de $N$ sinais de fontes submetido à ação de um sistema misturador, isto é, um sistema cujas $M$ saídas correspondem a misturas das suas entradas. O problema de separação cega de fontes reside em recuperar os sinais da entrada deste sistema através apenas das observações dos sinais de mistura, ou seja, sem nenhum conhecimento do processo de mistura. Esta é uma peculiaridade da BSS em relação aos outros temas de filtragem, o que a torna particularmente útil em aplicações que são não-supervisionadas. Nestes casos, é inviável ou até mesmo impossível utilizar algum sinal no canal para tentar ajustar o sistema separador. Dessa falta de informação sobre o processo de mistura é que provém a nomenclatura \textit{cega}.
     
     \begin{figure}
        \hfill\includegraphics[scale=0.6]{model.PNG}\hspace*{\fill}
@@ -35,7 +35,7 @@
 \subsection{Biomedicina}
     Na biomedicina, a busca por métodos não-invasivos que sejam confiáveis é um desafio. O EEG (Eletroencefalograma) e o ECG (Eletrocardiograma) são dois exemplos bem comuns de técnicas que satisfazem esta necessidade. Entretanto, é relativamente difícil captar apenas os sinais desejados quando os sensores são posicionados em uma determinada região do corpo humano, principalmente devido à interferência proveniente de sinais gerados por outras atividades fisiológicas.
        
-    Uma forma de resolver este problema está na repetição da realização do exame, o que pode não ser viável em certas ocasiões, além de causar fadiga nos pacientes. O emprego de técnicas de BSS oferece uma alternativa eficiente, uma vez que o processamento é dado após a coleta dos dados e requer apenas um experimento.
+    Uma forma de resolver este problema está na repetição da realização do exame, o que pode não ser viável em certas ocasiões, além de causar fadiga nos pacientes. O emprego de técnicas de BSS oferece uma alternativa eficiente, uma vez que o processamento é realizado após a coleta dos dados e requer apenas um experimento.
     
     Existe uma expressiva gama de trabalhos acerca de separação de sinais biomédicos, o que evidencia sua importância.
     
@@ -60,9 +60,9 @@
     \end{equation}
     onde o operador $\mathcal{F}$($\cdot$) descreve a ação do sistema misturador, $L$ corresponde ao número de amostras passadas (memória) do vetor de fontes e o vetor $\mathbf{v}$($\mathpzc{n}$) corresponde ao ruído associado às fontes ou sensores do sistema.
     
-    Vale ressaltar que a representação (\ref{eq:mixer}) tem caráter puramente didático, uma vez que não existem técnicas de BSS que lidem com todos estes efeitos representados e uma só vez. Em geral, as técnicas são aplicadas a casos específicos, isto é, versões simplificadas da formulação citada. Desta forma, torna-se necessário introduzir os conceitos de classificação de um sistema misturador para auxiliar na adequação do problema para o caso proposto por este trabalho.
+    Vale ressaltar que a representação (\ref{eq:mixer}) tem caráter puramente didático, uma vez que não existem técnicas de BSS que lidem com todos estes efeitos representados e uma só vez. Em geral, as técnicas são aplicadas a casos específicos, isto é, versões simplificadas da formulação citada. Desta forma, torna-se necessário introduzir os tipos de classificação de um sistema misturador para auxiliar na adequação do problema para o caso proposto por este trabalho.
     
-    \textbf{Sistemas Lineares e Não-Lineares}: Para fins de simplificação, considera-se uma mistura linear ($L=0$) e que não haja ruídos no ambiente ($\mathbf{v}(n)=0$). O sistema misturador é dito linear se o operador  $\mathcal{F}(\cdot)$ respeita o princípio da superposição, conforme descrito abaixo:
+    \textbf{Sistemas Lineares e Não-Lineares}: Para fins de simplificação, considera-se uma mistura instantânea ($L=0$) e que não haja ruídos no ambiente ($\mathbf{v}(n)=0$). O sistema misturador é dito linear se o operador  $\mathcal{F}(\cdot)$ respeita o princípio da superposição, conforme descrito abaixo:
         % Linearidade
         \begin{equation}\label{eq:linearity}
             \mathcal{F}(\mathpzc{a_1}\mathbf{s_1}(\mathpzc{n}) + \mathpzc{a_2}\mathbf{s_2}(\mathpzc{n})) = \mathpzc{a_1}\mathcal{F}(\mathbf{s_1}(\mathpzc{n})) + \mathpzc{a_2}\mathcal{F}(\mathbf{s_2}(\mathpzc{n}))
@@ -73,9 +73,9 @@
     
      \textbf{Sistemas Sub-Determinados, Determinados e Sobre-Determinados}: Quando o número de sensores é maior que o número de fontes ($M>N$), tem-se o caso sobre-determinado. Analogamente, o caso sub-determinado corresponde ao caso em que $M<N$. O caso em que $M=N$ é chamado de determinado.
      
-     Apesar de a característica principal da BSS ser a falta de informação sobre o processo de mistura, é fundamental ao menos ter-se um certo conhecimento sobre a estrutura do sistema misturador. Assim, é possível definir um separador estruturalmente capaz de reverter a ação do processo de mistura. Geralmente, este tipo de informação é obtido com base na aplicação de interesse. No caso deste trabalho, o problema de separação de sinais de áudio, o processo de mistura é geralmente convolutivo, devido à presença de reverberações no ambiente.
+     Apesar de a característica principal da BSS ser a falta de informação sobre o processo de mistura, é fundamental ao menos ter-se um certo conhecimento sobre a estrutura do sistema misturador. Assim, é possível definir um separador estruturalmente capaz de reverter a ação do processo de mistura. Geralmente, este tipo de informação é obtido com base na aplicação de interesse. No caso deste trabalho, o problema de separação de sinais de áudio, o processo de mistura é geralmente linear e convolutivo, devido à presença de reverberações no ambiente.
      
-     A maioria dos trabalhos acerca de BSS aborda cenários com sistemas misturadores lineares e com o mesmo número de fontes e sensores, diferenciando-se basicamente no contexto de misturas instantâneas ou convolutivas. Apesar de esta última classificaçãço desempenhar um papel fundamental na abordagem do problema, o  processo de mistura pode ser igualmente descrito matematicamente da seguinte forma
+     A maioria dos trabalhos acerca de BSS aborda cenários com sistemas misturadores lineares e com o mesmo número de fontes e sensores, diferenciando-se basicamente no contexto de misturas instantâneas ou convolutivas. Apesar de esta última classificação desempenhar um papel fundamental na abordagem do problema, o  processo de mistura pode ser igualmente descrito matematicamente da seguinte forma
      
      % Notação Matricial
      \begin{equation}\label{eq:xn}
@@ -183,7 +183,7 @@
         \includegraphics[scale=0.8]{distrib_estimat.JPG}
         \label{fig:third_sub}
     }
-    \caption{Tratamento da BSS considerando estatística de segunda ordem. Na Figura (a), as distribuições de probabilidade de duas fontes $\mathbf{s_1}$ e $\mathbf{s_2}$ estão representadas nos eixos da abscissa e ordenada, respectivamente. Para estas duas fontes, obtemos uma distribuição conjunta que fica inteiramente contida dentro de um quadrado de lado 2. Na Figura (b), as distribuições de probabilidade de duas misturas $\mathbf{x_1}$ e $\mathbf{x_2}$ obtidas a partir das fontes $\mathbf{s_1}$ e $\mathbf{s_2}$ estão representadas nos eixos da abscissa e ordenada, respectivamente. O processo de mistura resultou em uma mudança de escala e de rotação das densidades de probabilidade das fontes originais $\mathbf{s_1}$ e $\mathbf{s_2}$. Na Figura (c), as distribuições de probabilidade dos vetores estimados $\mathbf{y_1}$ e $\mathbf{y_2}$, obtidos através da descorrelação, estão representadas nos eixos da abscissa e ordenada, respectivamente. Nota-se que apenas a escala das fontes originais foi recuperada. }
+    \caption{Tratamento da BSS considerando estatística de segunda ordem. Em (a), as distribuições de probabilidade de duas fontes $\mathbf{s_1}$ e $\mathbf{s_2}$ estão representadas nos eixos da abscissa e ordenada, respectivamente. Para estas duas fontes, obtemos uma distribuição conjunta que fica inteiramente contida dentro de um quadrado de lado 2. Em (b), as distribuições de probabilidade de duas misturas $\mathbf{x_1}$ e $\mathbf{x_2}$ obtidas a partir das fontes $\mathbf{s_1}$ e $\mathbf{s_2}$ estão representadas nos eixos da abscissa e ordenada, respectivamente. O processo de mistura resultou em uma mudança de escala e de rotação das densidades de probabilidade das fontes originais $\mathbf{s_1}$ e $\mathbf{s_2}$. Em (c), as distribuições de probabilidade dos vetores estimados $\mathbf{y_1}$ e $\mathbf{y_2}$, obtidos através da descorrelação, estão representadas nos eixos da abscissa e ordenada, respectivamente. Nota-se que apenas a escala das fontes originais foi recuperada. }
     \label{fig:sample_subfigures}
 \end{figure}
 
