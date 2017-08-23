@@ -3,9 +3,9 @@
 \section{Relação Tempo-Frequência}
     
     \subsection{Contexto}
-        Para o caso real, os sinais de áudio convoluem com a resposta ao impulso de um filtro, que representa o caminho percorrido pelos mesmos das fontes aos sensores. Isto caracteriza um caso de misturas convolutivas (conforme visto na Seção \ref{sec:separability}). 
+        Para o caso real, os sinais de áudio são convoluídos com a resposta ao impulso de um filtro, que representa o caminho percorrido pelos mesmos das fontes aos sensores. Isto caracteriza um caso de misturas convolutivas (conforme visto na Seção \ref{sec:separability}). 
         
-        Com o conhecimento de que podemos implementar a operação de convolução de sinais no domínio tempo pela  multiplicação no domínio da frequência, uma forma de simplificar este problema seria aplicar a transformada de Fourier a estes sinais, resolver a separação de misturas instântaneas e aplicar a transformada inversa de Fourier para levar os sinais de volta ao domínio do tempo. Uma das vantagens desta abordagem reside na redução da complexidade computacional, estando qualquer algoritimo ICA que trabalhe com números complexos e misturas instantâneas apto para ser usado.
+        Com o conhecimento de que podemos implementar a operação de convolução de sinais no domínio tempo pela  multiplicação no domínio da frequência, uma forma de simplificar este problema é aplicar a transformada de Fourier a estes sinais, resolver a separação de misturas instântaneas e aplicar a transformada inversa de Fourier para levar os sinais de volta ao domínio do tempo. Uma das vantagens desta abordagem reside na redução da complexidade computacional, estando qualquer algoritmo ICA que trabalhe com números complexos e misturas instantâneas apto para ser usado.
         
         Entretanto, as ambiguidades de escalamento e permutação inerentes ao problema de BSS (Seção \ref{sec:separability}) tornam-se elementos centrais no processo de separação e precisam ser resolvidas. Ao trabalhar no domínio da frequência, a ICA fornece componentes independentes em cada raia de frequência, mas as componentes de cada fonte devem ser corretamente agrupadas antes de serem levadas para o domínio do tempo. Isto é crucial para obter uma solução aceitável.
         

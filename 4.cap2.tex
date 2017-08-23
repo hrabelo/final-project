@@ -84,7 +84,7 @@
     onde a matriz $\mathbf{A}$ de dimensão ${N \times N}$ é chamada de matriz de mistura. A diferença é que, no caso instantâneo, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são, geralmente, respostas ao impulso de filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor devido à presença de reverberação. Assim, tem-se a convolução de cada uma das respostas ao impulso desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS \cite{ICA}. Além disso, é possível recuperar as fontes através da ICA, que será vista na próxima seção.
 
 \section{Análise de Componentes Independentes} \label{sec:ICA}
-    Nesta seção serão apresentados os aspectos básicos da ICA (do inglês \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear e convolutivo, trataremos apenas do caso linear, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências \cite{ICA3} e \cite{ICA}.
+    Nesta seção serão apresentados os aspectos básicos da ICA (do inglês \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear instantâneo e convolutivo, trataremos apenas do caso instantâneo, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências \cite{ICA3}, \cite{ICA}.
     
     Os algoritmos ICA podem ser derivados através da estimativa da máxima verossimilhança \cite{ICAML}, \cite{ML}, \cite{NaturalICA} e da maximização da não-gaussianidade \cite{fastica1}, \cite{fastica2}, \cite{fastica3} e \cite{fasticaebm}. Apesar de a maioria dos algoritmos serem desenvolvidos para trabalhar com números reais, podemos estendê-los para lidar com números complexos. Para isto, é preciso escolher apropriadamente uma função não-linear que, relacionada à formulação dos algoritmos para sinais reais, permita o emprego dos mesmos para sinais complexos.
 
@@ -100,7 +100,7 @@
     \end{equation}
     onde os elementos de $\mathbf{s}$ = [${s_1}$ ${s_2}$ \dots  ${s_N}$]$^T$ são estatisticamente independentes entre si e $\mathbf{A}$ corresponde a uma matriz constante de dimensão $M\times N$.
 
-    Sob a hipótese de que os sinais fontes são estatisticamente independentes entre si, fica claro que os elementos de $\mathbf{x}$ não são mais independentes, devido ao processo de mistura. O ponto fundamental da aplicação da ICA diz respeito exatamente a esta constatação, no sentido de que essa metodologia se propõe a separar as fontes a partir da recuperação da independência. O sistema separador, implementado pela matriz $\mathbf{W}$, é ajustado de modo que as compomentes do vetor $\mathbf{y}$ de estimativas das fontes sejam as mais independentes possível entre si.
+    Sob a hipótese de que os sinais fontes são estatisticamente independentes entre si, fica claro que os elementos de $\mathbf{x}$ não são mais independentes, devido ao processo de mistura. O ponto fundamental da aplicação da ICA diz respeito exatamente a esta constatação, no sentido de que essa metodologia se propõe a separar as fontes a partir da recuperação da independência. O sistema separador, implementado pela matriz $\mathbf{W}$, é ajustado de modo que as componentes do vetor $\mathbf{y}$ de estimativas das fontes sejam as mais independentes possível entre si.
     
     Entretanto, esta abordagem levanta a seguinte questão: tornar as estimativas das fontes independentes implica necessariamente na recuperação das fontes? Foi Pierre Comon \cite{Comon} que não só respondeu a esta pergunta, mas também forneceu todo o respaldo matemático necessário para o desenvolvimento da ICA e, por consequência, da BSS.
     A partir do teorema de Darmois, ele mostrou que é possível separar as fontes com base na recuperação da independência estatística, respeitando algumas condições para as fontes e para o sistema separador.
@@ -119,7 +119,7 @@
   
 \subsection{Técnicas baseadas em estatístiscas de segunda ordem aplicadas à BSS}\label{secondorder}
 
-    Até a década de 1980, a maioria das técnicas de filtragem estatística eram baseadas em estatísticas de segunda ordem. Isto era devido à simplicadade matemática relacionada a este tipo de abordagem e ao fato de que modelos gaussianos de sinais eram praticamente os únicos utilizados. 
+    Até a década de 1980, a maioria das técnicas de filtragem estatística eram baseadas em estatísticas de segunda ordem, devido à simplicadade matemática relacionada a este tipo de abordagem e ao fato de que modelos gaussianos de sinais eram praticamente os únicos utilizados. 
     
     Foi durante o desenvolvimento da teoria de filtragem não-supervisionada, dentro do contexto de identificação e equalização cega, que se chegou à conclusão de que, para resolver essa classe de problemas, era necessário utilizar \textit{HOS} \cite{HOS}. Em BSS, esse conhecimento é fundamental.
     
@@ -138,7 +138,7 @@
                      & = \mathbf{A}\mathbf{A^T}, \\
         \end{split}
     \end{equation}
-    onde $\mathbf{R_s}$ corresponde à matriz de correlação do vetor das fontes. Como estamos utilizado a hipótese de que as fontes são estatísticamente independentes e possuem variância unitária, esta matriz é igual à identidade.
+    onde $\mathbf{R_s}$ corresponde à matriz de correlação do vetor das fontes. Como estamos utilizando a hipótese de que as fontes são estatísticamente independentes e possuem variância unitária, esta matriz é igual à identidade.
     
     Após passar por um sistema separador, a correlação entre as estimativas das fontes é descrita por:
     \begin{equation}
@@ -198,15 +198,15 @@
 
 \subsubsection{Curtose}
     
-    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussiana, subgaussiana e super-gaussiana. Também pode ser interpretada como o grau de desvio da inclinação em relação à curva de uma distribuição gaussiana, sendo definida como
+    A curtose é uma estatística de quarta ordem que categoriza as distribuições como gaussianas, subgaussianas e super-gaussianas. Também pode ser interpretada como o grau de desvio da inclinação em relação à curva de uma distribuição gaussiana, sendo definida como
     
     \begin{equation}
         \mathpzc{k_4} = \mathpzc{E}\{\mathpzc{x^4}\} - 3(\mathpzc{E}\{\mathpzc{x^2}\})^2.
     \end{equation} 
     
-    A curtose é não-nula para a grande maioria das variáveis aleatórias, salvo os sinais gaussianos. Assim, podemos estender o conceito de maximização da não-gaussianidade para a maximização do valor absoluto da curtose do conjunto das fontes. Essa abordagem foi proposta em \cite{ML}, juntamente à deflação, que tem por objetivo a extração das fontes de maneira sequencial.
+    A curtose é não-nula para as variáveis aleatórias não gaussianas. Assim, podemos estender o conceito de maximização da não-gaussianidade para a maximização do valor absoluto da curtose do conjunto das fontes. Essa abordagem foi proposta em \cite{ML}, juntamente à deflação, que tem por objetivo a extração das fontes de maneira sequencial.
     
-    Segundo o autor em \cite{LuizVictorio}, a derivação do algoritmo de maximização da curtose resulta em:
+    Segundo \cite{LuizVictorio}, a derivação do algoritmo de maximização da curtose resulta em:
     \begin{equation}
         \mathbf{w_i} \leftarrow \mathbf{w_i} + \eta  sign(curt_{ICA}(\mathbf{w_iz}))\mathpzac{E}\{\mathbf{z^T}(\mathbf{w_iz})^3\}
         \label{eq:refreshforcurtosis}
@@ -219,9 +219,9 @@
         curt_{ICA} = \mathpzc{E}\{(\mathpzc(y - \mu_y)^4\} -3\sigma_y^4
     \end{equation}
 
-    Existem basicamente duas abordagens para este caso: a baseada em um gradiente (que faz com que o mesmo necessite de uma escolha eficiente para passo de adaptação, podendo resultar em convergência lenta ou até mesmo divergência) e a de ponto fixo, que é a base do FastICA \cite{fastica1}. 
+    Existem basicamente duas abordagens para este caso: a baseada em um gradiente (que faz com que o mesmo necessite de uma escolha eficiente para passo de adaptação, podendo resultar em convergência lenta ou até mesmo divergência) e a de ponto fixo, que é a base do algoritmo FastICA \cite{fastica1}. 
     
-    Sobre a abordagem de ponto fixo, seja $\mathpzc{f}$ uma função definida para todos os números reais. A partir de um ponto inicial $\mathpzc{x_0}$, a regra de iteração para o ponto fixo se dá através de 
+    Sobre a abordagem de ponto fixo, seja $\mathpzc{f}$ uma função definida para todos os números reais. A partir de um ponto inicial $\mathpzc{x_0}$, a regra de iteração se dá através de 
     \begin{equation}
         \mathpzc{x_{n+1}} = \mathpzc{f(x_n)}, \mathpzc{n = 0,1,2,}\dots,
     \end{equation}
@@ -246,12 +246,12 @@
     
 \subsubsection{Negentropia} \label{sec:negentropy}
 
-    Já a abordagem da negentropia é mais robusta, apesar de ser computacionalmente mais intensa. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada a uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância \cite{entropy}. Assim, uma forma de maximizar a não-gaussianidade seria minimizar as entropias marginais das estimativas das fontes. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma normalização da entropia de forma que fique invariante a qualquer transformação linear invertível. A negentropia de uma variável aleatória $\mathpzc{x}$ é dada por:
+    Já a abordagem da negentropia é mais robusta, apesar de ser computacionalmente mais intensa. Entretanto, existem aproximações simples que garantem um resultado satisfatório nesta abordagem. A entropia é um conceito da Teoria da Informação e está relacionada à incerteza associada a uma variável aleatória. Quanto maior o seu valor, mais aleatória é a variável. Um resultado fundamental da Teoria da Informação é de que uma variável contínua com distribuição gaussiana tem a maior entropia diferencial entre todas as variáveis de igual variância \cite{entropy}. Assim, uma forma de maximizar a não-gaussianidade seria minimizar as entropias marginais das estimativas das fontes. Um problema da entropia diferencial é que seu valor é alterado quando a variável aleatória é multiplicada por uma constante. Para resolver este problema, introduzimos o conceito de negentropia, que é uma normalização da entropia de forma que fique invariante a qualquer transformação linear inversível. A negentropia de uma variável aleatória $\mathpzc{x}$ é dada por:
     \begin{equation}
         \mathpzc{J(x) = H(x_g) - H(x)},
     \end{equation}
-    onde $\mathpzc{x_g}$ representa uma variável aleatória gaussiana com a mesma variância de $\mathpzc{x}$. Desta forma, a negentropia é sempre não-negativa e só é igual à zero quando $\mathpzc{x}$ for uma variável gaussiana. Uma vantagem da negentropia é que esta medida de gaussianidade é consideravelmente mais robusta a \textit{outliers} se comparada à curtose.
-    Entretanto, há uma dificuldade em relação à sua aplicação devido à necessidade de estimação da entropia. Para tentar contornar isto, é comum escolher uma função não-linear não-quadrática $G(\cdot)$ e incorporá-la à formulação tradicional do método \cite{fastica1}, dada por:
+    onde $\mathpzc{x_g}$ representa uma variável aleatória gaussiana com a mesma variância de $\mathpzc{x}$. Desta forma, a negentropia é sempre não-negativa e só é igual a zero quando $\mathpzc{x}$ for uma variável gaussiana. Uma vantagem da negentropia é que esta medida de gaussianidade é consideravelmente mais robusta a \textit{outliers} se comparada à curtose.
+    Entretanto, há uma dificuldade em relação à sua aplicação devido à necessidade de estimação da entropia. Para contornar este problema, é comum escolher uma função não-linear não-quadrática $G(\cdot)$ e incorporá-la à formulação tradicional do método \cite{fastica1}, dada por:
     \begin{equation}
         \mathpzc{J(y)} = \alpha(\mathpzc{E}\{\mathpzc{G(y)}\} - \mathpzc{E}\{\mathpzc{G(\nu)}\})^2,
     \end{equation}
@@ -262,8 +262,8 @@
     \begin{equation}
           \mathbf{w_i} \leftarrow  \frac{\mathbf{w_i}}{||\mathbf{w_i}||},
     \end{equation}
-    onde $\mathpzc{g} = \mathpzc{G}'$ é a primeira derivada da função não-quadratíca $\mathpzc{G}$.
-    Assim como o caso da curtose, também é possível derivar o algoritmo de ponto fixo para este caso. Conforme descrito em \cite{LuizVictorio}, encontra-se o seguinte algoritmo:
+    onde $\mathpzc{g} = \mathpzc{G}'$ é a primeira derivada da função não-quadrática $\mathpzc{G}$.
+    Assim como o caso da curtose, também é possível derivar o algoritmo de ponto fixo para este caso. Conforme descrito em \cite{LuizVictorio}, obtém-se o seguinte algoritmo:
     
     \begin{equation}
         \mathbf{W} \leftarrow \mathpzc{E}\{\mathpzc{g}\mathbf{(y)z^T}\} - diag(\mathpzc{E}\{\mathpzc{g'}\mathbf{(y)}\}\mathbf{W}
@@ -274,7 +274,7 @@
     \end{equation}
     
     
-    Assim sendo, resta escolhar uma função \textit{G} que contenha boas propriedades de convergência ao mesmo tempo que seja uma boa aproximação da entropia. A função $G(s_i)$ = -log($q(s_i)$), onde $q(s_i)$ é a densidade de probabilidade estimada da fonte $s_i$ é uma escolha natural. O problema se torna estimar as densidades de probabilidade das fontes, mas na Figura \ref{fig:scoretable} exibimos as densidades de probabilidade em conjunto com as chamadas funções $g$, também chamadas de funções \textit{score}.
+    Assim sendo, resta escolhar uma função \textit{G} que contenha boas propriedades de convergência ao mesmo tempo que seja uma boa aproximação da entropia. A função $G(s_i)$ = $-$log($q(s_i)$), onde $q(s_i)$ é a densidade de probabilidade estimada da fonte $s_i$ é uma escolha natural. O problema se torna estimar as densidades de probabilidade das fontes. Na Figura \ref{fig:scoretable} exibimos as densidades de probabilidade em conjunto com as funções $g$, também chamadas de funções \textit{score}.
     
     \begin{figure}
         \centering
@@ -356,7 +356,7 @@
     
     Vale ressaltar que supor que a distribuição das fontes é conhecida é uma desvantagem dos algoritmos baseados em ML em relação aos algoritmos que utilizam maximização da não-gaussianidade. No caso em que a distribuição estimada é bem diferente da distribuição real, os algoritmos baseados em ML terão desempenho inferior aos algoritmos baseados em maximização da não-gaussianidade, mesmo sem a restrição de que a matriz separadora seja unitária. A Figura \ref{fig:scoretable} relaciona algumas das densidades de probabilidade para fontes reais utilizadas no algoritmo Natural ICA e suas respectivas funções score.
     
-    Existem particularidades de certos casos que geram a necessidade de certas modificações no algoritmo. No caso do Natural ICA, para fontes cujas potências variam muito de um instante do tempo para o outro, o algoritmo pode ter problemas para convergir, devido à sua relação com o gradiente. Isto acontece em uma implementação on-line, por exemplo. Para este caso, em \cite{holonomic} é derivado o Natural ICA com restrições não-holonômicas. Entretanto, por não fazer parte do escopo deste trabalho, esta abordagem não será discutida.
+    Existem particularidades de certos casos que geram a necessidade de certas modificações no algoritmo. No caso do Natural ICA, para fontes cujas potências variam muito de um instante do tempo para o outro, o algoritmo pode ter problemas para convergir, devido à sua relação com o gradiente. Isto acontece em uma implementação \textit{on-line}, por exemplo. Para este caso, em \cite{holonomic} é derivado o Natural ICA com restrições não-holonômicas. Entretanto, por não fazer parte do escopo deste trabalho, esta abordagem não será discutida.
 
 
 \section{Avaliação de Desempenho}\label{metrics}
@@ -373,43 +373,41 @@
         \item SAR (Razão Sinal-Artefatos) - mede a razão entre as potências do sinal de saída (com interferências e ruído) e dos artefatos, que são todas as distorções do sinal excluídas as interferências de outras fontes e o ruído dos sensores.
     \end{enumerate}
     
-    Estas medidas podem ser expressas pelas seguinte forma:
+    Estas medidas podem ser expressas pelas seguintes equações:
     
     \begin{equation}
         \label{eq:sir}
-        SIR_i = 10\log_{10} \frac{|| [s_{target}]_i ||^2}{|| [e_{interf}]_i ||^2},
+        SIR_i = 20\log_{10} \frac{|| [s_{target}]_i ||^2}{|| [e_{interf}]_i ||^2},
     \end{equation}
     \medskip
     \begin{equation}
         \label{eq:sdr}
-        SDR_i = 10\log_{10} \frac{|| [s_{target}]_i ||^2}{|| [e_{interf}]_i + [e_{noise}]_i + [e_{art}]_i   ||^2},
+        SDR_i = 20\log_{10} \frac{|| [s_{target}]_i ||^2}{|| [e_{interf}]_i + [e_{noise}]_i + [e_{art}]_i   ||^2},
     \end{equation}
     \medskip
     \begin{equation}
         \label{eq:sar}
-        SAR_i = 10\log_{10} \frac{|| [s_{target}]_i + [e_{interf}]_i + [e_{noise}]_i ||^2}{|| [e_{interf}]_i ||^2},
+        SAR_i = 20\log_{10} \frac{|| [s_{target}]_i + [e_{interf}]_i + [e_{noise}]_i ||^2}{|| [e_{interf}]_i ||^2},
     \end{equation}
-    onde $s_{target}$ é a fonte real, com alguma distorção aceitável, $e_{interf}$  é a parcela do erro
-proveniente de interferências de outras fontes $i`$ $\neq$ i na estimativa $y_i$ da fonte, $e_{noise}$
-é a parcela do erro proveniente de ruído dos sensores, e $e_{art}$ é a parcela do erro que não provém nem de interferências nem de ruído. Estes podem ser obtidos pelas seguintes equações:
+    onde $s_{target}$ é a fonte real, com alguma distorção aceitável, $e_{interf}$  é a parcela do erro proveniente de interferências de outras fontes na estimativa $y_i$ da fonte, $e_{noise}$ é a parcela do erro proveniente de ruído dos sensores, e $e_{art}$ é a parcela do erro que não provém nem de interferências nem de ruído. Estes podem ser obtidos pelas seguintes equações:
 
     \begin{equation}
         \label{eq:star}
-         [s_{target}]_i  = (\mathbf{y_i^Ts_i})\frac{\mathbf{s_i}}{||\mathbf{s_i}||^2}
+         [s_{target}]_i  = (\mathbf{y_i^Ts_i})\frac{s_i}{||\mathbf{s_i}||^2}
     \end{equation}
     
     \medskip
     
     \begin{equation}
         \label{eq:eint}
-         [e_{interf}]_i  = \sum_{i' \neq i} \{(\mathbf{y_i^Ts_i})\frac{\mathbf{s_i}}{||\mathbf{s_i}||^2}\}
+         [e_{interf}]_i  = \sum_{i' \neq i} \{(\mathbf{y_i^Ts_{i'}})\frac{s_{i'}}{||\mathbf{s_{i'}}||^2}\}
     \end{equation}
     
     \medskip
     
     \begin{equation}
         \label{eq:enoise}
-         [e_{noise}]_i  = (\mathbf{y_i^Tn_j})\frac{\mathbf{n_j}}{||\mathbf{n_j}||^2}
+         [e_{noise}]_i  = (\mathbf{y_i^Tn_j})\frac{n_j}{||\mathbf{n_j}||^2}
     \end{equation}
     
     \medskip
@@ -418,7 +416,6 @@ proveniente de interferências de outras fontes $i`$ $\neq$ i na estimativa $y_i
         \label{eq:eart}
          [e_{art}]_i  = y_i -  [e_{noise}]_i -  [e_{interf}]_i - [s_{target}]_i 
     \end{equation}
-    
-    Como não consideramos ruído nos sensores neste trabalho, temos $e_{noise}$ = 0.
+    onde $n_j$ é o sinal com o ruído proveniente dos sensores. Como não consideramos ruído nos sensores neste trabalho, temos $e_{noise}$ = 0.
     
     
