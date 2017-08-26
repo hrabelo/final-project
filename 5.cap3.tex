@@ -58,7 +58,7 @@
         
         \item  $\mathpzc{f_s}$ é a frequência de amostragem;
         
-        \item $\mathpzc{win_a}$($\mathpzc{n}$) é a janela de análise, definida como sendo não-nula apenas no intervalo $[0, L-1]$. O salto J é obviamente menor ou igual L, ou haverá perda de observações. Este salto deve ser bem escolhido para não haver distorções na síntese dos sinais.
+        \item $\mathpzc{win_a}$($\mathpzc{n}$) é a janela de análise, definida como sendo não-nula apenas no intervalo $[0, L-1]$. O salto $J$ é obviamente menor ou igual a $L$, ou haverá perda de observações. Este salto deve ser bem escolhido para não haver distorções na síntese dos sinais.
     \end{itemize}
     
         Em geral, utiliza-se $K=L$ na equação acima. Entretanto, há casos em que $K>L$, chamados de \textit{oversampled}. Nestes casos, é necessário utilizar \textit{zero-padding} para preencher o sinal com zeros antes de passar para a frequência, conforme descrito em \cite{STFT}.
@@ -73,7 +73,7 @@
          onde 
         \begin{enumerate}
         
-            \item \textit{DFT}($\mathbf{v})$ representa a DFT do vetor $\mathbf{v}$, que pode ser calculada através da FFT;
+            \item \textit{DFT}($\mathbf{v})$ representa a DFT do vetor $\mathbf{v}$, que pode ser eficientemente calculada através da FFT;
             
             \item O vetor $\mathbf{x_{frame}}$(m) = [$\mathpzc{x}$($\mathpzc{mJ}$), $\dots$, $\mathpzc{x(mJ + L - 1)}$]$^T$ tem comprimento $L$ e representa o \textit{frame m} no domínio do tempo;
             
@@ -111,7 +111,7 @@
         \end{equation}
  
         
-        Existem estudos acerca da utilização de outras janelas e em quais condições estas satisfazem ou não à condição COLA, conforme descrito em \cite{LuizVictorio}. Neste trabalho, iremos utilizar a janela de \texit{Hanning}, representada em (\ref{eq:hanning}), como janela de análise, atendendo à condição COLA (\ref{eq:condition2}). Normalmente, a janela retangular é escolhida como a janela de síntese. O salto da janela que respeita a condição COLA para este caso é $J = \frac{L}{2}$.
+        Existem estudos acerca da utilização de outras janelas e em quais condições estas satisfazem a condição COLA, conforme descrito em \cite{LuizVictorio}. Neste trabalho, iremos utilizar a janela de \texit{Hanning}, representada em (\ref{eq:hanning}), como janela de análise, atendendo à condição COLA (\ref{eq:condition2}). Normalmente, a janela retangular é escolhida como a janela de síntese. O salto da janela que respeita a condição COLA para este caso é $J = \frac{L}{2}$.
         
         \begin{equation}\label{eq:hanning}
             \mathpzc{w_{hanning}(n)} = 0,5 \left( 1 - cos\frac{2\pi\mathpzc{n}}{L}\right)
@@ -120,10 +120,10 @@
         Em suma, quando trabalhamos no domínio da frequência utilizando STFT, para cada raia de frequência $k$, buscaremos suas contribuições em todos os saltos de janela $L$ e aplicaremos o método de separação escolhido.
         
 \section{Pré-Processamento}
-        O estágio de pré-processamento pode ser necessário, auxiliar ou desnecessário, dependendo do método de separação a ser empregado no processamento propriamente dito. O método mais comum de pré-processamento é o do branqueamento, que se baseia na média do vetor de amostras.
+        O estágio de pré-processamento pode ser necessário, dependendo do método de separação a ser empregado no processamento propriamente dito. O método mais comum de pré-processamento é o do branqueamento, que se baseia na média do vetor de amostras.
     
     \subsection{Branqueamento} \label{sec:whitening}
-        Em geral, branquear os vetores é uma boa prática, visto que faz grande parte do trabalho de separação, a descorrelação. Dependendo do método utilizado na etapa de separação, o branqueamento pode ser obrigatório (FastICA) ou pode melhorar a velocidade e robustez da convergência do algoritmo ICA no domínio da frequência (Natural ICA). A normalização do vetor de misturas desempenha um papel importante em sinais de áudio devido à sua característica de não-brancura (ou colorimento), ou seja, a energia varia bastante entre as suas componentes de frequências.
+        Em geral, branquear os vetores é uma boa prática, visto que corresponde à grande parte do trabalho de separação, a descorrelação. Dependendo do método utilizado na etapa de separação, o branqueamento pode ser obrigatório (FastICA) ou pode melhorar a velocidade e robustez da convergência do algoritmo ICA no domínio da frequência (Natural ICA). A normalização do vetor de misturas desempenha um papel importante em sinais de áudio devido à sua característica de colorimento, ou seja, a energia varia bastante entre as suas componentes de frequências.
         
         Matematicamente, é possivel mostrar que o processo de branqueamento faz aproximadamente metade do trabalho de separação, sem muito custo computacional. Entre outros benefícios, estão a rapidez e uniformidade na convergência para cada raia de frequência, quando utilizado um passo de adaptação fixo, além de ser pré-requisito dos algoritmos FastICA.
         
@@ -165,12 +165,12 @@
     
         A separação dos sinais é realizada em cada raia de frequência, utilizando um algoritmo ICA que trabalhe com números complexos. O algoritmo Natural ICA, por não possuir restrições com relação à matriz separadora, é uma boa escolha. No Natural ICA, após o branqueamento das amostras, a matriz de branqueamento $\mathbf{V_K}$ é utilizada como solução inicial $\mathbf{W_k = V_k}$ e a matriz $\mathbf{W_k}$ é atualizada iterativamente, através do algoritmo apresentado em (\ref{eq:refresh}).
     
-        Em \cite{real}, é proposto que uma vez escolhida uma das funções \textit{score} apresentadas na Figura \ref{fig:scoretable} seja aplicada independentemente à parte real e imaginária, ou seja,
+        Em \cite{real}, é proposto que uma vez escolhida uma das funções \textit{score} apresentadas na Figura \ref{fig:scoretable} esta seja aplicada independentemente à parte real e imaginária, ou seja,
         \begin{equation}
             \phi(\mathpzc{y_{ik}}) =\phi(\mathcal{R}(\mathpzc{y_{ik}})) + j\phi(\mathcal{F}(\matphzc{y_{ik}}))
         \end{equation}
     
-        A conclusão de utilizar o Natural ICA com números complexos diretamente e aplicar a função \textit{score} às partes real e imaginária separadamente também foi obtida por outra abordagem que decidiu derivar o algoritmo diretamente no domínio complexo. Isto implica em uma restrição: as partes real e imaginária de $\mathpzc{y_{ik}}$ devem ser independentes. Uma forma de contornar esta situação é utilizar o Natural ICA não-holonômico ou aplicar a função \textit{score} à fonte $\mathpzc{y_{ik}}$ da seguinte forma:
+        A conclusão de utilizar o Natural ICA com números complexos diretamente e aplicar a função \textit{score} às partes real e imaginária separadamente também foi obtida por outra abordagem em que o algoritmo foi derivado diretamente no domínio complexo. Isto implica em uma restrição: as partes real e imaginária de $\mathpzc{y_{ik}}$ devem ser independentes. Uma forma de contornar esta situação é utilizar o Natural ICA não-holonômico ou aplicar a função \textit{score} à fonte $\mathpzc{y_{ik}}$ da seguinte forma:
         \begin{equation}
                \phi(\mathpzc{y_{ik}}) =\phi(|\mathpzc{y_{ik}}|)e^{j\theta(\mathpzc{y_{ik}})}
         \end{equation}
@@ -186,7 +186,7 @@
         
     Conforme mencionado na Seção \ref{sec:ICA}, é necessário utilizar algoritmos ICA que lidem com sinais complexos para que tenhamos êxito na realização da separação no domínio da frequência. Em \cite{fasticaebm}, é proposta uma variação do FastICA tradicional, utilizando a minimização da entropia através das suas fronteiras, resultando no algoritmo ICA-EBM (do inglês \textit{Entropy Bound Minimization}).
         
-    Este algoritmo baseia-se na abordagem da negentropia, no contexto da maximização da não-gaussianidade (Seção \ref{sec:negentropy}). A idéia principal reside em não calcular a entropia $H(\mathbf{x})$ diretamente, mas sim através das suas fronteiras. Para obter uma estimativa confiável, é necessário resolver a distribuição que maximiza a entropia e ao mesmo tempo respeitar as restrições que, na prática, são as estimativas obtidas através das amostras. 
+    Este algoritmo baseia-se na abordagem da negentropia, no contexto da maximização da não-gaussianidade (Seção \ref{sec:negentropy}). A idéia principal reside em não calcular a entropia $H(\mathbf{x})$ diretamente, mas sim através das suas fronteiras. Para obter uma estimativa confiável, é necessário encontrar a distribuição que maximiza a entropia e ao mesmo tempo respeitar as restrições que, na prática, são as estimativas obtidas através das amostras. 
         
     Dado um sinal complexo $\mathpzc{z(n)}$ = $\mathpzc{z_R(n) + jz_I(n)}$, onde $\mathpzc{z_R(n)}$ corresponde à sua parte real e $\mathpzc{z_I(n)}$ à sua parte imaginária, considere a seguinte decomposição:
     \begin{equation}
@@ -222,7 +222,7 @@
     \end{equation}
     que só resulta em igualdade no caso em que $\mathpzc{r}$ e $\mathpzc{\theta}$ são estatisticamente independentes e este está uniformemente distribuido em [$\mathpzc{-\pi,\pi}$) e, portanto, $\mathpzc{u + jv}$ é circular. Também é possível escrever esta fronteira (\ref{eq:inferiorbound}) apenas em função da matriz $\mathbf{B}$. 
     
-    Conforme observado em \ref{eq:superiorbound} e \ref{eq:inferiorbound}, para uma dada matriz $\mathbf{B}$ não-singular, é preciso determinar os limites $\mathpzc{H(u)}$ e  $\mathpzc{H(v)}$. Em \cite{entropymaximum}, o autor diz ser possível encontrar essas fronteiras encontrando as distribuições que maximizam as entropias e que são compatíveis com as restrições $\mathpzc{E[u]} = 0$, $\mathpzc{E[u^2]} = 1$, $\mathpzc{E[G_1^{[I]}(u)]}$ = $\mu_{G_I}$, $\mathpzc{E[v]} = 0$, $\mathpzc{E[v^2]} = 1$ e $\mathpzc{E[G_2^{[I]}(u)]}$ = $\mu_{G_{II}}$, onde ${G_I^{[I]}}$($\cdot$) e $\matphzc{\mu_{G_i}^{[I]}}$, $\mathpzc{i}$ = 1,2, são, respectivamente, as funções de medição e valor esperado (que pode ser estimado apenas usando médias amostradas).
+    Conforme observado em (\ref{eq:superiorbound}) e (\ref{eq:inferiorbound}), para uma dada matriz $\mathbf{B}$ não-singular, é preciso determinar os limites $\mathpzc{H(u)}$ e  $\mathpzc{H(v)}$. Em \cite{entropymaximum}, o autor diz ser possível obter estas fronteiras encontrando as distribuições que maximizam as entropias e que são compatíveis com as restrições $\mathpzc{E[u]} = 0$, $\mathpzc{E[u^2]} = 1$, $\mathpzc{E[G_1^{[I]}(u)]}$ = $\mu_{G_I}$, $\mathpzc{E[v]} = 0$, $\mathpzc{E[v^2]} = 1$ e $\mathpzc{E[G_2^{[I]}(u)]}$ = $\mu_{G_{II}}$, onde ${G_I^{[I]}}$($\cdot$) e $\matphzc{\mu_{G_i}^{[I]}}$, $\mathpzc{i}$ = 1,2, são, respectivamente, as funções de medição e valor esperado (que pode ser estimado apenas usando médias amostradas).
     
     A estimativa da entropia $\mathpzc{H(z)}$ em função das suas fronteiras é dada por:
     \begin{equation}
@@ -233,9 +233,9 @@
         \big)
     \end{equation}
     \bigskip
-    onde ${K^{[I]}}$ e ${K^{[II]}}$ são o número de funções de medição para os limites (\ref{eq:superiorbound}) e (\ref{eq:inferiorbound}) respectivamente.
+    onde ${K^{[I]}}$ e ${K^{[II]}}$ são o número de funções de medição para os limites (\ref{eq:superiorbound}) e (\ref{eq:inferiorbound}), respectivamente.
     
-    As funções de medição ${G^{[I]}}$ e ${G^{[II]}}$ e suas respectivas derivadas de primeira ordem estão representadas nas Tabelas \ref{tb:g1} e \ref{tb:g2}, respectivamente. 
+    As funções de medição ${G^{[I]}}$ e ${G^{[II]}}$ e suas derivadas de primeira ordem estão representadas nas Tabelas \ref{tb:g1} e \ref{tb:g2}, respectivamente. 
 
     O algoritmo é definido por
     \begin{equation}
@@ -244,7 +244,7 @@
     \begin{equation}
         \mathbf{w_n^{[new]}} = \frac{\mathbf{w_n^+}}{||\mathbf{w_n^+}||}
     \end{equation}
-    onde o valor de $\mathbf{u_n}$ vem de:
+    onde o valor de $\mathbf{u_n}$ é obtido por:
     \begin{equation}
         \mathbf{u_n^+} = \frac{\partial J_n(\mathbf{w_n})}{\partial \mathbf{w_n^*}} - \text{Re}\{\mathbf{w_n^T}\frac{\partial J_n(\mathbf{w_n})}{\partial \mathbf{w_n^*}}\}\mathbf{w_n}
     \end{equation}
@@ -306,20 +306,18 @@
     \end{equation}
     onde $\mathbf{U}$ é a matriz branqueadora ortogonal e  $\mathbf{\Delta(M)}$ é uma matriz ortogonal cujos parâmetros dependem de $\mathbf{M}$ e das curtoses das fontes.
 
-    Obviamente, a matriz $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonalização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumultante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos \cite{JADE}. Como não se tem essa informação da matriz $\mathbf{U}$ a priori, é impossível estabelecer qualquer tipo de garantia sobre os autovalores.
+    Obviamente, a matriz $\mathbf{U}$ diagonaliza  $\mathbf{Q^x(M)}$. Assim, a diagonalização de $\mathbf{Q^x(M)}$ é uma abordagem possível para a recuperação das fontes.  A diagonalização da matriz de cumulante garante a identificação de $\mathbf{U}$ desde que haja, no máximo, uma fonte com curtose nula (restrição sobre fontes gaussianas) e que os autovalores de $\mathbf{Q^x(M)}$ sejam distintos \cite{JADE}. Como não se tem essa informação da matriz $\mathbf{U}$ a priori, é impossível estabelecer qualquer tipo de garantia sobre os autovalores.
     Assim sendo, em vez de se realizar a diagonalização considerando apenas uma matriz de cumulante, adota-se um esquema de diagonalização conjunta de diferentes matrizes de cumulante, sendo cada uma delas definida por uma matriz $\mathbf{M_i}$. Dessa forma, a função custo a ser minimizada no algoritmo JADE é dada por
     
     \begin{equation}\label{eq:optimize}
-        \mathbf{D(U)} = \sum_i \Omega(\mathbf{U^TQ^X(M_i)U})
-    \end{equation}
-    
-    onde o operador $\Omega(\cdot)$ expressa a soma quadrática dos elementos que não estão na diagonal principal. Sobre a escolha das matrizes $\mathbf{M_i}$, utilizam-se automatrizes relativas ao tensor de cumulante, ou seja, as N matrizes $\mathbf{M_i}$ tal que $\mathbf{Q^x(M_i)}$ = $\lambda$ $\mathbf{M_i}$.
+        {D(\mathbf{U}) = \sum_i \Omega(\mathbf{U^TQ^X(M_i)U})
+    \end{equation} onde o operador $\Omega(\cdot)$ expressa a soma quadrática dos elementos que não estão na diagonal principal. Sobre a escolha das matrizes $\mathbf{M_i}$, utilizam-se automatrizes relativas ao tensor de cumulante, ou seja, as N matrizes $\mathbf{M_i}$ tal que $\mathbf{Q^x(M_i)}$ = $\lambda$ $\mathbf{M_i}$.
     
     O método de Jacobi para diagonalização de matrizes pode ser utilizado para otimizar a função (\ref{eq:optimize}). A idéia essencial é representar a matriz $\mathbf{U}$ como um produto de matrizes de rotação:
     \begin{equation}
         \mathbf{U} = \sum_{i,j=1,i\neqj}^N \mathbf{R_{ij}},
     \end{equation}
-    onde a matriz de rotação $\mathbf{R_{ij}}$, de dimensões $NxN$, tem todos os seus elementos nulos exceto os das posições $\mathpzc{(i,i), (i,j), (j,i), (j,j)}$, que são dados por:
+    onde a matriz de rotação $\mathbf{R_{ij}}$, de dimensões $N \times N$, tem todos os seus elementos nulos exceto os das posições $\mathpzc{(i,i), (i,j), (j,i), (j,j)}$, que são dados por:
     \begin{equation}
         \mathpzc{r_{ii} = cos \theta, r_{ij} = sin \theta, r_{ji} = -sin \theta, r_{jj} = cos \theta}
     \end{equation}
@@ -333,7 +331,7 @@
     O principal desafio do ICA no domínio da frequência é o problema da permutação. Ele consiste em encontrar a matriz de permutação $\mathbf{P_k}$, definida na Seção \ref{sec:separability}, onde o índice $\mathpzc{k}$ indica a raia da frequência, de forma que se agrupe corretamente as frequências das fontes e a ISTFT gere resultados satisfatórios.
     Este problema pode ser tratado de diferentes maneiras; entretanto, para este trabalho, iremos destacar o método TDOA (\textit{Time Difference Of Arrival}), que pode ser considerado uma extensão do DOA (\textit{Difference Of Arrival}).
     
-    O método DOA se baseia na estimação do ângulo de chegada das fontes nos sensores. Entretanto, é possível que duas fontes tenham o mesmo DOA, uma vez que a estimativa do ângulo de chegada utilizada é feita em um plano 2D. Desta forma, fontes cujos ângulos de chegada tenham o mesmo valor de cosseno estão, para o algoritmo, na mesma direção. Isto cria uma uma limitação de ângulos entre 0 e 2$\pi$. Uma alternativa é estimar a direção num espaço tridimensional das fontes (DOA 3D), mas isto acarreta um aumento significativo no custo computacional.
+    O método DOA se baseia na estimação do ângulo de chegada das fontes nos sensores. Entretanto, é possível que duas fontes tenham o mesmo DOA, uma vez que a estimativa do ângulo de chegada utilizada é feita em um plano 2D. Desta forma, fontes cujos ângulos de chegada tenham o mesmo valor de cosseno estão, para o algoritmo, na mesma direção. Isto cria uma uma limitação de ângulos entre 0 e $\pi$. Uma alternativa é estimar a direção num espaço tridimensional das fontes (DOA 3D), mas isto acarreta um aumento significativo no custo computacional.
     
     O TDOA é uma alternativa mais robusta ao DOA. Baseando-se na diferença de tempos de chegada de cada fonte aos sensores, este não sofre a limitação de ângulo que o DOA sofre, além de não ser computacionalmente mais custoso. Através do TDOA de cada fonte entre todos os pares de sensores, é possível identificá-las em cada uma das raias de frequência.
     
