@@ -13,7 +13,7 @@
     
     O trabalho de Bell e Sejnowski \cite{ICAML} popularizou o problema da BSS na comunidade de processamento de sinais devido à sua simplicade de implementação combinada com a capacidade de separar uma quantidade considerável de fontes.
     
-    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja \cite{ICA} possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA (do inglês \textit{Principal Component Analysis}), já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduz o conceito de maximização da não-gaussianidade \cite{ICAML}, dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
+    No fim da década de 1990, os trabalhos de Karhunen, Pajunen e Oja \cite{ICA} possibilitaram analisar a ICA como uma extensão não-linear da técnica PCA (do inglês \textit{Principal Component Analysis}), já bastante conhecida e difundida na comunidade. Isto fez com que a ICA pudesse ser aplicada em vários estágios referentes à análise de dados. Além disso,  o trabalho de  Hyvärinen introduziu o conceito de maximização da não-gaussianidade \cite{ICAML}, dando origem a um dos algoritmos mais conhecidos para o problema, o FastICA.
     
     
     Atualmente, uma das principais vertentes de estudo do problema de BSS é considerada a dissociação entre BSS e ICA, que pode ser evidenciada por estudos tais como o do algoritmo TRINICON \cite{trinicon}
@@ -84,7 +84,7 @@
     onde a matriz $\mathbf{A}$ de dimensão ${N \times N}$ é chamada de matriz de mistura. A diferença é que, no caso instantâneo, os elementos da matriz $\mathbf{A}$ são constantes que multiplicam as componentes do vetor de fontes $\mathbf{s}$ para formar as misturas $\mathbf{x}$, enquanto no caso convolutivo, os elementos da matriz $\mathbf{A}$ são, geralmente, respostas ao impulso de filtros \textit{FIR} que representam o percurso realizado pela fonte até o sensor devido à presença de reverberação. Assim, tem-se a convolução de cada uma das respostas ao impulso desses filtros com cada elemento do vetor de fontes $\mathbf{s}$. A despeito de sua simplicidade, esta classe de modelos é válida em uma vasta quantidade de problemas de BSS \cite{ICA}. Além disso, é possível recuperar as fontes através da ICA, que será vista na próxima seção.
 
 \section{Análise de Componentes Independentes} \label{sec:ICA}
-    Nesta seção serão apresentados os aspectos básicos da ICA (do inglês \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear instantâneo e convolutivo, trataremos apenas do caso instantâneo, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências \cite{ICA3}, \cite{ICA}.
+    Nesta seção serão apresentados os aspectos básicos da ICA (do inglês \textit{Independent Component Analysis}), relacionando-a com alguns métodos semelhantes. Embora a ICA seja definida para o caso linear, instantâneo e convolutivo, trataremos apenas do caso instantâneo, pois é o que condiz com a abordagem que queremos realizar, a de separação das fontes no domínio da frequência. Recomendamos ao leitor interessado em um estudo aprofundado sobre os aspectos teóricos da ICA a leitura do trabalho de Comon \cite{Comon}, responsável pela formalização matemática desse assunto, e as referências \cite{ICA3}, \cite{ICA}.
     
     Os algoritmos ICA podem ser derivados através da estimativa da máxima verossimilhança \cite{ICAML}, \cite{ML}, \cite{NaturalICA} e da maximização da não-gaussianidade \cite{fastica1}, \cite{fastica2}, \cite{fastica3} e \cite{fasticaebm}. Apesar de a maioria dos algoritmos serem desenvolvidos para trabalhar com números reais, podemos estendê-los para lidar com números complexos. Para isto, é preciso escolher apropriadamente uma função não-linear que, relacionada à formulação dos algoritmos para sinais reais, permita o emprego dos mesmos para sinais complexos.
 
@@ -407,7 +407,7 @@
     
     \begin{equation}
         \label{eq:enoise}
-         [e_{noise}]_i  = (\mathbf{y_i^Tn_j})\frac{n_j}{||\mathbf{n_j}||^2}
+         [e_{noise}]_i  = (\mathbf{y_i^Tn_i})\frac{n_i}{||\mathbf{n_i}||^2}
     \end{equation}
     
     \medskip
@@ -416,6 +416,6 @@
         \label{eq:eart}
          [e_{art}]_i  = y_i -  [e_{noise}]_i -  [e_{interf}]_i - [s_{target}]_i 
     \end{equation}
-    onde $n_j$ é o sinal com o ruído proveniente dos sensores. Como não consideramos ruído nos sensores neste trabalho, temos $e_{noise}$ = 0.
+    onde $n_i$ é o sinal do ruído proveniente do sensor. Como não consideramos ruído nos sensores neste trabalho, temos $e_{noise}$ = 0.
     
     
